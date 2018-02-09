@@ -1,0 +1,101 @@
+#!/bin/bash
+while true
+do
+
+clear
+
+echo "||||||||Zeninity||||||||||"
+echo "|||                    |||"
+echo "|||   1:Entrée         |||"
+echo "|||   2:Question       |||"
+echo "|||   3:Mot de passe   |||"
+echo "|||   4:Erreur         |||"
+echo "|||   5:Avertissement  |||"
+echo "|||                    |||"
+echo "||||||||||||||||||||||||||"
+echo ""
+
+read -rp $'' -n 1 key
+
+clear
+
+if [ $key == "1" ]; then
+	while [ $key != 'n' ]
+	do
+	echo "||||||||Zeninity||||||||||"
+	echo "|||||||[1:Entrée]|||||||||"  
+	echo "Demande une information:"
+	text=$''
+	read text
+	zenity --entry --text "$text"
+	echo ""
+	read -rp $'Continuer ? (o/n): ' -n 1 -ei $'o' key
+	clear
+	done
+	
+
+elif [ $key == "2" ]; then
+	while [ $key != 'n' ]
+	do
+	echo "||||||||Zeninity||||||||||"
+	echo "||||||[2:Question]||||||||"
+	echo "Pose une question:"
+	text=$''
+	read text
+	zenity --question --text "$text"
+	echo ""
+	read -rp $'Continuer ? (o/n): ' -n 1 -ei $'o' key
+	clear
+	done
+	
+
+elif [ $key == "3" ]; then
+	while [ $key != 'n' ]
+	do
+	echo "||||||||Zeninity||||||||||"
+	echo "||||[3:Mot de passe]||||||"
+	echo "Demande un mot de passe:"
+	text=$''
+	read text
+	zenity --password "$text"
+	echo ""
+	read -rp $'Continuer ? (o/n): ' -n 1 -ei $'o' key
+	clear
+	done
+	
+
+elif [ $key == "4" ]; then
+	while [ $key != 'n' ]
+	do
+	echo "||||||||Zeninity||||||||||"
+	echo "|||||||[4:Erreur]|||||||||"
+	echo "Entre ton Erreur:"
+	text=$''
+	read text
+	zenity --error --text "$text"
+	echo ""
+	read -rp $'Continuer ? (o/n): ' -n 1 -ei $'o' key
+	clear
+	done
+	
+
+elif [ $key == "5" ]; then
+	while [ $key != 'n' ]
+	do
+	echo "||||||||Zeninity||||||||||"
+	echo "||||[5:Avertissement]|||||"
+	echo "Entre ton Avertissement:"
+	text=$''
+	read text
+	zenity --warning --text "$text"
+	echo ""
+	read -rp $'Continuer ? (o/n): ' -n 1 -ei $'o' key
+	clear
+	done
+	
+else
+	echo "Mauvais argument"
+	
+fi
+done
+exit 1

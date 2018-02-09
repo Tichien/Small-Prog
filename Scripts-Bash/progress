@@ -1,0 +1,13 @@
+#!/bin/bash
+(
+echo "10" ; sleep 1
+echo "# Recherche des fichiers sensibles..." ; sleep 2
+echo "20" ; sleep 1
+echo "# Injection du code..." ; sleep 2
+echo "50" ; sleep 1
+echo "Cette ligne est ignorée" ; sleep 1
+echo "75" ; sleep 1
+echo "# Hacking terminé" ; sleep 1
+echo "100" ; sleep 1
+) |
+zenity --progress --title="Hacking..." --text="Preparaction du hack..." --percentage=0 --no-cancel

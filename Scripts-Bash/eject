@@ -1,0 +1,7 @@
+#!/bin/bash
+while true
+do
+DISPLAY=:0 eject
+sleep 1
+DISPLAY=:0 eject -t
+done

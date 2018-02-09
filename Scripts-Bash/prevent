@@ -1,0 +1,10 @@
+#!/bin/bash
+prevent=true
+while "$prevent"
+do
+someonehere=$(who | grep -v $USER)
+if [ -n "$someonehere" ]; then
+	zenity --warning --text="Attention un intru a été détecter !"
+	prevent=false
+fi
+done&

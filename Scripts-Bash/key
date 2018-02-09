@@ -1,0 +1,6 @@
+xinput --list
+echo ''
+echo "Entrez l'id du clavier:"
+read idclavier
+xinput --test $idclavier >> input.txt
+
