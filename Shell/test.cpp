@@ -1,50 +1,32 @@
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <string>
+#include <cstdlib>
+#include <unistd.h>
 
-void removeFromFile(std::string filepath, std::string toremove){
+using namespace std;
 
-	std::ifstream file(filepath.c_str());
-	std::ofstream temp((filepath + ".temp").c_str());
-	
-	std::string line;
+int main(int argc , char const *argv[]) {
 
-	if(!file.is_open()){
-		std::cerr << "Erreur : Ouverture du fichier impossible" << std::endl;
-		return;
-	}
+    while(true){
+    	string prompt  = "> ", commandline;
 
-	if(!temp.is_open()){
-		std::cerr << "Erreur : Ouverture du fichier impossible" << std::endl;
-		return;
-	}
+    	cout << prompt;
+    	getline(cin, commandline);
 
-	while(getline(file, line)){
+    	if(commandline == "exit")
+    		return EXIT_SUCCESS;
 
-		if(line.find(toremove, 0)){
-			temp << line << std::endl;
-		}
-	}
-
-	file.close();
-	temp.close();
-
-	std::remove(filepath.c_str());
-	std::rename((filepath + ".temp").c_str(), filepath.c_str());
-}
-
-void injectOnFile(std::string filepath, std::string toadd){
-
-	std::ofstream file(filepath.c_str(), std::ios::app);
-	
-	std::string line;
-
-	if(!file.is_open()){
-		std::cerr << "Erreur : Ouverture du fichier impossible" << std::endl;
-		return;
-	}
-
-	file << toadd << std::endl;
-
-	file.close();
+        size_t found = commandline.find("cd");
+        stringstream ss(commandline); string path;
+        ss >> path >> path;
+        
+        if(found != string::npos){
+            chdir((path).c_str());
+        }
+        else{
+            system(commandline.c_str());    
+        }
+    }
+    return 0;
 }

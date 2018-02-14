@@ -1,0 +1,16 @@
+INTERPRETER:
+
+fonctionnement:
+
+1) Le programme est en pause |ou| boucle sur lui même en verifiant qu'il ne peut rien faire.
+2) Le programme reçois un signal qui lui permet de savoir quoi faire (signal) |ou| ecriture dans un fichier.
+3) Il interpretes les commandes qui ont été ecrite dans un fichier.
+4) Le resultat de l'interpretation est enregistré dans un fichier output.
+
+
+SHELL:
+
+1) Le programme demande de rentrer une commande a executer.
+2) La commande est ecrite dans un fichier accessible a l'interpreteur, et un signal est envoyé a l'interpreteur.
+3) Le programme doit attendre que l'interpreteur renvoi le resultat.
+4) le programme recoit un signal de l'interpreteur et lis le resultat.
