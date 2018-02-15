@@ -24,6 +24,7 @@ int main(int argc , char const *argv[]) {
 			string commandfile(commandpath);
 			ifstream file(commandfile.c_str());
 			ofstream history((commandfile + ".history").c_str(), ios::app);
+			//ofstream output(outputpath.c_str());
 
 			if(!file.is_open()){
 				ERREUR_OUVERTURE(commandfile);
@@ -45,6 +46,8 @@ int main(int argc , char const *argv[]) {
 					stringstream ss(line); string path; 
 		    		ss >> path >> path;
 					chdir(path.c_str());
+					//output << "cd" << endl;
+					system()
 					system(("cd > " + outputpath + " 2>&1").c_str());
 				}
 				else{
@@ -59,7 +62,7 @@ int main(int argc , char const *argv[]) {
 			remove(readpath.c_str());
 			fileCreate(printpath);
 			cout << "En attente de commande..." << endl;
-			//cout << get_current_dir_name() << endl;
+			cout << get_current_dir_name() << endl;
 			//cout << parampath << endl;
 
 		}
