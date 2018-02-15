@@ -23,10 +23,9 @@ Prends en paramètre l'emplacement ou se situe l'interpreter et permet d'execute
 
 1) Le shell ouvre le pipe input, puis boucle en essayant d'ouvrir le pipe output si l'ouverture du pipe output n'est pas possible alors c'est que l'interpreteur n'est pas encore synchroniser.
 
-2) 
-2) La commande est ecrite dans un fichier accessible a l'interpreteur, et un signal est envoyé a l'interpreteur.
-3) Le programme doit attendre que l'interpreteur renvoi le resultat.
-4) le programme recoit un signal de l'interpreteur et lis le resultat.
+2) Si le pipe output est ouvert alors on recupère les informations sur l'environnement de l'interpreteur et on rentre dans une boucle
+
+3) Dans la boucle on demande de rentrer une commande a l'utilisateur, on va parser cette commande puis l'envoyer via le pipe input. puis on va afficher le contenu du pipe ouput ne testants si il est ouverte et on reboucle.
 
 
 

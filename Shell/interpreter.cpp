@@ -2,9 +2,16 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+
 #include <cstdlib>
-#include <unistd.h>
+#include <cstdio>
+#include <cstring>
 #include <csignal>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 #include "file.h"
 
 using namespace std;
@@ -16,6 +23,58 @@ static string printpath(execpath + "/print");
 static string historypath(commandpath + ".history");
 static string outputpath(execpath + "/output");
 
+void signal_handler(int sig){
+	remove("input");
+	remove("output");
+	exit(EXIT_SUCCESS);
+}
+
+int main(int argc , char const *argv[]) {
+
+	int inputfd;
+	int outputfd;
+	char line[1024];
+	const char *inputname = "input";
+	const char *outputname = "output";
+
+	signal(SIGINT, signal_handler);
+
+    /* Creation des pipes input output (impossible de mettre les permission au dessus de 666 à cause du umask) */
+	mkfifo(inputname, 0666);
+	mkfifo(outputname, 0666);
+    /* Changement des droit pipes input output à 777 */
+	system(("chmod 777 " + string(inputname)).c_str());
+	system(("chmod 777 " + string(outputname)).c_str());
+
+	cout << "mkfifo done" << endl;
+
+	while(true){
+		inputfd = open(inputname, O_RDONLY);
+		cout << "open inputfd done" << endl;
+
+		CHEK_FD(inputfd, inputname)
+
+		read(inputfd, line, sizeof(line));
+		close(inputfd);
+
+		outputfd = open(outputname, O_WRONLY);
+		cout << "open outputfd done" << endl;
+
+		CHEK_FD(inputfd, outputname)
+
+		dup2(outputfd, 1); dup2(outputfd, 2); dup2(outputfd, 3);
+
+		system(line);
+
+		close(inputfd);
+
+		cout << line << endl;
+	}
+
+	return 0;
+}
+
+/*
 int main(int argc , char const *argv[]) {
 
 	while(true){
@@ -47,7 +106,6 @@ int main(int argc , char const *argv[]) {
 		    		ss >> path >> path;
 					chdir(path.c_str());
 					//output << "cd" << endl;
-					system()
 					system(("cd > " + outputpath + " 2>&1").c_str());
 				}
 				else{
@@ -75,3 +133,4 @@ int main(int argc , char const *argv[]) {
 
 	return 0;
 }
+*/

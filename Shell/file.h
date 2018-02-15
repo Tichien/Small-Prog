@@ -2,6 +2,14 @@
 #include <fstream>
 #include <string>
 
+
+#define CHEK_FD(FD, FDNAME) 		\
+if((FD) < 0){						\
+	cerr << "Erreur : Problème à l'ouverture du fichier " << (FDNAME) << endl; \
+	cerr << strerror(FD) << endl;	\
+	return EXIT_FAILURE; 			\
+}									\
+
 #define ERREUR_OUVERTURE(F) \
 std::cout << "Erreur: ouverture du fichier " << (F) << " impossible" << std::endl;
 
