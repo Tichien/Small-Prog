@@ -22,7 +22,7 @@ void signal_handler(int sig){
 
 int main(int argc , char const *argv[]) {
 
-    int c;
+    char c;
 	int inputfd;
 	int outputfd;
     char line[1024];
@@ -31,13 +31,14 @@ int main(int argc , char const *argv[]) {
 
     signal(SIGINT, signal_handler);
 
-    /* Creation des pipes input output (impossible de mettre les permission au dessus de 666 à cause du umask) */
+    /*
+    // Creation des pipes input output (impossible de mettre les permission au dessus de 666 à cause du umask) 
     mkfifo(inputname, 0666);
     mkfifo(outputname, 0666);
-    /* Changement des droit pipes input output à 777 */
+    // Changement des droit pipes input output à 777 
     system(("chmod 777 " + string(inputname)).c_str());
     system(("chmod 777 " + string(outputname)).c_str());
-
+    */
     cout << "mkfifo done" << endl;
 
     while(true){
@@ -55,9 +56,11 @@ int main(int argc , char const *argv[]) {
         outputfd = open(outputname, O_RDONLY);
         cout << "open outputfd done" << endl;
 
-        while(read(outputfd, &c, sizeof(c))){
-            putc(c, stdout);
+        while(read(outputfd, &c, sizeof(c)) > 0){
+        	printf("%c", c);
         }
+        printf("\n");
+        
         close(outputfd);
   }
   return 0;

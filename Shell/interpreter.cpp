@@ -34,6 +34,7 @@ int main(int argc , char const *argv[]) {
 	int inputfd;
 	int outputfd;
 	char line[1024];
+	char msg[1024] = "Test";
 	const char *inputname = "input";
 	const char *outputname = "output";
 
@@ -60,15 +61,28 @@ int main(int argc , char const *argv[]) {
 		outputfd = open(outputname, O_WRONLY);
 		cout << "open outputfd done" << endl;
 
-		CHEK_FD(inputfd, outputname)
+		CHEK_FD(outputfd, outputname)
+		cout << "check outputfd done" << endl;
 
-		dup2(outputfd, 1); dup2(outputfd, 2); dup2(outputfd, 3);
+		//dup2(outputfd, 0); 
+		dup2(outputfd, 1);
+		CHEK_FD(outputfd, "output");
+		cout << "check dup done" << endl;
 
-		system(line);
+		//dup2(outputfd, 2);
+		cout << "dup2 outputfd done" << endl;
 
-		close(inputfd);
+		dprintf(outputfd, "%s\n", line);
+		dprintf(1, "%s\n", line);
+		fflush(stdout);
+		//printf("%s\n", line);
+		//cout << line << endl;
+		close(outputfd);
 
-		cout << line << endl;
+		//system(line);
+		//write(outputfd, msg, sizeof(msg));
+		cout << "fin de boucle" << endl;
+
 	}
 
 	return 0;
