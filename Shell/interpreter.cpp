@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #include "file.h"
@@ -29,12 +30,14 @@ void signal_handler(int sig){
 	exit(EXIT_SUCCESS);
 }
 
+
+
 int main(int argc , char const *argv[]) {
 
+	char c;
 	int inputfd;
 	int outputfd;
 	char line[1024];
-	char msg[1024] = "Test";
 	const char *inputname = "input";
 	const char *outputname = "output";
 
@@ -43,48 +46,41 @@ int main(int argc , char const *argv[]) {
     /* Creation des pipes input output (impossible de mettre les permission au dessus de 666 à cause du umask) */
 	mkfifo(inputname, 0666);
 	mkfifo(outputname, 0666);
-    /* Changement des droit pipes input output à 777 */
+    /* Changement des droit des pipes input output à 777 */
 	system(("chmod 777 " + string(inputname)).c_str());
 	system(("chmod 777 " + string(outputname)).c_str());
 
-	cout << "mkfifo done" << endl;
+	cout << "Connexion en cours..." << endl;
 
-	while(true){
-		inputfd = open(inputname, O_RDONLY);
-		cout << "open inputfd done" << endl;
+	inputfd = open(inputname, O_RDONLY);
+	CHECK_FD(inputfd, inputname)
 
-		CHEK_FD(inputfd, inputname)
+	outputfd = open(outputname, O_WRONLY);
+	CHECK_FD(outputfd, outputname)
 
-		read(inputfd, line, sizeof(line));
-		close(inputfd);
+	cout << "Connexion reussi" << endl;
 
-		outputfd = open(outputname, O_WRONLY);
-		cout << "open outputfd done" << endl;
+	int fd[2];
+	int errorp = pipe(fd);
+	CHECK_ERROR(errorp)
 
-		CHEK_FD(outputfd, outputname)
-		cout << "check outputfd done" << endl;
+	pid_t pid = fork();
+	CHECK_ERROR(pid)
 
-		//dup2(outputfd, 0); 
-		dup2(outputfd, 1);
-		CHEK_FD(outputfd, "output");
-		cout << "check dup done" << endl;
-
-		//dup2(outputfd, 2);
-		cout << "dup2 outputfd done" << endl;
-
-		dprintf(outputfd, "%s\n", line);
-		dprintf(1, "%s\n", line);
-		fflush(stdout);
-		//printf("%s\n", line);
-		//cout << line << endl;
-		close(outputfd);
-
-		//system(line);
-		//write(outputfd, msg, sizeof(msg));
-		cout << "fin de boucle" << endl;
-
+	if(pid == 0){
+		close(fd[0]);
+		interpreter(inputfd, fd[1]);
+	}
+	else{
+		close(fd[1]);
+		writer(fd[0], outputfd);
 	}
 
+	close(inputfd);
+	close(outputfd);
+
+	remove("input");
+	remove("output");
 	return 0;
 }
 
