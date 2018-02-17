@@ -1,0 +1,34 @@
+les programmes communiquerons avec deux tube nommé : input et output
+ou input contiendra les commandes ecrite par le shell et lu par l'interpreteur
+et ouput contiendra les données ecrite par l'interpreteur et lu par le shell 
+
+INTERPRETER:
+
+Description:
+Un programme qui attend en boucle de pouvoir executer des commandes bash.
+
+fonctionnement
+
+1) L'interpreteur essaie d'ouvrir le pipe input en boucle, si l'ouverture n'est pas possible alors c'est que le shell n'envoie pas de commande donc on continue à boucler.
+
+2) Si l'interpreteur arrive a ouvrir le pipe input alors il va maintenant ouvrir le pipe ouput ecrire un message de connection reussi avec certaine variables d'environnement
+et rentrer dans une boucle. 
+
+3) Dans la boucle l'interpreteur execute les commandes ecrite dans le pipe input et ecrit le resultat dans le pipe output avec en première ligne le dossier courant, puis c'est la fin de la boucle
+
+SHELL:
+
+Description:
+Prends en paramètre l'emplacement ou se situe l'interpreter et permet d'executer des commandes a distance.
+
+1) Le shell ouvre le pipe input, puis boucle en essayant d'ouvrir le pipe output si l'ouverture du pipe output n'est pas possible alors c'est que l'interpreteur n'est pas encore synchroniser.
+
+2) Si le pipe output est ouvert alors on recupère les informations sur l'environnement de l'interpreteur et on rentre dans une boucle
+
+3) Dans la boucle on demande de rentrer une commande a l'utilisateur, on va parser cette commande puis l'envoyer via le pipe input. puis on va afficher le contenu du pipe ouput ne testants si il est ouverte et on reboucle.
+
+
+
+
+
+
