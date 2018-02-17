@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
 #include "file.h"
 
 using namespace std;
@@ -28,12 +29,45 @@ int writer(int inputfd, int outputfd){
 	}
 }
 
+int parseline(char* line){
+
+	/* découpe la ligne jusqu'au delimiteur ";" */
+	char *token = strtok(line, ";");
+
+	/* tant que la chaine peu encore etre découpé */
+	while(token != NULL){
+
+		string strline(token);
+		size_t found = strline.find("cd");
+
+		if(strline.find("exit") != string::npos){
+			//kill(getppid(), SIGINT);
+			//exit(EXIT_SUCCESS);
+			cout << "exit" << endl;
+		}
+		else if(found != string::npos){
+			stringstream ss(token); string path; 
+			ss >> path >> path;
+			chdir(path.c_str());
+			system("pwd");
+		}
+		else{
+			/* le resultat de la commande est envoyé dans outputfd grace a la redirection */
+			system("pwd");
+			system(token);
+		}
+		/* decoupe la chaine jusqu'au prochain delimiteur */
+		token = strtok(NULL, ";");
+	}
+
+}
 
 /* interprete une commande venant de inputfd et affiche le resultat sur ouputfd */
 int interpreter(int inputfd, int outputfd){
 	char c;
 	int error;
-	char line[1024];
+	char line[1024] = "";
+	char cwd[1024] = "";
 	
 	FILE* input = fdopen(inputfd, "r");
 	
@@ -48,25 +82,9 @@ int interpreter(int inputfd, int outputfd){
 
 	while(1){
 		fgets(line, sizeof(line), input);
-
-		string strline(line);
-		size_t found = strline.find("cd");
-
-		if(strline.find("exit") != string::npos){
-			kill(getppid(), SIGINT);
-			exit(EXIT_SUCCESS);
-		}
-		else if(found != string::npos){
-			stringstream ss(line); string path; 
-			ss >> path >> path;
-			chdir(path.c_str());
-			system(("cd " + path).c_str());
-		}
-		else{
-			/* le resultat de la commande est envoyé dans outputfd grace a la redirection */
-			system(line);
-		}
-
+		//getcwd(cwd, sizeof(cwd));
+		//cout << cwd << " ";
+		parseline(line);
 	}
 }
 

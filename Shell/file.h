@@ -23,6 +23,8 @@ std::cout << "Erreur: ouverture du fichier " << (F) << " impossible" << std::end
 
 int writer(int inputfd, int outputfd);
 
+int parseline(char* line);
+
 int interpreter(int inputfd, int outputfd);
 
 int shellinterpreter(int inputfd, int outputfd);
