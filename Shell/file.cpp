@@ -49,25 +49,47 @@ int parseline(char* line){
 			stringstream ss(token); string path; 
 			ss >> path >> path;
 			chdir(path.c_str());
-			system("pwd");
 		}
 		else{
 			/* le resultat de la commande est envoyé dans outputfd grace a la redirection */
-			system("pwd");
 			system(token);
 		}
+
 		/* decoupe la chaine jusqu'au prochain delimiteur */
 		token = strtok(NULL, ";");
 	}
 
 }
 
+void printuserline(int outputfd){
+	char cwd[1024] = ""; getcwd(cwd, sizeof(cwd));
+	char *user = getenv("USER");
+	char userline[1024] = "";
+	
+	string scwd(cwd);
+	string suser(user);
+	string path;
+
+	size_t found = scwd.find(suser);
+
+	if(found != string::npos){
+		path = scwd.substr(found + suser.length(), scwd.length());
+	}
+	else{
+		path = scwd;
+	}
+
+	strcpy(userline, (suser + "@:~" + path + "$ ").c_str());
+	write(outputfd, userline, sizeof(userline));
+}
+
 /* interprete une commande venant de inputfd et affiche le resultat sur ouputfd */
 int interpreter(int inputfd, int outputfd){
 	char c;
 	int error;
-	char line[1024] = "";
 	char cwd[1024] = "";
+	char line[1024] = "";
+	char userline[1024] = "";
 	
 	FILE* input = fdopen(inputfd, "r");
 	
@@ -82,9 +104,14 @@ int interpreter(int inputfd, int outputfd){
 
 	while(1){
 		fgets(line, sizeof(line), input);
-		//getcwd(cwd, sizeof(cwd));
-		//cout << cwd << " ";
+		
 		parseline(line);
+
+		printuserline(outputfd);
+		///getcwd(cwd, sizeof(cwd));
+		//strcpy(userline, strcat(cwd, "$ "));
+
+		//write(outputfd, cwd, strlen(cwd)+1);
 	}
 }
 
