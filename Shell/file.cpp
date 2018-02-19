@@ -3,7 +3,6 @@
 #include <fstream>
 #include <string>
 
-
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -12,7 +11,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include "file.h"
+#include "file.h" 
 
 using namespace std;
 
@@ -29,118 +28,6 @@ int writer(int inputfd, int outputfd){
 	}
 }
 
-int parseline(char* line){
-
-	/* découpe la ligne jusqu'au delimiteur ";" */
-	char *token = strtok(line, ";");
-
-	/* tant que la chaine peu encore etre découpé */
-	while(token != NULL){
-
-		string strline(token);
-		size_t found = strline.find("cd");
-
-		if(strline.find("exit") != string::npos){
-			//kill(getppid(), SIGINT);
-			//exit(EXIT_SUCCESS);
-			cout << "exit" << endl;
-		}
-		else if(found != string::npos){
-			stringstream ss(token); string path; 
-			ss >> path >> path;
-			chdir(path.c_str());
-		}
-		else{
-			/* le resultat de la commande est envoyé dans outputfd grace a la redirection */
-			system(token);
-		}
-
-		/* decoupe la chaine jusqu'au prochain delimiteur */
-		token = strtok(NULL, ";");
-	}
-
-}
-
-void printuserline(int outputfd){
-	char cwd[1024] = ""; getcwd(cwd, sizeof(cwd));
-	char *user = getenv("USER");
-	char userline[1024] = "";
-	
-	string scwd(cwd);
-	string suser(user);
-	string path;
-
-	size_t found = scwd.find(suser);
-
-	if(found != string::npos){
-		path = scwd.substr(found + suser.length(), scwd.length());
-	}
-	else{
-		path = scwd;
-	}
-
-	strcpy(userline, (suser + "@:~" + path + "$ ").c_str());
-	write(outputfd, userline, sizeof(userline));
-}
-
-/* interprete une commande venant de inputfd et affiche le resultat sur ouputfd */
-int interpreter(int inputfd, int outputfd){
-	char c;
-	int error;
-	char cwd[1024] = "";
-	char line[1024] = "";
-	char userline[1024] = "";
-	
-	FILE* input = fdopen(inputfd, "r");
-	
-	/* redirection de stdin vers inputfd */
-	close(0); dup(inputfd);
-
-	/* redirection de stdout vers ouputfd */
-	close(1); dup(outputfd);
-
-	/* redirection de stderr vers outputfd */
-	close(2); dup(outputfd);
-
-	while(1){
-		fgets(line, sizeof(line), input);
-		
-		parseline(line);
-
-		printuserline(outputfd);
-		///getcwd(cwd, sizeof(cwd));
-		//strcpy(userline, strcat(cwd, "$ "));
-
-		//write(outputfd, cwd, strlen(cwd)+1);
-	}
-}
-
-/* interprete une commande venant de inputfd et affiche le resultat sur ouputfd */
-int shellinterpreter(int inputfd, int outputfd){
-	char c;
-	int error;
-	char line[1024];
-	
-	FILE* input = fdopen(inputfd, "r");
-	FILE* output = fdopen(outputfd, "w");
-
-	while(1){
-		fgets(line, sizeof(line), input);
-
-		string strline(line);
-		size_t found = strline.find("cd");
-
-		if(strline.find("exit") != string::npos){
-			fputs(line, output);
-			kill(getppid(), SIGINT);
-			exit(EXIT_SUCCESS);
-		}
-		else{
-			fputs(line, output);
-		}
-	}
-}
-
 
 /* Enleve la ligne ou se trouve le motif dans le fichier n fois
  * renvoie vrai si la ligne a été trouvé faux sinon
@@ -154,14 +41,14 @@ bool removeFromFile(std::string filepath, std::string toremove, size_t ntime){
 	std::string line;
 
 	if(!file.is_open()){
-		ERREUR_OUVERTURE(filepath);
+		//CHECK_FILE(file, filepath);
 		return false;
 	}
 
 	std::ofstream temp((filepath + ".temp").c_str());
 
 	if(!temp.is_open()){
-		ERREUR_OUVERTURE(filepath + ".temp");
+		//CHECK_FILE(file, filepath + ".temp");
 		return false;
 	}
 
@@ -203,7 +90,7 @@ void injectOnFile(std::string filepath, std::string toadd, bool overwrite, size_
 	std::string line;
 
 	if(!file.is_open()){
-		ERREUR_OUVERTURE(filepath);
+		//CHECK_FILE(file, filepath);
 		return;
 	}
 

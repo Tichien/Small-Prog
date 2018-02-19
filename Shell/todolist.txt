@@ -30,5 +30,27 @@ Prends en paramètre l'emplacement ou se situe l'interpreter et permet d'execute
 
 
 
+CONTROLLER:
+
+//creer le pipe qui permettra de lire le nom inputfd et nom ouputfd
+createPipe()
+
+while 1
+
+//block en attendant qu'un programme ecrive dans le pipe
+lirePipe() 
+recuperer inputfdname, ouputfdname
+
+fork()
+
+si dans le fils
+ssh_shell(inputfd, ouputfd)
+
+fin while
+
+
+ssh_shell()
+
+
 
 

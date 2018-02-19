@@ -1,21 +1,20 @@
 CC = g++
 CFLAGS = -W -Wall
-SRCS1 = interpreter.cpp file.cpp
-SRCS2 = shell.cpp file.cpp
-EXE1 = interpreter
-EXE2 = shell
+SRCS1 = sshell.cpp file.cpp
+SRCS2 = cshell.cpp file.cpp
+EXE1 = sshell
+EXE2 = cshell
 EXT = *.o
 
 all: $(EXE1) $(EXE2) 
 
 $(EXE1): $(SRCS1)
-	clear;
-	clear;
+	clear
+	clear
 	$(CC) $(SRCS1) -o $(EXE1) $(CFLAGS) 
 
 $(EXE2): $(SRCS2)
-	clear;
-	clear;
+	clear
 	$(CC) $(SRCS2) -o $(EXE2) $(CFLAGS) 
 
 clean:

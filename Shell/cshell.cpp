@@ -23,22 +23,17 @@ void signal_handler(int sig){
 
 int main(int argc , char const *argv[]) {
 
-    char c;
     int inputfd;
     int outputfd;
-    char line[1024];
-    const char *inputname = "input";
-    const char *outputname = "output";
+    const char *shellpath = "";
+    const char *inputpipe = "input";
+    const char *outputpipe = "output";
 
-    inputfd = open(inputname, O_WRONLY);
-    CHECK_FD(inputfd, inputname)
+    inputfd = open(inputpipe, O_WRONLY);
+    CHECK_FD(inputfd, inputpipe)
 
-    outputfd = open(outputname, O_RDONLY);
-    CHECK_FD(outputfd, outputname)
-
-    int fd[2];
-    int errorp = pipe(fd);
-    CHECK_ERROR(errorp)
+    outputfd = open(outputpipe, O_RDONLY);
+    CHECK_FD(outputfd, outputpipe)
 
     pid_t pid = fork();
     CHECK_ERROR(pid)
