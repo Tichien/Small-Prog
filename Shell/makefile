@@ -1,7 +1,7 @@
-CC = g++
+CC = gcc
 CFLAGS = -W -Wall
-SRCS1 = sshell.cpp file.cpp
-SRCS2 = cshell.cpp file.cpp
+SRCS1 = sshell.c shell.c
+SRCS2 = cshell.c shell.c
 EXE1 = sshell
 EXE2 = cshell
 EXT = *.o
