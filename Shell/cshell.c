@@ -47,7 +47,7 @@ int main(int argc , char const *argv[]) {
     sprintf(outputpath, "%s/output", canalpath);
 
     if(!sh_check_server(serverpath)){
-        printf("Erreur : le serveur shell n'est pas dans ce dossier ou alors il n'est pas actif.\n");
+        printf("Erreur : le serveur n'est pas dans le dossier ou n'est pas actif.\n");
         return EXIT_FAILURE;
     }
 
@@ -90,7 +90,7 @@ int main(int argc , char const *argv[]) {
         wait(NULL);
     }
 
-    printf("Fin de la connexion au canal N°%d\n", canal);
+    printf("Fin de la connexion au shell\n");
 
     return 0;
 }

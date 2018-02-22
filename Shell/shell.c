@@ -85,7 +85,7 @@ void sh_print_state(int canal, int outputfd){
 
 	username = getenv("USER");
 	
-	sprintf(state, "Vous êtes connecter sur le terminal de %s via le canal N°%d\n", username, canal);
+	sprintf(state, "Vous etes connecté sur le terminal de %s via le canal N°%d\n", username, canal);
 
 	write(outputfd, state, sizeof(state));
 }
@@ -258,7 +258,7 @@ int sh_create(int canal){
 	sprintf(permission, "chmod 777 %s", outputpath);
 	system(permission);
 
-	printf("En attente de connexion sur le canal N°%d...\n", canal);
+	printf("Connexion sur le canal N°%d en cours...\n", canal);
 
 	/* Ouverture du tuyau inputfd en lecture */
 	inputfd = open(inputpath, O_RDONLY);
@@ -268,7 +268,7 @@ int sh_create(int canal){
 	outputfd = open(outputpath, O_WRONLY);
 	CHECK_FD(outputfd, outputpath)
 
-	printf("Connexion sur le canal N°%d reussi !\n", canal);	
+	printf("Connexion reussi\n");	
 	
 	sh_print_state(canal, outputfd);
 	sh_print_prompt(outputfd);
