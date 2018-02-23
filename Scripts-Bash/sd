@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# sd => self-destruct [FILE]
+# écrit dans le fichier passé en paramètre du code bash qui sera ecrit via l'entrée standard (ecriture via pipe possible donc).
+# une fois ce code bash executé il sera ensuite enlevé du fichier comme si il n'avais jamais été la.
+
+ARGC=$#
+
+if [[ $ARGC -lt 1 ]]; then
+	echo "Usage : $0 [FILE]"
+	exit 1
+fi
+
+BEGINING="#STARTINGDELETION"
+
+# Recuperation de l'entrée stdin
+INPUT=$(cat /dev/stdin)
+
+ENDING="#ENDINGDELETION"
+
+echo "$BEGINING" >> "$1"
+echo "$INPUT" >> "$1"
+# Cette commande efface tout ce qui ce trouve entre $BEGINING et $ENDING
+echo "sed -i -n '/$BEGINING*$/!p;/$BEGINING*$/ {:a;N;s/$ENDING*$/&/;tb;ba;:b;s/.*//;:c;n;p;${q};bc}' $1" >> "$1"
+echo "$ENDING" >> "$1"
