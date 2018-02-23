@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Copie le contenu du dossier SOURCE vers dossier DEST et execute le makefile associer au programme.
+
+ARGC=$#
+
+if [[ $ARGC -lt 2 ]]; then
+	echo "Usage : $0 [SOURCE] [DEST]"
+	exit 1
+fi
+
+cp -r "$1" "$2"
+
+cd "$2"
+
+make
+
