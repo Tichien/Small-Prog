@@ -1,13 +1,15 @@
 #!/bin/bash
 
-# sd => self-destruct [FILE]
-# écrit dans le fichier passé en paramètre du code bash qui sera ecrit via l'entrée standard (ecriture via pipe possible donc).
-# une fois ce code bash executé il sera ensuite enlevé du fichier comme si il n'avais jamais été la.
-
 ARGC=$#
 
 if [[ $ARGC -lt 1 ]]; then
+	echo "sd = self-destruct"
+	echo ""
 	echo "Usage : $0 [FILE]"
+	echo ""
+	echo "Ce programme va ecrire dans le fichier [FILE] du code bash (envoyé via pipe)."
+    echo "Si ce code est executé, il sera automatiquement enlevé du fichier cible."
+	echo "Discretion garantie pour petits et grands."
 	exit 1
 fi
 

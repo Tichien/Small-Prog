@@ -1,4 +1,12 @@
 #!/bin/bash
+
+ARGC=$#
+
+if [[ ARGC -lt 1 ]]; then
+	echo "Usage : $0 [MESSAGE]"
+	exit 1
+fi
+
 while true
 do
     notify-send -t 5000 "$1"

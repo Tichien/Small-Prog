@@ -70,6 +70,9 @@ int sh_clean_up();
 
 //////////////////////////// AUTRE /////////////////////////////
 
+/* Renvoie le chemin du dossier d'installation du programme */
+int sh_install_path(char* path, size_t size);
+
 /* Rajoute dans le fichier "workingpath" le canal utilisé "canal". */
 int sh_add_entry(const char* workingpath, int canal);
 

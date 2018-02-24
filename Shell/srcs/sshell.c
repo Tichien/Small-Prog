@@ -20,11 +20,16 @@
  * Ces noms sont necessaires pour la fonction de creation de shell. */
 int main(/*int argc , char const *argv[]*/) {
 
+    char path[1024] = "";
     char permission[1024] = "chmod 777 ";
-    char requestpath[1024] = "request";
+    char requestpath[1024] = "";
     //char workingpath[1024] = "working";
- 
-    sh_clean_up();
+
+    sh_install_path(path, sizeof(path));
+
+    sprintf(requestpath, "%s/request", path);
+
+    //sh_clean_up();
 
     mkfifo(requestpath, 0666);
 

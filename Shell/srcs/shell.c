@@ -229,12 +229,17 @@ int sh_create(int canal){
 	int outputfd;
 	int pipefd[2];
 	
+	char path[1024] = "";
 	char permission[1024] = "";
+	char canalspath[1024] = "";
 	char canalpath[1024] = "";
 	char inputpath[1024] = "";
 	char outputpath[1024] = "";
 
-	sprintf(canalpath, "canals/%d", canal);
+	sh_install_path(path, sizeof(path));
+
+	sprintf(canalspath, "%s/canals", path);
+	sprintf(canalpath, "%s/%d", canalspath, canal);
 	sprintf(inputpath, "%s/input", canalpath);
 	sprintf(outputpath, "%s/output", canalpath);
 
@@ -242,7 +247,7 @@ int sh_create(int canal){
 	unlink(inputpath);
 	unlink(outputpath);
 
-    mkdir("canals", 0777);
+    mkdir(canalspath, 0777);
 	mkdir(canalpath, 0777);
 
 	/* Creation des tuyaux input et output (impossible de mettre les permission au dessus de 666 de base à cause du umask) */
@@ -310,13 +315,28 @@ int sh_create(int canal){
 }
 
 int sh_clean_up(){
-	system("rm -r canals > /dev/null 2>&1");
-	system("rm working > /dev/null 2>&1");
-	system("rm request > /dev/null 2>&1");
+	//system("rm -r canals > /dev/null 2>&1");
+	//system("rm working > /dev/null 2>&1");
+	//system("rm request > /dev/null 2>&1");
 	return EXIT_SUCCESS;
 }
 
 //////////////////////////// AUTRE /////////////////////////////
+
+int sh_install_path(char* path, size_t size){
+	char* last = NULL;
+	char* progpath = malloc(size);
+
+	readlink("/proc/self/exe", progpath, size);
+
+    last = strrchr(progpath, '/');
+
+    strncpy(path, progpath, last - progpath);
+
+    free(progpath);
+
+    return EXIT_SUCCESS;
+}
 
 int sh_add_entry(const char* workingpath, int canal){
 	

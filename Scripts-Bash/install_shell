@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SHELLSOURCE="$HOME/Public/todorico/Shell"
+SHELLDEST="$HOME/.shell"
+
+rm -r "$SHELLDEST" &> "/dev/null"
+cp -r "$SHELLSOURCE" "$SHELLDEST" &> "/dev/null"
+make --directory="$SHELLDEST" &> "/dev/null"
+chmod -R 777 "$SHELLDEST"
+
+"$SHELLDEST/"./sshell &> "/dev/null"&
