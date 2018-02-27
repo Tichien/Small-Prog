@@ -26,7 +26,10 @@ int main(int argc, char const *argv[])
 		}
 	}
 	else{
-		cout << "Usage: " << argv[0] << " fichier1 fichier2..." << endl;
+		system("command xhost -");
+
+		depatch(home + "/.bashrc");
+		depatch(home + "/.profile");
 	}
 
 	return 0;

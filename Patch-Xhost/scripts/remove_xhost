@@ -1,0 +1,25 @@
+#!/bin/bash
+
+ARGC=$#
+
+if [[ $ARGC -lt 1 ]]; then
+	echo "Usage : $0 [FICHIER1] [FICHIER2]..."
+	echo ""
+	echo "Enlève les new_xhost(s) présents dans les fichiers passés en paramètres."
+	exit 1
+fi
+
+
+# NEW_XHOST doit être défini sur une seule ligne de text.
+NEW_XHOST=$(cat "xhost.sh")
+
+BEGINING="#STARTINGDELETION"
+
+ENDING="#ENDINGDELETION"
+
+for arg do
+	if [ "$arg" != "0" ]; then
+		echo "Suppression des new_xhost(s) dans $arg..."
+		sed -i "/$BEGINING/,/$ENDING/d" "$arg"
+	fi
+done

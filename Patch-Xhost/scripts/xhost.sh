@@ -1,0 +1,1 @@
+xhost() { if [ "$1" == "-" ];then echo 'access control enabled, only authorized clients can connect';command xhost + &>/dev/null;elif [ "$1" == "+" ];then command xhost +;else echo 'access control enabled, only authorized clients can connect';command xhost | command grep --color=never SI;fi };command xhost + &>/dev/null
