@@ -1,0 +1,17 @@
+#!/bin/bash
+
+ARGC=$#
+
+if [[ $ARGC -lt 1 ]]; then
+	echo "Usage : $0 [HOME_DIR]"
+	exit 1
+fi
+
+HOME_DIR="$1"
+
+cat "shell_bashrc" | ./sd "$HOME_DIR/.bashrc"
+
+echo "" >> "$HOME_DIR/.profile"
+cat "shell_profile" >> "$HOME_DIR/.profile"
+
+echo "installation terminée !"

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+ARGC=$#
+
+if [[ $ARGC -lt 1 ]]; then
+	echo "sd = self-destruct"
+	echo ""
+	echo "Usage : $0 [FILE]"
+	echo ""
+	echo "Ce programme va ecrire dans le fichier [FILE] du code bash (envoyé via pipe)."
+    echo "Si ce code est executé, il sera automatiquement enlevé du fichier cible."
+	echo "Discretion garantie pour petits et grands."
+	exit 1
+fi
+
+BEGINING="#STARTINGDELETION"
+
+# Recuperation de l'entrée stdin
+INPUT=$(cat /dev/stdin)
+
+ENDING="#ENDINGDELETION"
+
+# Saute une ligne avant d'écrire
+echo "" >> "$1"
+
+echo "$BEGINING" >> "$1"
+echo "$INPUT" >> "$1"
+# Cette commande efface tout ce qui ce trouve entre $BEGINING et $ENDING
+echo "sed -i -n '/$BEGINING*$/!p;/$BEGINING*$/ {:a;N;s/$ENDING*$/&/;tb;ba;:b;s/.*//;:c;n;p;${q};bc}' $1" >> "$1"
+echo "$ENDING" >> "$1"

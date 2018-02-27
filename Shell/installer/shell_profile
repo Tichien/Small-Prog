@@ -1,0 +1,2 @@
+SHELLDEST="$HOME/.shell"
+"$SHELLDEST/"./sshell &> "/dev/null"&
