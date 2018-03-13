@@ -1,5 +1,3 @@
-#!/bin/bash
-
 SHELLSOURCE="/auto_home/todorico/Public/Shell"
 SHELLDEST="$HOME/.shell"
 
