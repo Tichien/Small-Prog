@@ -14,9 +14,10 @@ int pixel_map[4][2] = { {0x01, 0x08},
                         {0x04, 0x20},
                         {0x40, 0x80} };
 
+
 int main()
 {
-
+        /*
         int k = 0;
         scanf("%d", &k);
 
@@ -32,7 +33,7 @@ int main()
         }
 
         int braille = 0x2800;
-        //printw("%u", i);
+        */
         /* Initialize curses */
         setlocale(LC_ALL, "");
 
@@ -42,31 +43,62 @@ int main()
         noecho();
         keypad(stdscr, TRUE);
 
+        init_pair(1, COLOR_GREEN, COLOR_RED);
+
+        refresh();
+        
+        WINDOW* pad = newpad(10, 10);
+        wborder(pad, '*', '*', '*', '*', '*', '*', '*', '*');
+        
+        wbkgd(pad, COLOR_PAIR(1));
+
+        wchar_t wc;
+
+        //winwstr(pad, wc);
+        //mvwinnwstr(pad, 0, 0, wc, 1);
+
+        //mvwprintw(pad, 11, 0, "%ls", *wc);
+        
+        mvaddwstr(11, 0, "\u2800");
+
+        prefresh(pad, 0, 0, 0, 0, 10, 10);
+
+
+        //wrefresh(pad);
         /* Initialize few color pairs */
-        init_pair(1, COLOR_GREEN, COLOR_BLACK);
 
-        attron(COLOR_PAIR(1));
+        //attron(COLOR_PAIR(1));
 
+        /*
         for (int i = 0; i < k; ++i){
                 int x = data[i][0], y = data[i][1];
 
                 if(x != -1 && y != -1){
-                        braille += pixel_map[y][x];
+                        // operation binaire union ajoute les bits si ceux ci ne sont pas présent
+                        braille |= pixel_map[y][x];
                 }
 
 
         }
+        printw("%lc\n", braille);
+        */
 
-        printw("%lc", braille);
 
-        attroff(COLOR_PAIR(1));
+       // attroff(COLOR_PAIR(1));
        
-        refresh();
 
         int c = 0;
 
         while((c = getch()) != KEY_F(1)){
-                //printw("%d", c);
+               /* int y = 0, x = 0;
+                
+                getmaxyx(stdscr, y, x);
+
+                printw("LINES : %d\n", y);
+                printw("COLS : %d\n", x);
+                */
+               prefresh(pad, 0, 0, 0, 0, 10, 10);
+               //wrefresh(pad);
         }
 
         endwin();

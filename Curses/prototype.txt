@@ -1,0 +1,30 @@
+FONCTION:
+
+draw(canvas)
+
+drawLine(canvas, x1, y1, x2, y2)
+
+UNICODE CANVAS:
+
+Canvas(x, y, w, h)
+	initialiser avec un newpad
+
+//MODIFICATION
+
+set(x, y)
+
+unset(x, y)
+
+toggle(x, y)
+
+write(row, col, text)
+
+//AQUISITION
+
+get(col, row)
+
+//CHECK
+
+is_set(x, y)
+
+
