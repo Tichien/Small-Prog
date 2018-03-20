@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -W -Wall
-LIB = -lncurses -lpanel -lmenu -lform
+LIB = -lncursesw -lpanel -lmenu -lform
 SRCS1 = main.c
 EXE1 = curses
 HEADER = includes

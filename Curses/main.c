@@ -5,11 +5,13 @@
 #include <panel.h>
 #include <menu.h>
 #include <form.h>
+#include <locale.h>
 
 
 int main()
 {
         /* Initialize curses */
+		setlocale(LC_ALL, "");
         initscr();
         start_color();
         cbreak();
@@ -20,15 +22,15 @@ int main()
         init_pair(1, COLOR_RED, COLOR_BLACK);
 
         attron(COLOR_PAIR(1));
-        addstr(":::"); 
-        addstr(".::"); 
-        addstr(" ::"); 
-        addstr(".:."); 
-        addstr(".: "); 
-        addstr(" : "); 
-        addstr("..."); 
-        addstr(".. "); 
-        addstr(" . ");
+		addstr("\u28FF");
+		addstr("\u28FF");
+		addstr("\u28FF");
+		addstr("\u28FF");
+		addstr("\u28FF");
+		addstr("\n");
+		addstr("\u28FF");
+		addstr("\u28FF");
+		addstr("\u28FF");
         attroff(COLOR_PAIR(1));
         refresh();
         getch();
