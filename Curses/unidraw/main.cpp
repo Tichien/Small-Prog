@@ -26,7 +26,9 @@ int main()
 		}
 	}
 
+	canvas.clear();
 	canvas.display();
+	
 
 	getch();
 

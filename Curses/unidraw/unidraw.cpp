@@ -1,11 +1,3 @@
-#define _GNU_SOURCE
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <locale.h>
-
-#include <curses.h>
-
 #include "unidraw.h"
 
 wint_t braille_char_offset = 0x2800;
@@ -88,11 +80,11 @@ void Canvas::setcell(int col, int row, wint_t c){
 void Canvas::write(int col, int row, const char* text){
 }
 */
-/*
+
 void Canvas::clear(int col, int row, int w, int h){
 	wclear(m_frame);
 }
-*/
+
 void Canvas::display(){
 	int h, w;
 	getmaxyx(stdscr, h, w);

@@ -1,9 +1,12 @@
 #ifndef _UNIDRAW_H_
 #define _UNIDRAW_H_
 
+#include <cwchar>
+
 extern "C"{
-#include <curses.h>
+#include <ncursesw/curses.h>
 }
+
 
 class Canvas {
 
@@ -23,7 +26,7 @@ public:
 	void setcell(int col, int row, wint_t c);
 
 	void write(int col, int row, const char* text);
-	void clear(int col, int row, int w, int h);
+	void clear(int col = 0, int row = 0, int w = 0, int h = 0);
 	void display();
 
 	bool is_set(int x, int y);
