@@ -1,3 +1,7 @@
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 
+#endif
+
 #include "unidraw.h"
 
 wint_t braille_char_offset = 0x2800;
