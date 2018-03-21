@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -14,6 +16,17 @@ int pixel_map[4][2] = { {0x01, 0x08},
                         {0x04, 0x20},
                         {0x40, 0x80} };
 
+
+wint_t getcell(WINDOW* win, int col, int row){
+        wchar_t wc[2] = {0};
+        mvwinnwstr(win, row, col, wc, 1);
+        return wc[0];
+}
+
+void setcell(WINDOW* win, int col, int row, wint_t c){
+        wchar_t wc[2] = {0}; wc[0] = c;
+        mvwaddnwstr(win, row, col, wc, 1);
+}
 
 int main()
 {
@@ -52,18 +65,24 @@ int main()
         
         wbkgd(pad, COLOR_PAIR(1));
 
-        wchar_t wc;
+        wint_t wi = 0;
+        wchar_t wc[2] = {0};
 
         //winwstr(pad, wc);
         //mvwinnwstr(pad, 0, 0, wc, 1);
+        //inwstr()
+        setcell(pad, 0, 0, braille_char_offset + 0x01);
+        wi = getcell(pad, 0, 0);
 
-        //mvwprintw(pad, 11, 0, "%ls", *wc);
+        //waddnwstr(pad, L"€", 1);
+        //mvwinnwstr(pad, 0, 0, wc, 1);
+       // mvaddstr(1, 0, L"\x2713");
+
+
+        mvprintw(11, 0, "Wide char : %lc", wi);
         
-        mvaddwstr(11, 0, "\u2800");
-
+        //refresh();
         prefresh(pad, 0, 0, 0, 0, 10, 10);
-
-
         //wrefresh(pad);
         /* Initialize few color pairs */
 
@@ -104,3 +123,5 @@ int main()
         endwin();
         return 0;
 }
+
+
