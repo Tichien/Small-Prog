@@ -80,10 +80,10 @@ void Canvas::setcell(int col, int row, wint_t c){
 	wchar_t wc[2] = {0}; wc[0] = c;
 	mvwaddnwstr(m_frame, row, col, wc, 1);
 }
-/*
+
 void Canvas::write(int col, int row, const char* text){
+	mvwprintw(m_frame, row, col, text);
 }
-*/
 
 void Canvas::clear(int col, int row, int w, int h){
 	wclear(m_frame);

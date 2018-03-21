@@ -19,12 +19,19 @@ int main()
 
 	Canvas canvas;
 
-	for(int i = 0; i < 20 ; i++){
-		for(int j = 0 ; j < 20 ; j++){
-			if(i == j)
+	int imax = 200;
+	int jmax = 200;
+
+	for(int i = 0; i < imax ; i++){
+		for(int j = 0 ; j < jmax ; j++){
+			if(i == j){
 				canvas.set(i, j);
+				canvas.set(imax-1, jmax-1 -j);
+			}
 		}
 	}
+
+	canvas.write(10, 6, "TEXT");
 
 	canvas.display();
 	

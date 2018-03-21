@@ -1,4 +1,6 @@
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +10,7 @@
 #include <menu.h>
 #include <form.h>
 #include <locale.h>
+#include <wchar.h>
 
 int braille_char_offset = 0x2800;
 
@@ -59,14 +62,16 @@ int main()
         init_pair(1, COLOR_GREEN, COLOR_RED);
 
         refresh();
+
+        int h = 20; 
+        int w = 20;
         
-        WINDOW* pad = newpad(10, 10);
+        WINDOW* pad = newpad(h, w);
         wborder(pad, '*', '*', '*', '*', '*', '*', '*', '*');
         
         wbkgd(pad, COLOR_PAIR(1));
 
         wint_t wi = 0;
-        wchar_t wc[2] = {0};
 
         //winwstr(pad, wc);
         //mvwinnwstr(pad, 0, 0, wc, 1);
@@ -79,10 +84,10 @@ int main()
        // mvaddstr(1, 0, L"\x2713");
 
 
-        mvprintw(11, 0, "Wide char : %lc", wi);
+        //mvprintw(11, 0, "Wide char : %lc", wi);
         
         //refresh();
-        prefresh(pad, 0, 0, 0, 0, 10, 10);
+        prefresh(pad, 0, 0, 0, 0, h, w);
         //wrefresh(pad);
         /* Initialize few color pairs */
 
