@@ -7,6 +7,7 @@ grandement inspiré de SFML et de DRAWILLE
 #define _UNIDRAW_H_
 
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 
 #include <clocale>
@@ -88,6 +89,9 @@ Vector2<T>::Vector2(const Vector2<U> &vector) : x(vector.x), y(vector.y) {}
 
 template <typename T>
 Vector2<T>::~Vector2() {}
+
+////////////////////////////////////////////////// METHODES
+
 
 ////////////////////////////////////////////////// OPERATEURS
 

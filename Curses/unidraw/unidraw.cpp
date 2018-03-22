@@ -26,6 +26,7 @@ Canvas::Canvas(){
 Canvas::Canvas(int w, int h){
 	//int col, row;
 	/* converti le nombre de pixels en nombre de colonnes/lignes */
+	//newpad(0, 0); fille the entire terminal
 	//pixel2cell(w, h, col, row);
 	if(!(w % 2 == 0))
 		w+=2;
@@ -112,31 +113,28 @@ void Canvas::clear(int col, int row, int w, int h){
 
 void Canvas::display(){
 	int h, w;
-	
 	getmaxyx(stdscr, h, w);
-	
-	IntRect inter;
-	IntRect screen(0, 0, w, h);
-	IntRect canvas(Vector2i::zero, get_size());
 
-	if(canvas.intersects(screen, inter))
-		prefresh(m_frame, 0, 0, inter.y, inter.x, inter.y + (inter.height - 1), inter.x + (inter.width - 1));
+	display(Vector2i::zero, IntRect(Vector2i::zero, Vector2i(w, h)));
 }
 
-void Canvas::display(const Vector2i& position, const IntRect& canvas_zone){
+void Canvas::display(const Vector2i& position, const IntRect& offset){
 	int h, w;
-	
 	getmaxyx(stdscr, h, w);
-	
-	IntRect inter;
-	IntRect screen(0, 0, w, h);
 
-	if (canvas_zone.intersects(screen, inter) && canvas_zone.height > 0 && canvas_zone.width > 0) {
-		int offsetX = position.x, offsetY = position.y;
-		if (position.x < 0) { offsetX = -position.x; }
-		if (position.y < 0) { offsetY = -position.y; }
-		prefresh(m_frame, canvas_zone.y, canvas_zone.x, offsetY, offsetX, offsetY + inter.height, offsetX + inter.width);
-	}
+	int maxY = position.y + offset.height - 1;
+	int maxX = position.x + offset.width - 1;
+	int maxTermY = h - 1;
+	int maxTermX = w - 1;
+
+	int pminrow = position.y >= 0 ? offset.y : offset.y - position.y;
+	int pmincol = position.x >= 0 ? offset.x : offset.x - position.x;
+	int sminrow = offset.y >= 0 ? position.y : position.y - offset.y;
+	int smincol = offset.x >= 0 ? position.x : position.x - offset.x;
+	int smaxrow = maxTermY >= maxY ? maxY : maxY - (maxY - maxTermY);
+	int smaxcol = maxTermX >= maxX ? maxX : maxX - (maxX - maxTermX);
+
+	prefresh(m_frame, pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol);
 }
 
 bool Canvas::is_set(int x, int y){
