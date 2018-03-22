@@ -1,8 +1,9 @@
 #include <cstdlib>
 #include <cstdio>
-#include <locale.h>
 
 #include "unidraw.h"
+
+using namespace std;
 
 int main()
 {
@@ -17,26 +18,32 @@ int main()
 
     refresh();
 
-	Canvas canvas;
+    init_pair(1, COLOR_GREEN, COLOR_RED);
 
-	int imax = 200;
-	int jmax = 200;
+    int k = 400;
+	Canvas canvas(k, k);
+	wattron(canvas.m_frame, COLOR_PAIR(1));
+
+	int imax = canvas.get_size().x;
+	int jmax = canvas.get_size().y;
 
 	for(int i = 0; i < imax ; i++){
 		for(int j = 0 ; j < jmax ; j++){
-			if(i == j){
-				canvas.set(i, j);
-				canvas.set(imax-1, jmax-1 -j);
-			}
+			canvas.set(i, j);
 		}
 	}
 
-	canvas.write(10, 6, "TEXT");
+	mvprintw(LINES-1, 0, "Canvas size : {%d, %d}", canvas.get_size().x, canvas.get_size().y);
+	canvas.write(0,3, "0123456789012345678901234567890123456789");
+	wattroff(canvas.m_frame, COLOR_PAIR(1));
 
-	canvas.display();
+	canvas.display(Vector2i(0, 0), IntRect(0, 0, 40, 40));
 	
+	int c = 0;
 
-	getch();
+	while((c = getch()) != 'q'){
+		canvas.display();
+	}
 
 	endwin();
 	return 0;

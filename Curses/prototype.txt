@@ -28,3 +28,14 @@ get(col, row)
 is_set(x, y)
 
 
+
+
+
+CLASS VIEW:
+
+class View
+
+view(const Canvas& c){}
+
+
+
