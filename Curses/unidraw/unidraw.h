@@ -299,28 +299,75 @@ public:
 	virtual ~Canvas();
 
 	void set(int x, int y);
+	void set(const Vector2i& point);
+	
 	void unset(int x, int y);
+	void unset(const Vector2i& point);
+	
 	void toggle(int x, int y);
+	void toggle(const Vector2i& point);
 
-	wint_t get_cell(int col, int row) const;
-	void set_cell(int col, int row, wint_t c);
+	wint_t get_cell(int row, int col) const;
+	wint_t get_cell(const Vector2i& cell_coord) const;
 
+	void set_cell(int row, int col, wint_t c);
+	void set_cell(const Vector2i& cell_coord, wint_t c);
+
+	/* Renvoie les dimension du canvas en nombre de pixel (width, height) */
 	Vector2i get_size() const;
 
-	void write(int col, int row, const std::string& text);
+	/* Renvoie les dimension du canvas en nombre de cellules (row, col) */
+	Vector2i get_cells_size() const;
+
+	void write(int x, int y, const std::string& text);
+	void write(const Vector2i& position, const std::string& text);
+
 	void clear(int col = 0, int row = 0, int w = 0, int h = 0);
+
 	void display();
-	void display(const Vector2i& position, const IntRect& canvas_zone);
+	void display(const Vector2i& position, const IntRect& offset);
 
 	bool is_set(int x, int y);
 };
 
-void pixel2cell(int x, int y, int& col, int& row);
-Vector2i pixel2cell(const Vector2i& point);
+/* Converti les coordonnées du pixel (x, y) en coordonnée de cellule (row, col) */
+Vector2i pixel_to_cell_coord(int x, int y);
+Vector2i pixel_to_cell_coord(const Vector2i& point);
+
+/* Converti les coordonnées de la cellule (row, col) en coordonnée de pixel (x, y) */
+Vector2i cell_to_pixel_coord(int row, int col);
+Vector2i cell_to_pixel_coord(const Vector2i& cell_coord);
 
 bool is_braille(wint_t cell);
-void draw_line(int x1, int y1, int x2, int y2);
 
+void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2);
+void draw_line(Canvas& canvas, const Vector2i& p1, const Vector2i p2);
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CANVAS
+
+class Turtle
+{
+private:
+	Canvas* m_canvas;
+	Vector2i position;
+	float rotation;
+	bool write;
+
+	bool allocated;
+
+public:
+	Turtle();
+	Turtle(Canvas* canvas);
+	~Turtle();
+
+	void draw(float distance);
+
+	/* Renvoie la position d'origine de la tortue */
+	void move(float distance);
+
+	void turn(float angle);
+};
+
+void draw_polygon(Canvas& c, float length, int sides);
 
 #endif

@@ -29,11 +29,27 @@ int main()
 	int imax = canvas.get_size().x;
 	int jmax = canvas.get_size().y;
 
+	Vector2i p1(10, 20);
+	Vector2i p2(135, 97);
+	
+	draw_line(canvas, p1, p2);
+	
 	for(int i = 0; i < imax ; i++){
 		for(int j = 0 ; j < jmax ; j++){
-			canvas.set(i, j);
+			//if(i == j)
+				//canvas.set(i, j);
 		}
 	}
+
+	Turtle T(&canvas);
+
+	T.turn(45);
+	T.draw(100);
+	T.turn(-45);
+	T.draw(100);
+	T.turn(-45);
+	T.draw(100);
+
 
 	canvas.write(0,2, "0         1         2         3         ");
 	canvas.write(0,3, "0123456789012345678901234567890123456789");
