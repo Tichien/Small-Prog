@@ -1,9 +1,0 @@
-Exception: STATUS_ACCESS_VIOLATION at eip=0040131C
-eax=00000000 ebx=0028CC5C ecx=00000000 edx=00000030 esi=8004AB1F edi=8004AB15
-ebp=0028CC38 esp=0028CBF0 program=C:\Users\Thibault\Projets\Small-Prog\Curses\curses.exe, pid 7744, thread main
-cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
-Stack trace:
-Frame     Function  Args
-0028CC38  0040131C (00000001, 0028CC5C, 800280F0, 61007A02)
-0028CD28  61007A67 (00000000, 0028CD84, 61006A60, 00000000)
-End of stack trace

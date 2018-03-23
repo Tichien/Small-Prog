@@ -1,6 +1,7 @@
 CC = g++
 CFLAGS = -W -Wall
-SRCS1 = main.cpp
+SRCS1 = main.cpp Canvas.cpp Turtle.cpp
+LIB = -lncursesw
 EXE1 = test
 HEADER = includes
 EXT = *.o

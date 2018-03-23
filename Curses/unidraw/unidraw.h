@@ -12,6 +12,7 @@ grandement inspiré de SFML et de DRAWILLE
 
 #include <clocale>
 #include <cwchar>
+#include <cmath>
 
 extern "C"{
 #include <ncursesw/curses.h>
@@ -38,12 +39,30 @@ public:
 	
 	~Vector2();
 
+	float length() const;
+	float length_squared() const;
+
+	void normalize();
+
 	static Vector2<T> zero;
 	static Vector2<T> one;
 	static Vector2<T> up;
 	static Vector2<T> down;
 	static Vector2<T> left;
 	static Vector2<T> right;
+
+	static float dot(const Vector2<T>& left, const Vector2<T>& right);
+
+	static float distance(const Vector2<T>& left, const Vector2<T>& right);
+	static float distance_squared(const Vector2<T>& left, const Vector2<T>& right);
+
+	static Vector2<T> min(const Vector2<T>& left, const Vector2<T>& right);
+	static Vector2<T> max(const Vector2<T>& left, const Vector2<T>& right);
+
+	static Vector2<T> normalize(const Vector2<T>& vector);
+
+	/* renvoie la reflexion du vecteur vector par rappor a la normal normal (normal doit etre normalisé) */
+	static Vector2<T> reflect(const Vector2<T>& vector, const Vector2<T>& normal);
 };
 
 ////////////////////////////////////////////////// TYPES COMMUNS
@@ -51,26 +70,6 @@ public:
 typedef Vector2<int> 			Vector2i;
 typedef Vector2<unsigned int> 	Vector2u;
 typedef Vector2<float> 			Vector2f;
-
-////////////////////////////////////////////////// VARIABLE STATIQUES
-
-template <typename T>
-Vector2<T> Vector2<T>::zero(0, 0);
-
-template <typename T>
-Vector2<T> Vector2<T>::one(1, 1);
-
-template <typename T>
-Vector2<T> Vector2<T>::up(0, -1);
-
-template <typename T>
-Vector2<T> Vector2<T>::down(0, 1);
-
-template <typename T>
-Vector2<T> Vector2<T>::left(-1, 0);
-
-template <typename T>
-Vector2<T> Vector2<T>::right(1, 0);
 
 ////////////////////////////////////////////////// CONSTRUCTEURS
 
@@ -91,6 +90,81 @@ template <typename T>
 Vector2<T>::~Vector2() {}
 
 ////////////////////////////////////////////////// METHODES
+
+template <typename T>
+float Vector2<T>::length() const{
+	return powf(Vector2<T>::distance_squared(left, right), 0.5);
+}
+
+template <typename T>
+float Vector2<T>::length_squared() const{
+	return (x * x) + (y * y);
+}
+
+template <typename T>
+void Vector2<T>::normalize(){
+	float length = this->length();
+	x /= length;
+	y /= length;
+}
+
+///////////////////////////////////////////////////// METHODES STATIQUES
+
+template <typename T>
+float Vector2<T>::dot(const Vector2<T>& left, const Vector2<T>& right){
+	return (left.x * right.x) + (left.y * right.y); 
+}
+
+template <typename T>
+float Vector2<T>::distance(const Vector2<T>& left, const Vector2<T>& right){
+	return powf(Vector2<T>::distance_squared(left, right), 0.5);
+}
+
+template <typename T>
+float Vector2<T>::distance_squared(const Vector2<T>& left, const Vector2<T>& right){
+	Vector2<T> dv = left - right;
+	return (dv.x * dv.x) + (dv.y * dv.y);
+}
+
+template <typename T>
+Vector2<T> Vector2<T>::min(const Vector2<T>& left, const Vector2<T>& right){
+	return left.length_squared() < right.length_squared() ? Vector2<T>(left) : Vector2<T>(right);
+}
+
+template <typename T>
+Vector2<T> Vector2<T>::max(const Vector2<T>& left, const Vector2<T>& right){
+	return left.length_squared() > right.length_squared() ? Vector2<T>(left) : Vector2<T>(right);
+}
+
+template <typename T>
+Vector2<T> Vector2<T>::normalize(const Vector2<T>& vector){
+	return vector / vector.length();
+}
+
+template <typename T>
+Vector2<T> Vector2<T>::reflect(const Vector2<T>& vector, const Vector2<T>& normal){
+	return vector - (2 * Vector2<T>::dot(vector, normal) * normal);
+}
+
+///////////////////////////////////////////////////// VARIABLE STATIQUES
+
+template <typename T>
+Vector2<T> Vector2<T>::zero(0, 0);
+
+template <typename T>
+Vector2<T> Vector2<T>::one(1, 1);
+
+template <typename T>
+Vector2<T> Vector2<T>::up(0, -1);
+
+template <typename T>
+Vector2<T> Vector2<T>::down(0, 1);
+
+template <typename T>
+Vector2<T> Vector2<T>::left(-1, 0);
+
+template <typename T>
+Vector2<T> Vector2<T>::right(1, 0);
 
 
 ////////////////////////////////////////////////// OPERATEURS
@@ -197,6 +271,14 @@ public:
    	template <typename U>
 	explicit Rect(const Rect<U>& rectangle);
 
+	Vector2<T> center();
+
+	Vector2<T> get_size();
+	Vector2<T> get_position();
+	
+	void set_size(const Vector2<T>& size);
+	void set_position(const Vector2<T>& position);
+
 	bool contains(T x, T y)  const;
 
 	bool contains(const Vector2<T>& point) const;
@@ -230,6 +312,33 @@ template <typename U>
 Rect<T>::Rect(const Rect<U>& rectangle) : x(rectangle.x), y(rectangle.y), width(rectangle.width), height(rectangle.height) {}
 
 ////////////////////////////////////////////////// METHODES
+
+template <typename T>
+Vector2<T> Rect<T>::center(){
+	return Vector2<T>(x + (width / 2), y + (height / 2));
+}
+
+template <typename T>
+Vector2<T> Rect<T>::get_size(){
+	return Vector2<T>(width, height);
+}
+
+template <typename T>
+Vector2<T> Rect<T>::get_position(){
+	return Vector2<T>(x, y);
+}
+
+template <typename T>
+void Rect<T>::set_size(const Vector2<T>& size){
+	width = size.x;
+	height = size.y;
+}
+
+template <typename T>
+void Rect<T>::set_position(const Vector2<T>& position){
+	x = position.x;
+	y = position.y;
+}
 
 template <typename T>
 bool Rect<T>::contains(T x, T y)  const {
@@ -349,7 +458,7 @@ class Turtle
 {
 private:
 	Canvas* m_canvas;
-	Vector2i position;
+	Vector2f position;
 	float rotation;
 	bool write;
 
@@ -360,14 +469,18 @@ public:
 	Turtle(Canvas* canvas);
 	~Turtle();
 
+	void set_position(float x, float y);
+	void set_position(const Vector2f& position);
+
 	void draw(float distance);
 
-	/* Renvoie la position d'origine de la tortue */
 	void move(float distance);
 
 	void turn(float angle);
 };
 
-void draw_polygon(Canvas& c, float length, int sides);
+float to_radians(float);
+
+void draw_polygon(Canvas& canvas, Vector2f center, int sides, float radius, float rotation);
 
 #endif

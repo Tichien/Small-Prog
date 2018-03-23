@@ -1,8 +1,4 @@
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE 
-#endif
-
-#include "unidraw.h"
+#include "Canvas.h"
 
 ////////////////////////////////////////////////// VARIABLES STATIQUES
 
@@ -30,7 +26,7 @@ Canvas::Canvas(int w, int h){
 	//pixel_to_cell_coord(w, h, col, row);
 	if(!(w % 2 == 0))
 		w+=2;
-	if(!(h % 4 == 0))
+	if(!(h % 4 == 0)) 
 		h+=4;
 	
 	m_frame = newpad(h / 4, w / 2);
@@ -52,7 +48,7 @@ void Canvas::set(int x, int y){
 		cell = braille_char_offset;
 
 	cell |= pixel_map[y % 4][x % 2];
-
+ 
 	set_cell(cell_coord, cell);
 }
 
@@ -174,7 +170,8 @@ bool is_braille(wint_t cell){
 	return cell >= 0x2800 && cell <= 0x28FF;
 }
 
-void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
+/* version plus simple de draw_line mais un peu moins precise */
+void draw_line1(Canvas& canvas, int x1, int y1, int x2, int y2){
 
 	int xdiff = std::max(x1, x2) - std::min(x1, x2);
 	int ydiff = std::max(y1, y2) - std::min(y1, y2);
@@ -186,7 +183,6 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 	for (int i = 0; i < r + 1; ++i){
 		int x = x1;
 		int y = y1;
-
 
 		if (ydiff)
 			y += (float(i) * ydiff) / r * ydir;
@@ -201,77 +197,218 @@ void draw_line(Canvas& canvas, const Vector2i& p1, const Vector2i p2){
 	draw_line(canvas, p1.x, p1.y, p2.x, p2.y);
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TURTLE 
+void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 
+	int dx = x2 - x1;
+	int dy = y2 - y1;
 
-Turtle::Turtle() : position(), rotation(), write(true), allocated(true) {
-	m_canvas = new Canvas();
-}
+	if(dx != 0){
+		if(dx > 0){
+			if(dy != 0){
+				if(dy > 0){
+					// vecteur oblique dans le 1er quadran
+					
+					if(dx >= dy){
+						// vecteur diagonal ou oblique proche de l’horizontale dans le 1er octant
 
-Turtle::Turtle(Canvas* canvas) : position(), rotation(), write(true), allocated(false) {
-	m_canvas = canvas;
-}
+						float e = dx ;
+						dx = e * 2;
+						dy *= 2;
 
-Turtle::~Turtle(){
-	if(allocated){
-		delete m_canvas;
+						while(1){
+							canvas.set(x1, y1);
+
+							if((x1++) == x2)
+								break;
+
+							if((e -= dy) < 0){
+								y1++;
+								e += dx;
+							}
+						}
+					}
+					else{
+						// vecteur oblique proche de la verticale, dans le 2d octant
+						
+						float e = dy;
+						dy = e * 2;
+						dx *= 2;
+
+						while(1){
+							canvas.set(x1, y1);
+
+							if((y1++) == y2)
+								break;
+
+							if((e -= dx) < 0){
+								x1++;
+								e += dy;
+							}
+						}
+					}
+				}
+				else{
+					// vecteur oblique dans le 4e cadran
+					
+					if(dx >= -dy){
+						// vecteur diagonal ou oblique proche de l’horizontale, dans le 8e octant
+						float e = dx;
+						dx = e * 2;
+						dy *= 2;
+
+						while(1){
+							canvas.set(x1, y1);
+
+							if((x1++) == x2)
+								break;
+
+							if((e += dy) < 0){
+								y1--;
+								e += dx;
+							}
+						}
+					}
+					else{
+						// vecteur oblique proche de la verticale, dans le 7e octant
+						
+						float e = dy;
+						dy = e * 2;
+						dx *= 2;
+
+						while(1){
+							canvas.set(x1, y1);
+
+							if((y1--) == y2)
+								break;
+
+							if((e += dx) > 0){
+								x1++;
+								e += dy;
+							}
+						}
+					}
+				}
+			}
+			else{
+				// vecteur horizontal vers la droite
+				
+				do{
+					canvas.set(x1, y1);
+				}while(!((x1++) == x2));
+			}
+		}
+		else{
+			if(dy != 0){
+				if(dy > 0){
+					// vecteur oblique dans le 2d quadran
+					
+					if(-dx >= dy){
+						// vecteur diagonal ou oblique proche de l’horizontale, dans le 4e octant
+						
+						float e = dx;
+						dx = e * 2;
+						dy *= 2;
+
+						while(1){
+							canvas.set(x1, y1);
+
+							if((x1--) == x2)
+								break;
+
+							if((e += dy) >= 0){
+								y1++;
+								e += dx;
+							}
+						}
+					}
+					else{
+						// vecteur oblique proche de la verticale, dans le 3e octant
+						
+						float e = dy;
+						dy = e * 2;
+						dx *= 2;
+
+						while(1){
+							canvas.set(x1, y1);
+
+							if((y1++) == y2)
+								break;
+
+							if((e += dx) <= 0){
+								x1--;
+								e += dy;
+							}
+						}
+					}
+				}
+				else{
+					// vecteur oblique dans le 3e cadran
+					
+					if(dx <= dy){
+						// vecteur diagonal ou oblique proche de l’horizontale, dans le 5e octant
+						
+						float e = dx;
+						dx = e * 2;
+						dy *= 2;
+
+						while(1){
+							canvas.set(x1, y1);
+
+							if((x1--) == x2)
+								break;
+
+							if((e -= dy) >= 0){
+								y1--;
+								e += dx;
+							}
+						}
+					}
+					else{
+						// vecteur oblique proche de la verticale, dans le 6e octant
+						
+						float e = dy;
+						dy = e * 2;
+						dx *= 2;
+
+						while(1){
+							canvas.set(x1, y1);
+
+							if((y1--) == y2)
+								break;
+
+							if((e -= dx) >= 0){
+								x1--;
+								e += dy;
+							}
+						}
+					}
+				}
+			}
+			else{
+				// vecteur horizontal vers la gauche
+				
+				do{
+					canvas.set(x1, y1);
+				}while(!((x1--) == x2));
+			}
+		}
 	}
-}
-
-void Turtle::set_position(float x, float y){
-	position.x = x;
-	position.y = y;
-}
-
-void Turtle::set_position(const Vector2f& position){
-	set_position(position.x, position.y);
-}
-
-void Turtle::draw(float distance){
-
-	Vector2f origin(position);
-
-	move(distance);
-
-	draw_line(*m_canvas, round(origin.x), round(origin.y), round(position.x), round(position.y));
-}
-
-void Turtle::move(float distance){
-
-	float angle = to_radians(rotation);
-
-	position += Vector2f(distance * cos(angle), distance * sin(angle));
-}
-
-void Turtle::turn(float angle){
-	rotation += angle;
-}
-
-float to_radians(float degree){
-	return degree * M_PI / float(180);
-}
-
-void draw_polygon(Canvas& canvas, Vector2f center, int sides, float radius, float rotation){
-	
-	Turtle T(&canvas);
-
-	float angle = float(360) / sides;
-	float length = 2 * radius * sin(M_PI / float(sides));
-	float inradius = radius * cos(M_PI / float(sides));
-	Vector2f offset(length / 2.0, inradius);
-
-	//canvas->set(round(center.x), round(center.y));
-
-	T.set_position(center);
-	T.turn(rotation);
-
-	T.move(-length / 2.0);
-	T.turn(90);
-	T.move(-inradius);
-	T.turn(-90);
-
-	for(int i = 0 ; i < sides ; i++){
-		T.draw(length);
-		T.turn(angle);
+	else{
+		if(dy != 0){
+			if(dy > 0){
+				// vecteur vertical croissant
+				
+				do{
+					canvas.set(x1, y1);
+				}while(!((y1++) == y2));
+			}
+			else{
+				// vecteur vertical décroissant
+				
+				do{
+					canvas.set(x1, y1);
+				}while(!((y1--) == y2));
+			}
+		}
 	}
 }

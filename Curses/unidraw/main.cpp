@@ -7,9 +7,24 @@ using namespace std;
 
 void handler(int ch, Vector2i& position, IntRect& offset);
 
-int main()
+int main(int argc, char** argv)
 {
 
+	int sides = 3;
+	float radius = 50;
+	float rotation = 0;
+
+	if(argc > 1)
+		sides = atoi(argv[1]);
+
+	if(argc > 2)
+		radius = atof(argv[2]);
+
+	if(argc > 3)
+		rotation = atof(argv[3]);
+
+	Vector2f center(radius, radius);
+    
     setlocale(LC_ALL, "");
 
     initscr();
@@ -20,11 +35,13 @@ int main()
 
     refresh();
 
-    init_pair(1, COLOR_GREEN, COLOR_RED);
+    //init_pair(1, COL, COLOR_RED);
 
-    int k = 400;
+    int k = 800;
 	Canvas canvas(k, k);
+	
 	wattron(canvas.m_frame, COLOR_PAIR(1));
+	wattroff(canvas.m_frame, COLOR_PAIR(1));
 
 	int imax = canvas.get_size().x;
 	int jmax = canvas.get_size().y;
@@ -32,7 +49,6 @@ int main()
 	Vector2i p1(10, 20);
 	Vector2i p2(135, 97);
 	
-	draw_line(canvas, p1, p2);
 	
 	for(int i = 0; i < imax ; i++){
 		for(int j = 0 ; j < jmax ; j++){
@@ -41,23 +57,41 @@ int main()
 		}
 	}
 
+	//draw_line(canvas, p1, p2);
+
+	//draw_polygon(&canvas, Vector2f(100, 50), 5, nbc);
+	//draw_polygon(canvas, Vector2f(20, 20), 0, nbc, distance);
+	draw_polygon(canvas, center, sides, radius, rotation);
+
+
 	Turtle T(&canvas);
 
 	T.turn(45);
+	T.draw(1000);
+/*
 	T.draw(100);
-	T.turn(-45);
+	T.turn(90);
 	T.draw(100);
-	T.turn(-45);
+	T.turn(90);
 	T.draw(100);
+	T.turn(90);
+	T.draw(100);
+	*/
+	/*
+	T.turn(90);
+	T.draw(100);
+	T.turn(90);
+	T.draw(100);
+	*/
 
-
-	canvas.write(0,2, "0         1         2         3         ");
-	canvas.write(0,3, "0123456789012345678901234567890123456789");
-	wattroff(canvas.m_frame, COLOR_PAIR(1));
+	//canvas.write(0,2, "0         1         2         3         ");
+	//canvas.write(0,3, "0123456789012345678901234567890123456789");
+	//wattroff(canvas.m_frame, COLOR_PAIR(1));
 
 	Vector2i printposition(0, 0);
 	IntRect canvasoffset(0, 0, 10, 10);
 
+	//refresh(); 
 	canvas.display();
 	
 	int c = 0;
@@ -71,9 +105,9 @@ int main()
 		refresh();
 		handler(c, printposition, canvasoffset);
 		canvas.display(printposition, canvasoffset);
-		mvprintw(LINES-3, 0, "printposition : {%d, %d}", printposition.x, printposition.y);
-		mvprintw(LINES-2, 0, "canvasoffset : {%d, %d, %d, %d}", canvasoffset.x, canvasoffset.y, canvasoffset.width, canvasoffset.height);
-		mvprintw(h-1, 0, "Term size : {%d, %d}", h, w);
+		//mvprintw(LINES-3, 0, "printposition : {%d, %d}", printposition.x, printposition.y);
+		//mvprintw(LINES-2, 0, "canvasoffset : {%d, %d, %d, %d}", canvasoffset.x, canvasoffset.y, canvasoffset.width, canvasoffset.height);
+		//mvprintw(h-1, 0, "Term size : {%d, %d}", h, w);
 	}
 
 	endwin();
