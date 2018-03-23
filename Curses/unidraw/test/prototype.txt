@@ -1,0 +1,55 @@
+Window:
+
+get_cells_size();
+set_cells_size();	
+
+set_curs_pos();
+get_curs_pos();
+
+set_curs_vis();
+get_curs_vis();
+
+get_cell();
+set_cell();
+
+fill(color); wattr_set
+get_fill_color(); wattr_get
+
+copy() copywin;
+
+write(x, y, text);
+
+clear() werase;
+
+is_pad();
+
+virtual display() pnoutrefresh;
+
+Term:
+
+static void startPowerMode();
+static void endPowerMode();
+
+cbreak();
+echo(true);
+keypad()
+timeout()
+
+getstr();
+getch();
+ungetch();
+
+wborder
+
+static void saveState();
+static void loadState();
+
+getmouse
+
+has_color
+
+border
+
+wscrl
+
+update() doupdate;
