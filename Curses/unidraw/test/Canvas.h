@@ -1,6 +1,10 @@
 #ifndef _CANVAS_H_
 #define _CANVAS_H_
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <clocale>
 #include <cwchar>
 
@@ -54,13 +58,13 @@ public:
 	bool is_set(int x, int y);
 };
 
-/* Converti les coordonnées du pixel (x, y) en coordonnée de cellule (row, col) */
+/* Converti la position du pixel (x, y) en coordonnée de cellule (row, col) */
 Vector2i pixel_to_cell_coord(int x, int y);
 Vector2i pixel_to_cell_coord(const Vector2i& point);
 
-/* Converti les coordonnées de la cellule (row, col) en coordonnée de pixel (x, y) */
-Vector2i cell_to_pixel_coord(int row, int col);
-Vector2i cell_to_pixel_coord(const Vector2i& cell_coord);
+/* Converti les coordonnées de la cellule (row, col) en position de pixel (x, y) */
+Vector2i cell_to_pixel_pos(int row, int col);
+Vector2i cell_to_pixel_pos(const Vector2i& cell_coord);
 
 bool is_braille(wint_t cell);
 

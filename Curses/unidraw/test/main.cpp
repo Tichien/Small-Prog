@@ -35,6 +35,8 @@ int main(int argc, char** argv)
 
     refresh();
 
+    //resizeterm(200, 200);
+
     //init_pair(1, COL, COLOR_RED);
 
     int k = 800;
@@ -68,25 +70,7 @@ int main(int argc, char** argv)
 
 	T.turn(45);
 	T.draw(1000);
-/*
-	T.draw(100);
-	T.turn(90);
-	T.draw(100);
-	T.turn(90);
-	T.draw(100);
-	T.turn(90);
-	T.draw(100);
-	*/
-	/*
-	T.turn(90);
-	T.draw(100);
-	T.turn(90);
-	T.draw(100);
-	*/
 
-	//canvas.write(0,2, "0         1         2         3         ");
-	//canvas.write(0,3, "0123456789012345678901234567890123456789");
-	//wattroff(canvas.m_frame, COLOR_PAIR(1));
 
 	Vector2i printposition(0, 0);
 	IntRect canvasoffset(0, 0, 10, 10);
@@ -103,6 +87,7 @@ int main(int argc, char** argv)
 	while((c = getch()) != 'q'){
 		clear();
 		refresh();
+		//wscrl(stdscr, 1);
 		handler(c, printposition, canvasoffset);
 		canvas.display(printposition, canvasoffset);
 		//mvprintw(LINES-3, 0, "printposition : {%d, %d}", printposition.x, printposition.y);
