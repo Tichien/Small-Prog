@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -W -Wall
-SRCS1 = main.cpp Canvas.cpp Turtle.cpp Color.cpp Attr.cpp Cell.cpp Window.cpp
+SRCS1 = main.cpp Canvas.cpp Turtle.cpp Color.cpp Attr.cpp Cell.cpp Window.cpp Term.cpp
 LIB = -lncursesw
 EXE1 = test
 HEADER = includes

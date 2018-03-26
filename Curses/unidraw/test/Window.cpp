@@ -205,6 +205,7 @@ void Window::set_background(ColorPair color, Attr attr){
 	set_background(cell);
 } 
 
+/*
 void Window::copy(const Window&, const IntRect&, const Vector2i&, bool convert_attr){
 
 }
@@ -212,6 +213,7 @@ void Window::copy(const Window&, const IntRect&, const Vector2i&, bool convert_a
 void Window::write(const Vector2i& coord, std::wstring, ColorPair color, Attr attr){
 
 }
+*/
 
 void Window::clear(){
 	wclear(m_win);
