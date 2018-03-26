@@ -6,18 +6,18 @@ extern "C"{
 }
 
 enum ColorUnit{
-	Default = -1, //La couleur par default du terminal a l'initialisation de ncurses
+	DEFAULT = -1, //La couleur par default du terminal a l'initialisation de ncurses
 	
-	Black = COLOR_BLACK,
-	White = COLOR_WHITE,
+	BLACK = COLOR_BLACK,
+	WHITE = COLOR_WHITE,
 
-	Red = COLOR_RED,
-	Green = COLOR_GREEN,
-	Blue = COLOR_BLUE,
+	RED = COLOR_RED,
+	GREEN = COLOR_GREEN,
+	BLUE = COLOR_BLUE,
 		
-	Cyan = COLOR_CYAN,
-	Magenta = COLOR_MAGENTA,
-	Yellow = COLOR_YELLOW
+	CYAN = COLOR_CYAN,
+	MAGENTA = COLOR_MAGENTA,
+	YELLOW = COLOR_YELLOW
 };
 
 class ColorPair
@@ -31,7 +31,13 @@ public:
 	ColorPair(ColorUnit front_back);
 	ColorPair(ColorUnit front, ColorUnit back);
 
+/* Renvoie le numéro correspondant à la paire de couleur composée de front et back */
+	int pair_num() const;
+
+/* Convertie en chtype la paire de couleur composée de front et back */
+
 	operator chtype() const;
+
 
 	static const ColorPair Default;
 	static const ColorPair WhiteBlack;
@@ -56,12 +62,6 @@ public:
 void init_color_pairs();
 
 /* Change les valeurs de rouge vert et bleu associée à une couleur */
-void color_unit_rgb(ColorUnit color, short r, short g, short b);
-
-/* Renvoie le numéro correspondant à la paire de couleur composée de front et back */
-int colot_pair_num(ColorUnit front, ColorUnit back);
-
-/* Convertie la paire de couleur composée de front et back en chtype */
-chtype color_pair_to_chtype(ColorUnit front, ColorUnit back);
+void color_rgb(ColorUnit color, short r, short g, short b);
 
 #endif

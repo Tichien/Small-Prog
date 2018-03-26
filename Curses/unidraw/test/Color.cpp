@@ -1,6 +1,6 @@
 #include "Color.h"
 
-ColorPair::ColorPair() : front(ColorUnit::Default), back(ColorUnit::Default) {}
+ColorPair::ColorPair() : front(DEFAULT), back(DEFAULT) {}
 
 ColorPair::ColorPair(chtype c){
 
@@ -23,28 +23,32 @@ ColorPair::ColorPair(ColorUnit front, ColorUnit back) {
 	this->back = back;
 }
 
-ColorPair::operator chtype() const{
-	
-	return color_pair_to_chtype(front, back);
+int ColorPair::pair_num() const{
+	return (front + 1) * COLORS + (back + 1) + 1;
 }
 
-const ColorPair ColorPair::Default(ColorUnit::Default, ColorUnit::Default);
-const ColorPair ColorPair::WhiteBlack(ColorUnit::White, ColorUnit::Black);
-const ColorPair ColorPair::WhiteRed(ColorUnit::White, ColorUnit::Red);
-const ColorPair ColorPair::WhiteGreen(ColorUnit::White, ColorUnit::Green);
-const ColorPair ColorPair::WhiteBlue(ColorUnit::White, ColorUnit::Blue);
-const ColorPair ColorPair::WhiteMagenta(ColorUnit::White, ColorUnit::Magenta);
-const ColorPair ColorPair::WhiteYellow(ColorUnit::White, ColorUnit::Yellow);
-const ColorPair ColorPair::WhiteCyan(ColorUnit::White, ColorUnit::Cyan);
+ColorPair::operator chtype() const{
+	
+	return COLOR_PAIR(pair_num());
+}
 
-const ColorPair ColorPair::White(ColorUnit::White, ColorUnit::Default);
-const ColorPair ColorPair::Black(ColorUnit::Black, ColorUnit::Default);
-const ColorPair ColorPair::Red(ColorUnit::Red, ColorUnit::Default);
-const ColorPair ColorPair::Green(ColorUnit::Green, ColorUnit::Default);
-const ColorPair ColorPair::Blue(ColorUnit::Blue, ColorUnit::Default);
-const ColorPair ColorPair::Magenta(ColorUnit::Magenta, ColorUnit::Default);
-const ColorPair ColorPair::Yellow(ColorUnit::Yellow, ColorUnit::Default);
-const ColorPair ColorPair::Cyan(ColorUnit::Cyan, ColorUnit::Default);
+const ColorPair ColorPair::Default(DEFAULT, DEFAULT);
+const ColorPair ColorPair::WhiteBlack(WHITE, BLACK);
+const ColorPair ColorPair::WhiteRed(WHITE, RED);
+const ColorPair ColorPair::WhiteGreen(WHITE, GREEN);
+const ColorPair ColorPair::WhiteBlue(WHITE, BLUE);
+const ColorPair ColorPair::WhiteMagenta(WHITE, MAGENTA);
+const ColorPair ColorPair::WhiteYellow(WHITE, YELLOW);
+const ColorPair ColorPair::WhiteCyan(WHITE, CYAN);
+
+const ColorPair ColorPair::White(WHITE, DEFAULT);
+const ColorPair ColorPair::Black(BLACK, DEFAULT);
+const ColorPair ColorPair::Red(RED, DEFAULT);
+const ColorPair ColorPair::Green(GREEN, DEFAULT);
+const ColorPair ColorPair::Blue(BLUE, DEFAULT);
+const ColorPair ColorPair::Magenta(MAGENTA, DEFAULT);
+const ColorPair ColorPair::Yellow(YELLOW, DEFAULT);
+const ColorPair ColorPair::Cyan(CYAN, DEFAULT);
 
 
 void init_color_pairs(){
@@ -53,7 +57,7 @@ void init_color_pairs(){
 
 		start_color();
 
-		use_default_colors(); // -> COLOR_PAIR(0) = DefaultColor
+		use_default_colors(); // -> COLOR_PAIR(0) = DefaultColor (est un extensino de ncurses)
 
 		for (int j = 0; j < COLORS; ++j)
 		{
@@ -64,12 +68,4 @@ void init_color_pairs(){
 			}
 		}
 	}
-}
-
-int colot_pair_num(ColorUnit front, ColorUnit back) {
-	return (front + 1) * COLORS + (back + 1) + 1;
-}
-
-chtype color_pair_to_chtype(ColorUnit front, ColorUnit back) {
-	return COLOR_PAIR(colot_pair_num(front, back));
 }

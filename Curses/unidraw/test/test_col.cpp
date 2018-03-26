@@ -1,14 +1,15 @@
+/*
 #ifndef _XOPEN_SOURCE_EXTENDED
 #define _XOPEN_SOURCE_EXTENDED // pour utilisé les fonction wide character et cchar_t
 #endif
-
+*/
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <cstdio>
 #include <clocale>
 #include <cwchar>
-#include <curses.h>
+#include <ncursesw/curses.h>
 #include "Cell.h"
 
 
@@ -36,7 +37,7 @@ int main(int argc, char const *argv[])
 	attroff(c.attr);
 
 	cchar_t c2;
-	mvin_wch(0, 0, &c2);
+	//mvin_wch(0, 0, &c2);
 	Cell cell2(c2);
 
 	attron(cell2.attr | cell2.color);
