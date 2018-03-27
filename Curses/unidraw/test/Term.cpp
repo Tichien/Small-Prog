@@ -5,7 +5,7 @@ TermScreen* TermScreen::m_screen = NULL;
 TermScreen::TermScreen() : Window(stdscr) {}
 
 TermScreen::~TermScreen() {
-	delete m_screen;
+	//delete m_screen;
 }
 
 TermScreen* TermScreen::getInstance(){
@@ -15,8 +15,7 @@ TermScreen* TermScreen::getInstance(){
 	return m_screen;
 }
 
-
-Window Term::scr(NULL); 
+Window Term::scr; 
 
 void Term::init_curs() {
 
@@ -28,15 +27,12 @@ void Term::init_curs() {
 
 	Term::scr = *TermScreen::getInstance();
 
-	/*
-	screen.setInteractiveModeEnabled(true);
-	screen.setSpecialKeySignalEnabled(true);
-	screen.setMouseSignalEnabled(true);
-	screen.setScrollingEnabled(true);
-	screen.setInputDelay(0);
-	screen.setCursorVisibility(0);
-	screen.fill(screen.getColor(), screen.getAttribute());
-	*/
+	scr.set_special_key(true);
+	scr.set_input_timeout(-1); //block the program if no input detected
+	
+	Term::cooked_mode(false);
+	Term::echo_key(false);
+	Term::curs_vis(0);
 }
 
 void Term::end_curs(){
@@ -44,13 +40,35 @@ void Term::end_curs(){
 }
 
 void Term::save_state(){
-	def_prog_mode();// Save the tty modes
+	def_prog_mode();// Save the ncurses win (!= savetty)
 }
 
 void Term::load_state(){
-	reset_prog_mode(); // Return to the previous tty mode
+	reset_prog_mode(); // reset the ncurses win (!= resetty)
+}
+
+void Term::cooked_mode(bool on){
+	on ? nocbreak() : cbreak();
+}
+
+void Term::echo_key(bool on){
+	on ? echo() : noecho();
+}
+
+void Term::curs_vis(int vis){
+	curs_set(vis);
+}
+
+void Term::wait(int ms){
+	napms(ms);
+}
+
+void Term::push_input(int ch){
+	ungetch(ch); 
 }
 
 void Term::update(){
 	doupdate();
 }
+
+

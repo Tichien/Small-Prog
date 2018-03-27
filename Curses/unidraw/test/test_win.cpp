@@ -32,11 +32,15 @@ int main()//int argc, char const *argv[])
 
 	Term::init_curs();
 
-	//Window w = Term::scr;
+	Window w = Term::scr;
 	
-	Window w(newwin(20, 20, 10, 10));
+	//Window w(newwin(20, 20, 10, 10));
+	//wresize(w, 100, 200);
+ 
+	refresh();
 
 	printw("C'est du text pour tester ");
+
 
 	Cell cell(L'¤', ColorPair::Red, Attr::Bright);
 
@@ -53,12 +57,40 @@ int main()//int argc, char const *argv[])
 
 	w.fill(cell);
 
+	//clear();
+
+	refresh();
+
 	//refresh();
 
-	wgetch(w); //refresh stdscr egalement
+	Term::wait(1000);
+
+	//wgetch(w); //refresh stdscr egalement
+	//getch();	
 
 
 	Term::end_curs();
 
 	return 0;
 }
+
+/*
+//to manage resize;
+
+after a sigwinch:
+
+void handle_winch(int sig)
+{
+    endwin();
+    // Needs to be called after an endwin() so ncurses will initialize
+    // itself with the new terminal dimensions.
+    refresh();
+    clear();
+
+    mvprintw(0, 0, "COLS = %d, LINES = %d", COLS, LINES);
+    for (int i = 0; i < COLS; i++)
+        mvaddch(1, i, '*');
+    refresh();
+}
+
+ */

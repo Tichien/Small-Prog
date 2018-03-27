@@ -13,8 +13,9 @@ private:
 	TermScreen& operator=(const TermScreen&);
 
 public:
-	static TermScreen* getInstance();
 	~TermScreen();
+
+	static TermScreen* getInstance();
 };
 
 class Term {
@@ -28,22 +29,20 @@ public:
 	static void save_state();
 	static void load_state();
 
+	static void cooked_mode(bool on);
+	static void echo_key(bool on);
+
+	static void curs_vis(int vis);
+	
+	static void wait(int ms);
+
+/* push an input for the next call to the input queue */
+	static void push_input(int input); 
+
+/* update the terminal displays */
 	static void update();
 
-	static void cooked_mode(bool);// cbreak();
-	static void echo_key(bool);// echo();
-	static void special_key(bool);// keypad();
-	//static void scroll(bool);// scrollok();
-
-	static int get_timeout();
-	static void set_timeout();
-
-	static void set_curs_vis(int vis);
-
-	static int pop_input(); //getch()
-	static void push_input(); //ungetch()
-
-	static void getline(); //getstr()
+	//static void getline(); //getstr()
 };
 
 #endif

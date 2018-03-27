@@ -1,11 +1,8 @@
 #include "Window.h"
 
-Window::Window(WINDOW* win) : m_win(win) {
-	//m_win = win;
-	//int x = 0, y = 0;
-	//getmaxyx(win, y, x);
-	//setSize(x, y);
-}
+Window::Window() : m_win() {}
+
+Window::Window(WINDOW* win) : m_win(win) {}
 
 Window::~Window() {
 	delwin(m_win);
@@ -21,27 +18,6 @@ Vector2i Window::get_dimension() const{
 	return Vector2i(x, y);
 }
 
-void Window::set_dimension(const Vector2i& dim){
- 		//(resize est un extension de ncurses)
-	if(dim.x >= 0 && dim.y >= 0){
-		//m_size = Vector2i(width, height);
-		
-		/*
-		WINDOW* win = newpad(height, width);
-
-		wbkgd(win, m_color | m_attribute);
-
-		overwrite(m_win, win);
-
-		wresize(m_win, height, width);
-
-		overwrite(win, m_win);
-
-		delwin(win);
-		*/
-	}
-}
-
 Vector2i Window::get_curs_pos() const{
 	int x = 0, y = 0;
 	getyx(m_win, y, x);
@@ -50,6 +26,18 @@ Vector2i Window::get_curs_pos() const{
 
 void Window::set_curs_pos(const Vector2i& pos){
 	wmove(m_win, pos.y, pos.x);
+}
+
+int Window::pop_input(){
+	return wgetch(m_win);
+} 
+
+void Window::set_input_timeout(int ms){
+	wtimeout(m_win, ms);
+}
+
+void Window::set_special_key(bool on){
+	keypad(m_win, on); 
 }
 
 Cell Window::get_cell(const Vector2i& coord) const{
@@ -62,9 +50,8 @@ void Window::set_cell(const Vector2i& coord, const Cell& cell){
 
 	cchar_t c = cell;
 
-	if(cell.color == ColorPair::Default){
+	if(cell.color == ColorPair::Default)
 		c.attr |= get_color(); //affiche dans la couleur courante du terminal
-	}
 
 	mvwadd_wchnstr(m_win, coord.y, coord.x, &c, 1);
 }
@@ -106,12 +93,11 @@ void Window::set_on(chtype attr_color){
 	wattron(m_win, attr_color);
 }
 
-
 void Window::set_off(chtype attr_color){
 	wattroff(m_win, attr_color);
 }
 
-std::wstring Window::to_wstring(){
+std::wstring Window::to_wstring() const{
 	std::wstring data;
 	wchar_t* wstr = new wchar_t[get_dimension().x];
 
@@ -123,8 +109,6 @@ std::wstring Window::to_wstring(){
 	return data;
 }
 
-
-//fuite memoire dans set border
 void Window::set_border(Cell left, Cell right, Cell up, Cell down, Cell upLeft, Cell upRight, Cell downLeft, Cell downRight){
 	cchar_t l = left;
 	cchar_t r = right;
@@ -138,7 +122,6 @@ void Window::set_border(Cell left, Cell right, Cell up, Cell down, Cell upLeft, 
 	wborder_set(m_win, &l, &r, &u, &d, &ul, &ur, &dl, &dr);
 }
 
-//fuite memoire dans set border
 void Window::set_border(BorderType type, ColorPair color, Attr a){
 
 	ColorPair c = color == ColorPair::Default ? get_color() : color;
@@ -180,6 +163,7 @@ void Window::set_border(BorderType type, ColorPair color, Attr a){
 
 void Window::fill(const Cell& cell){
 	cchar_t c = cell;
+
 	wbkgrnd(m_win, &c);
 }
 
@@ -187,17 +171,21 @@ void Window::fill(ColorPair color, Attr attr){
 	Cell cell;
 	cell.color = color == ColorPair::Default ? get_color() : color;
 	cell.attr = attr;
+
 	fill(cell);
 }
 
-Cell Window::get_background(){
+Cell Window::get_background() const{
 	cchar_t c;
+
 	wgetbkgrnd(m_win, &c);
+
 	return c;
 }
 
 void Window::set_background(const Cell& cell){
 	cchar_t c = cell;
+
 	wbkgrndset(m_win, &c);
 }
 
@@ -205,6 +193,7 @@ void Window::set_background(ColorPair color, Attr attr){
 	Cell cell;
 	cell.color = color == ColorPair::Default ? get_color() : color;
 	cell.attr = attr;
+
 	set_background(cell);
 } 
 
@@ -235,5 +224,8 @@ void Window::clear(const IntRect& zone){
 }
 
 void Window::display(){
-	wnoutrefresh(m_win);
+	if(is_pad(m_win))
+		pnoutrefresh(m_win, 0, 0, 0, 0, 0, 0);
+	else
+		wnoutrefresh(m_win);
 } 
