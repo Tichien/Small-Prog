@@ -17,7 +17,7 @@ TermScreen* TermScreen::getInstance(){
 
 Window Term::scr; 
 
-int (*Term::scan)(const char*, ...) = scanw; 
+//int (*Term::scan)(const char*, ...) = scanw; 
 
 void Term::init_curs() {
 
