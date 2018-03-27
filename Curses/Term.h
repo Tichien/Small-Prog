@@ -36,13 +36,19 @@ public:
 	
 	static void wait(int ms);
 
-/* push an input for the next call to the input queue */
+/* pop/push an input for the next call to the input queue */
+	static int pop_input();
 	static void push_input(int input); 
+
+/* Renvoie un chaine de character taper par l'untilisateur dans str */
+	static void getline(std::string& str);
+
+/* Pointeur vers la fonction scanw */
+	static int (*scan)(const char*, ...);
 
 /* update the terminal displays */
 	static void update();
 
-	//static void getline(); //getstr()
 };
 
 #endif

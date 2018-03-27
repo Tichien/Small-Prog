@@ -25,77 +25,53 @@ int main(int argc, char** argv)
 
 	Vector2f center(radius, radius);
     
-    setlocale(LC_ALL, "");
+	Term::init_curs();
 
-    initscr();
-    start_color();
-        //cbreak();
-    noecho();
-    keypad(stdscr, TRUE);
+    int k = 400;
+	Canvas canvas;//(radius * 2 + 1, radius * 2 + 1);
+	/*
+	for(int i = 0 ; i < canvas.get_size().x; i++){
+		for(int j = 0 ; j < canvas.get_size().y ; j++){
+			canvas.set(i, j);
+		}
+	}
+	*/
+	mvwprintw(stdscr, 0, 0, "Canvas.size = (%d, %d)", canvas.get_size().x, canvas.get_size().y);
+	mvwprintw(stdscr, 1, 0, "Canvas.dimension = (%d, %d)", canvas.get_dimension().x, canvas.get_dimension().y);
 
-    refresh();
-
-    //resizeterm(200, 200);
-
-    //init_pair(1, COL, COLOR_RED);
-
-    int k = 800;
-	Canvas canvas(k, k);
-	
-	wattron(canvas.m_frame, COLOR_PAIR(1));
-	wattroff(canvas.m_frame, COLOR_PAIR(1));
-
-	int imax = canvas.get_size().x;
-	int jmax = canvas.get_size().y;
+	canvas.set_color(ColorPair::Red);
+	canvas.set_attr(Attr::HalfBright);
 
 	Vector2i p1(10, 20);
 	Vector2i p2(135, 97);
 	
-	
-	for(int i = 0; i < imax ; i++){
-		for(int j = 0 ; j < jmax ; j++){
-			//if(i == j)
-				//canvas.set(i, j);
-		}
-	}
-
-	//draw_line(canvas, p1, p2);
-
-	//draw_polygon(&canvas, Vector2f(100, 50), 5, nbc);
-	//draw_polygon(canvas, Vector2f(20, 20), 0, nbc, distance);
 	draw_polygon(canvas, center, sides, radius, rotation);
 
+	//Turtle T(&canvas);
 
-	Turtle T(&canvas);
-
-	T.turn(45);
-	T.draw(1000);
-
+	//T.turn(45);
+	//T.draw(1000);
 
 	Vector2i printposition(0, 0);
 	IntRect canvasoffset(0, 0, 10, 10);
 
-	//refresh(); 
-	canvas.display();
-	
+	//canvas.fill(Cell('+'));
 	int c = 0;
 
-	int h, w;
-	
-	getmaxyx(stdscr, h, w);
+	canvas.display(Vector2i(0, 0));
+	Term::update();
 
-	while((c = getch()) != 'q'){
-		clear();
-		refresh();
-		//wscrl(stdscr, 1);
+	//Term::pop_input();
+
+
+	while((c = Term::pop_input()) != 'q'){
 		handler(c, printposition, canvasoffset);
-		canvas.display(printposition, canvasoffset);
-		//mvprintw(LINES-3, 0, "printposition : {%d, %d}", printposition.x, printposition.y);
-		//mvprintw(LINES-2, 0, "canvasoffset : {%d, %d, %d, %d}", canvasoffset.x, canvasoffset.y, canvasoffset.width, canvasoffset.height);
-		//mvprintw(h-1, 0, "Term size : {%d, %d}", h, w);
+		canvas.display(printposition);
+		Term::update();
 	}
 
-	endwin();
+	Term::end_curs();
+	
 	return 0;
 }
 

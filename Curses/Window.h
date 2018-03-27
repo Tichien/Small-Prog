@@ -39,7 +39,7 @@ public:
 
 	operator WINDOW*();
 
-/* return/set the dimension of the Window (col, row) (stdscr ne peut pas  être resize et rien ne peut etre plus grand que stdscr a par les pads) */
+/* return the dimensions of the Window (col, row) (stdscr ne peut pas  être resize et rien ne peut etre plus grand que stdscr a par les pads) */
 	Vector2i get_dimension() const;
 	//void set_dimension(const Vector2i& dim);
 
@@ -101,6 +101,7 @@ public:
 
 /* prepare the Window to be drawn at the next Term::update */
 	virtual void display(); //pnoutrefresh;
+	void refresh();
 };
 
 #endif

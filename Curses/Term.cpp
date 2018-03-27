@@ -17,6 +17,8 @@ TermScreen* TermScreen::getInstance(){
 
 Window Term::scr; 
 
+int (*Term::scan)(const char*, ...) = scanw; 
+
 void Term::init_curs() {
 
 	setlocale(LC_ALL, "");
@@ -28,11 +30,13 @@ void Term::init_curs() {
 	Term::scr = *TermScreen::getInstance();
 
 	scr.set_special_key(true);
-	scr.set_input_timeout(-1); //block the program if no input detected
+	scr.set_input_timeout(-1); //-1 block the program if no input detected
 	
 	Term::cooked_mode(false);
 	Term::echo_key(false);
 	Term::curs_vis(0);
+
+	refresh();
 }
 
 void Term::end_curs(){
@@ -63,8 +67,18 @@ void Term::wait(int ms){
 	napms(ms);
 }
 
+int Term::pop_input(){
+	return getch();
+}
+
 void Term::push_input(int ch){
 	ungetch(ch); 
+}
+
+void Term::getline(std::string& str){
+	char cstr[1024] = "";
+	getstr(cstr);
+	str = cstr;
 }
 
 void Term::update(){

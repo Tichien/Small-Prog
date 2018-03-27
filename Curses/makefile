@@ -1,8 +1,8 @@
-CC = gcc
-CFLAGS = -W -Wall
-LIB = -lncursesw -lpanel -lmenu -lform
-SRCS1 = main.c
-EXE1 = curses
+CC = g++
+CFLAGS = -W -Wall -g
+SRCS1 = main.cpp Canvas.cpp Turtle.cpp Color.cpp Attr.cpp Cell.cpp Window.cpp Term.cpp
+LIB = -lncursesw
+EXE1 = test
 HEADER = includes
 EXT = *.o
 

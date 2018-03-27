@@ -164,12 +164,15 @@ void Window::set_border(BorderType type, ColorPair color, Attr a){
 void Window::fill(const Cell& cell){
 	cchar_t c = cell;
 
+	if(cell.color == ColorPair::Default)
+		c.attr |= get_color(); //affiche dans la couleur courante du terminal
+
 	wbkgrnd(m_win, &c);
 }
 
 void Window::fill(ColorPair color, Attr attr){
 	Cell cell;
-	cell.color = color == ColorPair::Default ? get_color() : color;
+	cell.color = color;
 	cell.attr = attr;
 
 	fill(cell);
@@ -224,8 +227,21 @@ void Window::clear(const IntRect& zone){
 }
 
 void Window::display(){
-	if(is_pad(m_win))
-		pnoutrefresh(m_win, 0, 0, 0, 0, 0, 0);
+	if(is_pad(m_win)){
+		int h, w;
+		getmaxyx(stdscr, h, w);
+		pnoutrefresh(m_win, 0, 0, 0, 0, h - 1, w -1);
+	}
 	else
 		wnoutrefresh(m_win);
+} 
+
+void Window::refresh(){
+	if(is_pad(m_win)){
+		int h, w;
+		getmaxyx(stdscr, h, w);
+		prefresh(m_win, 0, 0, 0, 0, h - 1, w -1);
+	}
+	else
+		wrefresh(m_win);
 } 
