@@ -1,7 +1,3 @@
-#ifndef _XOPEN_SOURCE_EXTENDED
-#define _XOPEN_SOURCE_EXTENDED // pour utilisé les fonction wide character et cchar_t
-#endif
-
 #include <iostream>
 #include "Term.h"
 
@@ -38,54 +34,29 @@ int main()//int argc, char const *argv[])
 
 	//Window w = Term::scr;
 	
-	Window w(stdscr);
-	/*
-    setlocale(LC_ALL, "");
-    initscr();
+	Window w(newwin(20, 20, 10, 10));
 
-    init_color_pairs();
-	
-	refresh();
-	
-	
-	*/
+	printw("C'est du text pour tester ");
 
 	Cell cell(L'¤', ColorPair::Red, Attr::Bright);
 
 	w.set_on(ColorPair::Cyan);
-	
-	w.set_border(Window::Dash);
-	w.set_off(ColorPair::Cyan);
 
-	/*
-	wprintw(w, "dimension : %d, %d\n", w.get_dimension().x, w.get_dimension().y);
+	w.set_border(Window::Dash);
 	
-	if(can_change_color())
-		wprintw(w, "couleurs modifiable");
-	else
-		wprintw(w, "couleurs non modifiable");
-*/
-/*
 	w.set_cell(Vector2i(10, 10), cell);
 
-	w.set_color(ColorPair::Red);
+	mvwprintw(w, 0, 0, "Test ma subwin");
 
-	mvwprintw(w, 30, 30, "Test couleurs bleu soulignées");
+	//w.set_border(Window::Dash);
+	w.set_off(ColorPair::Cyan);
 
-	w.set_background(Cell(L'-'));
+	w.fill(cell);
 
-
-	mvwprintw(w, 31, 30, "nouveau back ground ajouté");
-*/
-	//w.fill(ColorPair::Magenta, Attr::Bright);
-
-	//w.clear();
-
-	//Term::scr
 	//refresh();
-	//getch(); //refresh stdscr egalement
-	//w.display();
-	//doupdate();
+
+	wgetch(w); //refresh stdscr egalement
+
 
 	Term::end_curs();
 

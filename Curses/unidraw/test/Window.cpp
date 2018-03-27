@@ -123,19 +123,22 @@ std::wstring Window::to_wstring(){
 	return data;
 }
 
+
+//fuite memoire dans set border
 void Window::set_border(Cell left, Cell right, Cell up, Cell down, Cell upLeft, Cell upRight, Cell downLeft, Cell downRight){
-	const cchar_t l = left;
-	const cchar_t r = right;
-	const cchar_t u = up;
-	const cchar_t d = down;
-	const cchar_t ul = upLeft;
-	const cchar_t ur = upRight;
-	const cchar_t dl = downLeft;
-	const cchar_t dr = downRight;
+	cchar_t l = left;
+	cchar_t r = right;
+	cchar_t u = up;
+	cchar_t d = down;
+	cchar_t ul = upLeft;
+	cchar_t ur = upRight;
+	cchar_t dl = downLeft;
+	cchar_t dr = downRight;
 
 	wborder_set(m_win, &l, &r, &u, &d, &ul, &ur, &dl, &dr);
 }
 
+//fuite memoire dans set border
 void Window::set_border(BorderType type, ColorPair color, Attr a){
 
 	ColorPair c = color == ColorPair::Default ? get_color() : color;

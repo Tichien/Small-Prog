@@ -8,7 +8,7 @@ Cell::Cell(wint_t character, ColorPair color, Attr attr) : character(character),
 
 Cell::operator cchar_t() const{
 
-	cchar_t c;
+	cchar_t c = { 0, {0, 0, 0, 0, 0}};
 
 	c.attr = attr | color;
 
