@@ -17,17 +17,16 @@ Canvas::Canvas(){
 	getmaxyx(stdscr, h, w);
 
 	m_win = newpad(h, w);
-	m_pixel_size = Vector2i(w, h);
+
+	/* converti le nombre de cellules en nombre de pixel */
+	m_pixel_size = Vector2i(w * 2, h * 4);
 }
 
-Canvas::Canvas(int w, int h) : m_pixel_size(w, h) {	
-	//newpad(0, 0); remplie toute la fenetre
-	
+Canvas::Canvas(int w, int h) : m_pixel_size(w, h) {		
 	/* verification pour ne pas qu'il nous manque de cellules */
 	w = w % 2 != 0 ? w + 2 : w;	 
 	h = h % 4 != 0 ? h + 4 : h;
-	//h+=4;
-	//w+=2;
+
 	/* converti le nombre de pixels en nombre de colonnes/lignes */
 	m_win = newpad(h / 4, w / 2);
 } 
@@ -41,16 +40,20 @@ void Canvas::set(int x, int y){
 }
 
 void Canvas::set(const Vector2i& point){
-	Vector2i cell_coord = pixel_to_cell_coord(point);
 
-	wint_t cell = get_cell(cell_coord).character;
+	if(is_in(point)){
 
-	if(!is_braille(cell))
-		cell = braille_char_offset;
+		Vector2i cell_coord = pixel_to_cell_coord(point);
 
-	cell |= pixel_map[point.y % 4][point.x % 2];
- 
-	set_cell(cell_coord, cell);
+		wint_t cell = get_cell(cell_coord).character;
+
+		if(!is_braille(cell))
+			cell = braille_char_offset;
+
+		cell |= pixel_map[point.y % 4][point.x % 2];
+
+		set_cell(cell_coord, cell);
+	}
 }
 
 void Canvas::unset(int x, int y){
@@ -58,16 +61,20 @@ void Canvas::unset(int x, int y){
 }
 
 void Canvas::unset(const Vector2i& point){
-	Vector2i cell_coord = pixel_to_cell_coord(point);
 
-	wint_t cell = get_cell(cell_coord).character;
+	if(is_in(point)){
 
-	if(!is_braille(cell))
-		return;
+		Vector2i cell_coord = pixel_to_cell_coord(point);
 
-	cell &= ~pixel_map[point.y % 4][point.x % 2];
+		wint_t cell = get_cell(cell_coord).character;
 
-	set_cell(cell_coord, cell);
+		if(!is_braille(cell))
+			return;
+
+		cell &= ~pixel_map[point.y % 4][point.x % 2];
+
+		set_cell(cell_coord, cell);
+	}
 }
 
 void Canvas::toggle(int x, int y){
@@ -76,9 +83,7 @@ void Canvas::toggle(int x, int y){
 }
 
 void Canvas::toggle(const Vector2i& point){
-	wint_t cell = get_cell(pixel_to_cell_coord(point)).character;
-
-	if(is_braille(cell) && cell & pixel_map[point.y % 4][point.x % 2])
+	if(is_set(point))
 		unset(point);
 	else
 		set(point);
@@ -88,7 +93,6 @@ Vector2i Canvas::get_size() const {
 	return m_pixel_size;
 }
 
-
 void Canvas::display(){
 	Window::display();
 }
@@ -97,19 +101,19 @@ void Canvas::display(const Vector2i& position){
 	display(position, IntRect(Vector2i::zero, get_dimension()));
 } 
 
-void Canvas::display(const Vector2i& position, const IntRect& offset){
+void Canvas::display(const Vector2i& position, const IntRect& view){
 	int h, w;
 	getmaxyx(stdscr, h, w);
 
-	int maxY = position.y + offset.height - 1;
-	int maxX = position.x + offset.width - 1;
+	int maxY = position.y + view.height - 1;
+	int maxX = position.x + view.width - 1;
 	int maxTermY = h - 1;
 	int maxTermX = w - 1;
 
-	int pminrow = position.y >= 0 ? offset.y : offset.y - position.y;
-	int pmincol = position.x >= 0 ? offset.x : offset.x - position.x;
-	int sminrow = offset.y >= 0 ? position.y : position.y - offset.y;
-	int smincol = offset.x >= 0 ? position.x : position.x - offset.x;
+	int pminrow = position.y >= 0 ? view.y : view.y - position.y;
+	int pmincol = position.x >= 0 ? view.x : view.x - position.x;
+	int sminrow = view.y >= 0 ? position.y : position.y - view.y;
+	int smincol = view.x >= 0 ? position.x : position.x - view.x;
 	int smaxrow = maxTermY >= maxY ? maxY : maxY - (maxY - maxTermY);
 	int smaxcol = maxTermX >= maxX ? maxX : maxX - (maxX - maxTermX);
 
@@ -121,8 +125,16 @@ bool Canvas::is_set(int x, int y){
 }
 
 bool Canvas::is_set(const Vector2i& point){
-	wint_t cell = get_cell(pixel_to_cell_coord(Point)).character;
+	wint_t cell = get_cell(pixel_to_cell_coord(point)).character;
 	return is_braille(cell) && cell & pixel_map[point.y % 4][point.x % 2];
+}
+
+bool Canvas::is_in(int x, int y){
+	return is_in(Vector2i(x, y));
+}
+
+bool Canvas::is_in(const Vector2i& point){
+	return point.x >= 0 && point.y >= 0 && point.x < get_size().x && point.y < get_size().y;
 }
 
 ////////////////////////////////////////////////// FONCTIONS
@@ -133,6 +145,14 @@ Vector2i pixel_to_cell_coord(int x, int y){
 
 Vector2i pixel_to_cell_coord(const Vector2i& point){
 	return pixel_to_cell_coord(point.x, point.y);
+}
+
+Vector2i cell_to_pixel_pos(int col, int row){
+	return Vector2i(col * 2, row * 4);
+}
+
+Vector2i cell_to_pixel_pos(const Vector2i& cell_coord){
+	return pixel_to_cell_coord(cell_coord.x, cell_coord.y);
 }
 
 bool is_braille(wint_t cell){

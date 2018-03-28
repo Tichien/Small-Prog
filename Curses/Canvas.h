@@ -38,14 +38,22 @@ public:
 /* Renvoie les dimension du canvas en nombre de pixel (width, height) */
 	Vector2i get_size() const;
 
-/* affiche la zone "offset" du canvas à la position "position" qui est (0, 0) par default */
+/* affiche entièrement le canvas à la position (0, 0) */
 	virtual void display();
-	void display(const Vector2i& position);
-	void display(const Vector2i& position, const IntRect& offset);
 
-/* verifie si le pixel a la position point existe */
+/* affiche entièrement le canvas à la position "position" */
+	void display(const Vector2i& position);
+
+/* affiche à la position "position", le rectangle "view" représentant une vue/camera sur le canvas  */
+	void display(const Vector2i& position, const IntRect& view);
+
+/* verifie un pixel existe à la position (x, y) */
 	bool is_set(int x, int y);
 	bool is_set(const Vector2i& point);
+
+/* verifie si la position (x, y) est à l'interieur du canvas */
+	bool is_in(int x, int y);
+	bool is_in(const Vector2i& point);
 };
 
 /* Converti la position du pixel (x, y) en coordonnée de cellule (row, col) */

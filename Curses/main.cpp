@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 {
 
 	int sides = 3;
-	float radius = 50;
+	float radius = 46;
 	float rotation = 0;
 	int prof = 0;
 
@@ -80,10 +80,13 @@ int main(int argc, char** argv)
     
 	Term::init_curs();
 
-    int k = 400;
-	Canvas canvas;
+    int k = radius * 2 + 1;
+	Canvas canvas(k, k);
 
 	//(radius * 2 + 1, radius * 2 + 1);
+	canvas.set_on(ColorPair::Red);
+	canvas.set(canvas.get_size() - Vector2i::one);
+	canvas.set_off(ColorPair::Red);
 	/*
 	for(int i = 0 ; i < canvas.get_size().x; i++){
 		for(int j = 0 ; j < canvas.get_size().y ; j++){
@@ -91,6 +94,7 @@ int main(int argc, char** argv)
 		}
 	}
 	*/
+	
 
 	mvwprintw(stdscr, 0, 0, "Canvas.size = (%d, %d)", canvas.get_size().x, canvas.get_size().y);
 	mvwprintw(stdscr, 1, 0, "Canvas.dimension = (%d, %d)", canvas.get_dimension().x, canvas.get_dimension().y);
@@ -112,9 +116,9 @@ int main(int argc, char** argv)
 	//T.draw(1000);
 
 	Vector2i printposition(0, 0);
-	IntRect canvasoffset(0, 0, 10, 10);
+	IntRect canvasoffset(Vector2i::zero, Term::scr.get_dimension());
 
-	//canvas.fill(Cell('+'));
+	canvas.fill(Cell('+'));
 	int c = 0;
 
 	canvas.display(Vector2i(0, 0));
@@ -124,8 +128,10 @@ int main(int argc, char** argv)
 
 
 	while((c = Term::pop_input()) != 'q'){
+		Term::scr.clear();
+		Term::scr.display();
 		handler(c, printposition, canvasoffset);
-		canvas.display(printposition);
+		canvas.display(printposition, canvasoffset);
 		Term::update();
 	}
 
@@ -136,32 +142,30 @@ int main(int argc, char** argv)
 
 void handler(int ch, Vector2i& position, IntRect& offset){
 
+	int spd = 5;
+
 	if(ch == KEY_UP){
-		position += Vector2i::up;
+		position.y += -spd;
 	}
 	else if(ch == KEY_DOWN){
-		position += Vector2i::down;
+		position.y += spd;
 	}	
 	else if(ch == KEY_LEFT){
-		position += Vector2i::left;
+		position.x += -spd;
 	}	
 	else if(ch == KEY_RIGHT){
-		position += Vector2i::right;
+		position.x += spd;
 	}	
-	else if(ch == 'e'){
-		offset.x += Vector2i::up.x;
-		offset.y += Vector2i::up.y;	
+	else if(ch == 'e'){ //up
+		offset.y += -spd;
 	}
-	else if(ch == 'd'){
-		offset.x += Vector2i::down.x;
-		offset.y += Vector2i::down.y;	
+	else if(ch == 'd'){ //down
+		offset.y += spd;	
 	}	
-	else if(ch == 's'){
-		offset.x += Vector2i::left.x;
-		offset.y += Vector2i::left.y;	
+	else if(ch == 's'){ //left
+		offset.x += -spd;
 	}	
-	else if(ch == 'f'){
-		offset.x += Vector2i::right.x;
-		offset.y += Vector2i::right.y;
+	else if(ch == 'f'){ //right
+		offset.x += spd;
 	}	
 }

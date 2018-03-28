@@ -21,7 +21,8 @@ const Attr Attr::Invisible(A_INVIS);
 const Attr Attr::AltCharset(A_ALTCHARSET);
 const Attr Attr::Italic(A_ITALIC);
 
-/* Ne font rien sur Windows
+// Ne font rien sur Windows
+/*
 const Attr Attr::Horizontal(WA_HORIZONTAL);
 const Attr Attr::Vertical(WA_VERTICAL);
 const Attr Attr::Top(WA_TOP);

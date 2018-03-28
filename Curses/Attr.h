@@ -28,7 +28,8 @@ public:
 	static const Attr AltCharset;
 	static const Attr Italic;
 
-	/*Ne font rien sur Windows
+	//Ne font rien sur Windows
+	/*
 	static const Attr Horizontal;
 	static const Attr Vertical;
 	static const Attr Top;
