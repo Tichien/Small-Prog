@@ -44,7 +44,7 @@ public:
 	static void getline(std::string& str);
 
 /* Pointeur vers la fonction scanw */
-	static int (*scan)(const char*, ...);
+	//static int (*scan)(const char*, ...);
 
 /* update the terminal displays */
 	static void update();
