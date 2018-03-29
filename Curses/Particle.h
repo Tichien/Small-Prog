@@ -1,7 +1,7 @@
 #ifndef _PARTICLE_H_
 #define _PARTICLE_H_
 
-#include <vector>
+#include <list>
 #include "Canvas.h"
 
 class Particle {
@@ -14,7 +14,7 @@ public:
 
 	Particle();
 	Particle(const Vector2f& position, float lifespan = 100);
-	Particle(const Vector2f& pos, const Vector2f& v, const Vector2f& a);
+	Particle(const Vector2f& pos, const Vector2f& v, const Vector2f& a, float lifespan = 100);
 
 	void update();
 
@@ -29,7 +29,7 @@ public:
 class ParticleSystem {
 
 public:
-	std::vector<Particle> particles;
+	std::list<Particle> particles;
 
 	ParticleSystem();
 	ParticleSystem(int number, const Vector2f& position);

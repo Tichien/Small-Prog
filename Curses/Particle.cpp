@@ -2,7 +2,7 @@
 
 Particle::Particle() : position(), velocity(), acceleration(), lifespan() {}
 Particle::Particle(const Vector2f& position, float lifespan) : position(position), velocity(), acceleration(), lifespan(lifespan) {}
-Particle::Particle(const Vector2f& pos, const Vector2f& v, const Vector2f& a) : position(pos), velocity(v), acceleration(a), lifespan(100) {} 
+Particle::Particle(const Vector2f& pos, const Vector2f& v, const Vector2f& a, float lifespan) : position(pos), velocity(v), acceleration(a), lifespan(lifespan) {} 
 
 void Particle::update() { 
 	velocity += acceleration;
@@ -26,8 +26,8 @@ bool Particle::is_alive() {
 ParticleSystem::ParticleSystem() : particles() {}
 
 ParticleSystem::ParticleSystem(int number, const Vector2f& position) : particles(number){
-	for(int i = 0 ; i < number ; i++){
-		particles[i] = Particle(position);
+	for(int i = 0 ; i < (int)particles.size() ; i++){
+		particles.push_back(Particle(position));
 	}
 }
 
@@ -37,13 +37,13 @@ void ParticleSystem::add(const Particle& p){
 
 
 void ParticleSystem::run(Canvas& c){
-	for(int i = 0 ; i < (int)particles.size() ; i++){
+	for(std::list<Particle>::iterator it = particles.begin() ; it != particles.end() ; ++it){
 		
-		c.unset(round(particles[i].position.x), round(particles[i].position.y));
-		
-		if(particles[i].is_alive())
-			particles[i].run(c);
+		//c.unset(round(it->position.x), round(it->position.y));
+
+		if(it->is_alive())
+			it->run(c);
 		else
-			particles.erase(particles.begin() + i);
+			it = particles.erase(it); //met a jour l'iterateur pour pointer vers l'iterateur suivant
 	}
 }

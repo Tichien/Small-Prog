@@ -211,7 +211,8 @@ void Window::write(const Vector2i& coord, std::wstring, ColorPair color, Attr at
 */
 
 void Window::clear(){
-	wclear(m_win);
+	/* faster than wclear */
+	werase(m_win);
 } 
 
 void Window::clear(const IntRect& zone){

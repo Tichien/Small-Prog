@@ -1,21 +1,65 @@
-==12848== Memcheck, a memory error detector
-==12848== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
-==12848== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
-==12848== Command: ./test 5 100 20
-==12848== Parent PID: 11329
-==12848== 
-==12848== 
-==12848== HEAP SUMMARY:
-==12848==     in use at exit: 904,957 bytes in 397 blocks
-==12848==   total heap usage: 590 allocs, 193 frees, 1,696,370 bytes allocated
-==12848== 
-==12848== LEAK SUMMARY:
-==12848==    definitely lost: 0 bytes in 0 blocks
-==12848==    indirectly lost: 0 bytes in 0 blocks
-==12848==      possibly lost: 0 bytes in 0 blocks
-==12848==    still reachable: 904,957 bytes in 397 blocks
-==12848==         suppressed: 0 bytes in 0 blocks
-==12848== Rerun with --leak-check=full to see details of leaked memory
-==12848== 
-==12848== For counts of detected and suppressed errors, rerun with: -v
-==12848== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==4612== Memcheck, a memory error detector
+==4612== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==4612== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==4612== Command: ./test_par
+==4612== Parent PID: 4584
+==4612== 
+==4612== Invalid read of size 8
+==4612==    at 0x4079FA: std::_List_iterator<Particle>::operator++(int) (stl_list.h:167)
+==4612==    by 0x407797: ParticleSystem::run(Canvas&) (Particle.cpp:42)
+==4612==    by 0x4024F8: main (test_par.cpp:102)
+==4612==  Address 0x6161bd0 is 0 bytes inside a block of size 48 free'd
+==4612==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4612==    by 0x402D81: __gnu_cxx::new_allocator<std::_List_node<Particle> >::deallocate(std::_List_node<Particle>*, unsigned long) (new_allocator.h:110)
+==4612==    by 0x402D23: std::__cxx11::_List_base<Particle, std::allocator<Particle> >::_M_put_node(std::_List_node<Particle>*) (stl_list.h:396)
+==4612==    by 0x407CF2: std::__cxx11::list<Particle, std::allocator<Particle> >::_M_erase(std::_List_iterator<Particle>) (stl_list.h:1781)
+==4612==    by 0x407ADE: std::__cxx11::list<Particle, std::allocator<Particle> >::erase(std::_List_iterator<Particle>) (list.tcc:156)
+==4612==    by 0x407786: ParticleSystem::run(Canvas&) (Particle.cpp:48)
+==4612==    by 0x4024F8: main (test_par.cpp:102)
+==4612==  Block was alloc'd at
+==4612==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4612==    by 0x408012: __gnu_cxx::new_allocator<std::_List_node<Particle> >::allocate(unsigned long, void const*) (new_allocator.h:104)
+==4612==    by 0x407F69: std::__cxx11::_List_base<Particle, std::allocator<Particle> >::_M_get_node() (stl_list.h:392)
+==4612==    by 0x407E35: std::__cxx11::list<Particle, std::allocator<Particle> >::_M_create_node(Particle const&) (stl_list.h:553)
+==4612==    by 0x407C2E: std::__cxx11::list<Particle, std::allocator<Particle> >::_M_insert(std::_List_iterator<Particle>, Particle const&) (stl_list.h:1754)
+==4612==    by 0x407A65: std::__cxx11::list<Particle, std::allocator<Particle> >::push_back(Particle const&) (stl_list.h:1089)
+==4612==    by 0x4076E2: ParticleSystem::add(Particle const&) (Particle.cpp:37)
+==4612==    by 0x402419: main (test_par.cpp:88)
+==4612== 
+==4612== Invalid read of size 8
+==4612==    at 0x4079FA: std::_List_iterator<Particle>::operator++(int) (stl_list.h:167)
+==4612==    by 0x407797: ParticleSystem::run(Canvas&) (Particle.cpp:42)
+==4612==    by 0x40250E: main (test_par.cpp:103)
+==4612==  Address 0x6161c40 is 0 bytes inside a block of size 48 free'd
+==4612==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4612==    by 0x402D81: __gnu_cxx::new_allocator<std::_List_node<Particle> >::deallocate(std::_List_node<Particle>*, unsigned long) (new_allocator.h:110)
+==4612==    by 0x402D23: std::__cxx11::_List_base<Particle, std::allocator<Particle> >::_M_put_node(std::_List_node<Particle>*) (stl_list.h:396)
+==4612==    by 0x407CF2: std::__cxx11::list<Particle, std::allocator<Particle> >::_M_erase(std::_List_iterator<Particle>) (stl_list.h:1781)
+==4612==    by 0x407ADE: std::__cxx11::list<Particle, std::allocator<Particle> >::erase(std::_List_iterator<Particle>) (list.tcc:156)
+==4612==    by 0x407786: ParticleSystem::run(Canvas&) (Particle.cpp:48)
+==4612==    by 0x40250E: main (test_par.cpp:103)
+==4612==  Block was alloc'd at
+==4612==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4612==    by 0x408012: __gnu_cxx::new_allocator<std::_List_node<Particle> >::allocate(unsigned long, void const*) (new_allocator.h:104)
+==4612==    by 0x407F69: std::__cxx11::_List_base<Particle, std::allocator<Particle> >::_M_get_node() (stl_list.h:392)
+==4612==    by 0x407E35: std::__cxx11::list<Particle, std::allocator<Particle> >::_M_create_node(Particle const&) (stl_list.h:553)
+==4612==    by 0x407C2E: std::__cxx11::list<Particle, std::allocator<Particle> >::_M_insert(std::_List_iterator<Particle>, Particle const&) (stl_list.h:1754)
+==4612==    by 0x407A65: std::__cxx11::list<Particle, std::allocator<Particle> >::push_back(Particle const&) (stl_list.h:1089)
+==4612==    by 0x4076E2: ParticleSystem::add(Particle const&) (Particle.cpp:37)
+==4612==    by 0x40242C: main (test_par.cpp:89)
+==4612== 
+==4612== 
+==4612== HEAP SUMMARY:
+==4612==     in use at exit: 4,010,372 bytes in 76,513 blocks
+==4612==   total heap usage: 1,064,774 allocs, 988,261 frees, 51,461,081 bytes allocated
+==4612== 
+==4612== LEAK SUMMARY:
+==4612==    definitely lost: 0 bytes in 0 blocks
+==4612==    indirectly lost: 0 bytes in 0 blocks
+==4612==      possibly lost: 0 bytes in 0 blocks
+==4612==    still reachable: 4,010,372 bytes in 76,513 blocks
+==4612==         suppressed: 0 bytes in 0 blocks
+==4612== Rerun with --leak-check=full to see details of leaked memory
+==4612== 
+==4612== For counts of detected and suppressed errors, rerun with: -v
+==4612== ERROR SUMMARY: 988206 errors from 2 contexts (suppressed: 0 from 0)
