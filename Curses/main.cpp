@@ -7,9 +7,6 @@ using namespace std;
 
 void handler(int ch, Vector2i& position, IntRect& offset);
 
-
-
-
 void draw_von_koch_rec(Turtle& T, float length, int prof){
 	if(prof == 0){
 		T.draw(length);
@@ -118,7 +115,7 @@ int main(int argc, char** argv)
 	Vector2i printposition(0, 0);
 	IntRect canvasoffset(Vector2i::zero, Term::scr.get_dimension());
 
-	canvas.fill(Cell('+'));
+	//canvas.fill(Cell('+'));
 	int c = 0;
 
 	canvas.display(Vector2i(0, 0));

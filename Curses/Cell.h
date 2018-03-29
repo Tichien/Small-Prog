@@ -6,6 +6,7 @@
 #endif
 
 #include <cwchar>
+#include <cstring>
 #include "Color.h"
 #include "Attr.h"
 
@@ -22,7 +23,7 @@ public:
 	Cell();
 	Cell(cchar_t);
 	Cell(wint_t, ColorPair color = ColorPair::Default, Attr attr = Attr::Normal);
-	operator cchar_t() const;
+	operator cchar_t() const; //verifier avec valgrind pas de problème d'initialisation de variable local
 };
 
 #endif
