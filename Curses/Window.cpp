@@ -86,6 +86,7 @@ ColorPair Window::get_color() const{
 }
 
 void Window::set_color(ColorPair color){
+
 	wcolor_set(m_win, color.pair_num(), NULL);
 }
 

@@ -24,70 +24,112 @@ void run(Canvas& canvas, vector<Particle>& particles){
 	canvas.display();
 }
 
-float random(int start, int end, int precision = 100000){
+/* si la fonction renvoie vrai alors il faut appliquer le mode. */
+bool input_handler(int input, int& mode, int& mouseX, int& mouseY){
+		if(input == KEY_MOUSE){
+			MEVENT event;
 
-	int longueur = abs(abs(end) - start);
+			getmouse(&event);
 
-	int randlong = (rand() % ((longueur * precision) + 1));
+			mouseX = event.x;
+			mouseY = event.y;
 
-	return (float) start + ((float) randlong / (float) precision);
+			return true;
+		}
+		else if(input == 'r'){ //Repeller mode
+			mode = 'r';
+		}
+		else if(input == 'a'){ //Attractor mode
+			mode = 'a';
+		}
+		else if(input == 'p'){ //Particle mode
+			mode = 'p';
+		}
+
+		return false;
 }
+
+
 
 int main(int argc, char const *argv[])
 {
 	srand(time(NULL));
 
-	int n = 10000;
-	int spd = 10;
-	int gravity = 5;
+	int n = 100;
+	float lifespan = 1000;
+	Vector2f gravity(0, 0.02);
+	Vector2f wind(0, 0);
 
 	if(argc > 1)
 		n = atoi(argv[1]);
 
 	if(argc > 2)
-		spd = atoi(argv[2]);
+		lifespan = atof(argv[2]);
 
 	if(argc > 3)
-		gravity = atoi(argv[3]);
+		gravity.y = atof(argv[3]);
+
+	if(argc > 4)
+		wind.x = atof(argv[4]);
+
+	if(argc > 5)
+		wind.y = atof(argv[5]);
 
 	Term::init_curs();
 	Term::scr.set_input_timeout(1000 / 60);
 
 	Canvas canvas;
+	canvas.set_input_timeout(0);
+	keypad(canvas, TRUE);
+	
+	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 	canvas.set_attr(Attr::Bright);
 	canvas.set_color(ColorPair::Default);
 
-	ParticleSystem particles;
-	ParticleSystem particles2;
+	vector<ParticleSystem> PS;
 
-	/*
-	vector<Particle> particles(n);
+	PS.push_back(ParticleSystem(Vector2f(canvas.get_size()) / float(2)));
+	//PS.push_back(ParticleSystem(Vector2f(canvas.get_size()) / float(1.5)));
 
-	for(int i = 0 ; i < n ; i++){
-		particles[i].position = Vector2f(canvas.get_size()) / float(2);
-		particles[i].acceleration = Vector2f(0, gravity / 100.0);
-		particles[i].velocity = Vector2f(random(-spd, spd), random(-spd, spd));
-	} 0.0980
-	*/ 
+	int input = 0;
+	int mode = 0;
 	int nbframe = 0;
 	float moy = 0.0;
 	float moy_disp = 0.0;
 	float moy_clear = 0.0;
 	float moy_run = 0.0;
 
+	Vector2f att_pos(Vector2f(canvas.get_size()) / float(2));
+	
+	vector<Repeller> reps;
+	vector<Attractor> atts;
+
+	Repeller rep(att_pos);
+	Attractor att(att_pos);
+
+	int mouseX = 0, mouseY = 0;
+
 	while(true){//Term::pop_input() != 'q') {
-		//clear();
 		
 		nbframe++;
 
 		float total_time = clock();
 
-		for (int i = 0; i < (rand() % 10) ; ++i){
-			Particle p(Vector2f(canvas.get_size()) / float(4), Vector2f(random(-1, 1), random(-2, 0)), Vector2f(0, (float)gravity / 100), 200);
-			Particle p2(Vector2f(canvas.get_size()) / float(1.5), Vector2f(random(-1, 1), random(-2, 0)), Vector2f(0, (float)gravity / 100), 200);
-			particles.add(p);
-			particles2.add(p2);
+		for (int i = 0; i < (rand() % n) ; ++i){
+			for(int j = 0 ; j < (int)PS.size() ; ++j){
+				PS[j].add_particle(lifespan);
+			}
+		}
+
+		for(int i = 0 ; i < (int)PS.size() ; ++i){
+			PS[i].apply_force(gravity + wind);
+			
+			for(int k = 0 ; k < (int)reps.size() ; ++k)
+				PS[i].apply_repeller(reps[k]);
+			
+			for(int k = 0 ; k < (int)atts.size() ; ++k)
+				PS[i].apply_attractor(atts[k]);
 		}
 
 		float creation_time = (clock() - total_time) / (float)CLOCKS_PER_SEC;	
@@ -100,19 +142,24 @@ int main(int argc, char const *argv[])
 
 		float run_time = clock();
 
-		canvas.set_on(ColorPair::Green | Attr::Bright);
-		particles.run(canvas);
-		canvas.set_off(ColorPair::Green | Attr::Bright);
+		for(int i = 0 ; i < (int)PS.size() ; ++i){
 
-		canvas.set_on(ColorPair::Red | Attr::Bright);
-		particles2.run(canvas);
-		canvas.set_off(ColorPair::Red | Attr::Bright);
-		
+			if(i == 0)
+				canvas.set_color(ColorPair::Green);
+			else if(i == 1)
+				canvas.set_color(ColorPair::Red);
+			else
+				canvas.set_color(ColorPair::Default);
+
+			PS[i].run(canvas);
+		}
+
+		canvas.set_color(ColorPair::Default);
+
+
 		run_time = (clock() - run_time) / (float)CLOCKS_PER_SEC;
 		
 		float display_time = clock();
-
-		canvas.display();
 
 		display_time = (clock() - display_time) / (float)CLOCKS_PER_SEC;
 		
@@ -123,10 +170,28 @@ int main(int argc, char const *argv[])
 		moy_clear += clear_time;
 		moy_run += run_time;
 
-		mvwprintw(canvas, 0, 0, "Particles : %d, Creation time : %f, Run time : %f, Moy run : %f", particles.particles.size() + particles.particles.size(), creation_time, run_time, moy_run / nbframe);
+		mvwprintw(canvas, 0, 0, "Particles : %d, Creation time : %f, Run time : %f, Moy run : %f", PS[0].particles.size() * PS.size(), creation_time, run_time, moy_run / nbframe);
 		mvwprintw(canvas, 1, 0, "Clear time : %f,  Moy : %f", clear_time, moy_clear / nbframe);
 		mvwprintw(canvas, 2, 0, "Display time : %f,  Moy : %f", display_time, moy_disp / nbframe);
 		mvwprintw(canvas, 3, 0, "Total time : %f,  Moy : %f", total_time, moy / nbframe);
+		mvwprintw(canvas, 4, 0, "Mouse pos : %d %d   ", mouseX, mouseY);
+
+		input = canvas.pop_input();
+
+		if(input_handler(input, mode, mouseX, mouseY)){
+
+			Vector2f origin(cell_to_pixel_pos(mouseX, mouseY));
+
+			if(mode == 'r'){
+				reps.push_back(Repeller(origin));
+			}
+			else if(mode == 'a'){
+				atts.push_back(Attractor(origin));
+			}
+			else if(mode == 'p'){
+				PS.push_back(ParticleSystem(origin));
+			}
+		}
 
 		canvas.display();
 		

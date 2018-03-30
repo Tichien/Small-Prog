@@ -7,8 +7,8 @@ Vector2<T>::Vector2() : x(), y() {}
 template <typename T>
 Vector2<T>::Vector2(T x, T y) : x(x), y(y) {}
 
-template <typename T>
-Vector2<T>::Vector2(T xy) : x(xy), y(xy) {}
+//template <typename T>
+//Vector2<T>::Vector2(T xy) : x(xy), y(xy) {}
 
 template <typename T>
 template <typename U>
@@ -21,7 +21,7 @@ Vector2<T>::~Vector2() {}
 
 template <typename T>
 float Vector2<T>::length() const{
-	return powf(Vector2<T>::distance_squared(left, right), 0.5);
+	return powf(length_squared(), 0.5);
 }
 
 template <typename T>
@@ -34,6 +34,11 @@ void Vector2<T>::normalize(){
 	float length = this->length();
 	x /= length;
 	y /= length;
+}
+
+template <typename T>
+Vector2<int> Vector2<T>::rounded() const{
+	return Vector2<int>(round(x), round(y));
 }
 
 ///////////////////////////////////////////////////// METHODES STATIQUES
@@ -73,6 +78,7 @@ template <typename T>
 Vector2<T> Vector2<T>::reflect(const Vector2<T>& vector, const Vector2<T>& normal){
 	return vector - (2 * Vector2<T>::dot(vector, normal) * normal);
 }
+
 
 ///////////////////////////////////////////////////// VARIABLE STATIQUES
 

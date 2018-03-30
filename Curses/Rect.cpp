@@ -3,8 +3,8 @@
 template <typename T>
 Rect<T>::Rect() : x(), y(), width(), height() {}
 
-template <typename T>
-Rect<T>::Rect(T xywh) : x(xywh), y(xywh), width(xywh), height(xywh) {}
+//template <typename T>
+//Rect<T>::Rect(T xywh) : x(xywh), y(xywh), width(xywh), height(xywh) {}
 
 template <typename T>
 Rect<T>::Rect(T x, T y, T width, T height) : x(x), y(y), width(width), height(height) {}

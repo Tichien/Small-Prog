@@ -16,7 +16,7 @@ public:
 
 	Vector2();
 
-	Vector2(T xy);
+	//Vector2(T xy);
 	
 	Vector2(T x, T y);
 	
@@ -25,11 +25,14 @@ public:
 	
 	~Vector2();
 
+	Vector2<int> rounded() const;
+
 	float length() const;
 
 	float length_squared() const;
 
 	void normalize();
+
 
 	static Vector2<T> zero;
 	static Vector2<T> one;
@@ -41,6 +44,7 @@ public:
 	static float dot(const Vector2<T>& left, const Vector2<T>& right);
 	static float distance(const Vector2<T>& left, const Vector2<T>& right);
 	static float distance_squared(const Vector2<T>& left, const Vector2<T>& right);
+
 	static Vector2<T> min(const Vector2<T>& left, const Vector2<T>& right);
 	static Vector2<T> max(const Vector2<T>& left, const Vector2<T>& right);
 	static Vector2<T> normalize(const Vector2<T>& vector);
