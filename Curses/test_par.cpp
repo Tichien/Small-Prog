@@ -7,21 +7,25 @@
 
 using namespace std;
 
-void run(Canvas& canvas, vector<Particle>& particles){
+void clear(Canvas& canvas, ParticleSystem& particles){
 
 	/* effacement des cellules */
 	//canvas.clear();
-	
-	for(int i = 0 ; i < (int)particles.size() ; i++){
-		canvas.unset(round(particles[i].position.x), round(particles[i].position.y));
+	//
+	for(list<Particle>::iterator it = particles.particles.begin() ; it != particles.particles.end() ; ++it){
+		canvas.unset(it->position.rounded());
 	}
-	
-
+	/*
+	for(int i = 0 ; i < (int)particles.particles.size() ; i++){
+	}
+	*/
+/*
 	for(int i = 0 ; i < (int)particles.size() ; i++){
 		particles[i].update();
 		particles[i].display(canvas);
 	}
 	canvas.display();
+	*/
 }
 
 /* si la fonction renvoie vrai alors il faut appliquer le mode. */
@@ -75,11 +79,16 @@ int main(int argc, char const *argv[])
 	if(argc > 5)
 		wind.y = atof(argv[5]);
 
+
+	float FRAME_RATE = 30.0;
+
 	Term::init_curs();
-	Term::scr.set_input_timeout(1000 / 60);
+	nodelay(stdscr, TRUE);
+	//Term::scr.set_input_timeout(0);
 
 	Canvas canvas;
-	canvas.set_input_timeout(0);
+	nodelay(canvas, TRUE);
+	//canvas.set_input_timeout(1000.0 / 60.0);
 	keypad(canvas, TRUE);
 	
 	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
@@ -93,12 +102,12 @@ int main(int argc, char const *argv[])
 	//PS.push_back(ParticleSystem(Vector2f(canvas.get_size()) / float(1.5)));
 
 	int input = 0;
-	int mode = 0;
+	int mode = 'p';
 	int nbframe = 0;
-	float moy = 0.0;
-	float moy_disp = 0.0;
-	float moy_clear = 0.0;
-	float moy_run = 0.0;
+
+	float input_time = 0.0;
+	float update_time = 0.0;
+	float frame_time = 0.0;
 
 	Vector2f att_pos(Vector2f(canvas.get_size()) / float(2));
 	
@@ -116,7 +125,7 @@ int main(int argc, char const *argv[])
 
 		float total_time = clock();
 
-		for (int i = 0; i < (rand() % n) ; ++i){
+		for (int i = 0; i < n ; ++i){
 			for(int j = 0 ; j < (int)PS.size() ; ++j){
 				PS[j].add_particle(lifespan);
 			}
@@ -137,6 +146,7 @@ int main(int argc, char const *argv[])
 		float clear_time = clock();
 
 		canvas.clear();
+		//touchwin(canvas);
 
 		clear_time = (clock() - clear_time) / (float)CLOCKS_PER_SEC;
 
@@ -156,25 +166,29 @@ int main(int argc, char const *argv[])
 
 		canvas.set_color(ColorPair::Default);
 
-
 		run_time = (clock() - run_time) / (float)CLOCKS_PER_SEC;
 		
 		float display_time = clock();
 
+		canvas.display();
+
 		display_time = (clock() - display_time) / (float)CLOCKS_PER_SEC;
 		
-		total_time = (clock() - total_time) / (float)CLOCKS_PER_SEC;
 		
-		moy += total_time;
-		moy_disp += display_time;
-		moy_clear += clear_time;
-		moy_run += run_time;
+		int i = 0;
+		mvwprintw(canvas, i+0, 0, "Particles : %d/s, Creation : %f, Run : %f", n * PS.size(), creation_time, run_time);
+		mvwprintw(canvas, i+1, 0, "Frame time : %f, Clear : %f, Display : %f, Update : %f", frame_time, clear_time, display_time, update_time);
+		mvwprintw(canvas, i+2, 0, "Input time : %f, Mouse pos : %d %d   ", input_time, mouseX, mouseY);
+		
+		canvas.display();
 
-		mvwprintw(canvas, 0, 0, "Particles : %d, Creation time : %f, Run time : %f, Moy run : %f", PS[0].particles.size() * PS.size(), creation_time, run_time, moy_run / nbframe);
-		mvwprintw(canvas, 1, 0, "Clear time : %f,  Moy : %f", clear_time, moy_clear / nbframe);
-		mvwprintw(canvas, 2, 0, "Display time : %f,  Moy : %f", display_time, moy_disp / nbframe);
-		mvwprintw(canvas, 3, 0, "Total time : %f,  Moy : %f", total_time, moy / nbframe);
-		mvwprintw(canvas, 4, 0, "Mouse pos : %d %d   ", mouseX, mouseY);
+		update_time = clock();
+
+		Term::update();
+		
+		update_time = (clock() - update_time) / (float)CLOCKS_PER_SEC;
+
+		input_time = clock();
 
 		input = canvas.pop_input();
 
@@ -192,12 +206,16 @@ int main(int argc, char const *argv[])
 				PS.push_back(ParticleSystem(origin));
 			}
 		}
-
-		canvas.display();
 		
-		Term::update();
+		input_time = (clock() - input_time) / (float)CLOCKS_PER_SEC;
+
+		frame_time = (clock() - total_time) / (float)CLOCKS_PER_SEC;
+		
+		//fflush(stdout);
+		//Term::wait(1000.0 / FRAME_RATE);
 	}
 	
+	canvas.display();
 	Term::update();
 
 	Term::pop_input();

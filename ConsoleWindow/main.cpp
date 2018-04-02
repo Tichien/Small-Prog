@@ -61,8 +61,8 @@ int main(){
 			//Console::Screen.write("attention 1 sec", 1, 2);
 
 			//w.write(t.toString(), 1, 1);
-			w.write(w.getPosition().toString(), 1, 2);
-			w.write(w.getSize().toString(), 1, 3);
+			//w.write(w.getPosition().toString(), 1, 2);
+			//w.write(w.getSize().toString(), 1, 3);
 			w.display();
 		//}
 

@@ -2,7 +2,7 @@ CC = g++
 CFLAGS = -W -Wall -g
 SRCS1 = test_vois.cpp Canvas.cpp Turtle.cpp Color.cpp Attr.cpp Cell.cpp Window.cpp Term.cpp
 LIB = -lncursesw
-EXE1 = test_vois
+EXE1 = bin/test_vois
 HEADER = includes
 EXT = *.o
 

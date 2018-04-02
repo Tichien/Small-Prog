@@ -22,6 +22,7 @@ class Term {
 
 public:
 	static Window scr;
+	static int input;
 
 	static void init_curs();
 	static void end_curs();
@@ -38,7 +39,10 @@ public:
 
 /* pop/push an input for the next call to the input queue */
 	static int pop_input();
-	static void push_input(int input); 
+	static void push_input(int input);
+
+/* return the last poped input */
+	static int get_input();
 
 /* Renvoie un chaine de character taper par l'untilisateur dans str */
 	static void getline(std::string& str);

@@ -22,7 +22,7 @@ void Particle::update() {
 void Particle::display(Canvas& c) {
 		
 	c.set(position.rounded());
-	//c.toggle(round(position.x), round(position.y));
+	//c.toggle(position.rounded());
 }
 
 void Particle::run(Canvas& c) {

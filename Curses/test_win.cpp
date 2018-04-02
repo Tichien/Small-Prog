@@ -1,96 +1,77 @@
 #include <iostream>
 #include "Term.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 
 using namespace std;
 
-void check_color(ColorPair col){
-	if(col == ColorPair::Default)
-		printw("Default\n");
-	else if(col == ColorPair::White)
-		printw("White\n");
-	else if(col == ColorPair::Black)
-		printw("Black\n");
-	else if(col == ColorPair::Red)
-		printw("Red\n");
-	else if(col == ColorPair::Green)
-		printw("Green\n");
-	else if(col == ColorPair::Blue)
-		printw("Blue\n");
-	else if(col == ColorPair::Magenta)
-		printw("Magenta\n");
-	else if(col == ColorPair::Cyan)
-		printw("Cyan\n");
-	else if(col == ColorPair::Yellow)
-		printw("Yellow\n");
-	else 
-		printw("Autre\n");
-
-}
+void handler(Window& w);
 
 int main()//int argc, char const *argv[])
 {
-
 	Term::init_curs();
-
-	Window w = Term::scr;
 	
-	//Window w(newwin(20, 20, 10, 10));
-	//wresize(w, 100, 200);
- 
-	refresh();
+	cbreak();
+    noecho();
+   	//curs_set(0); /* Invisible cursor */
+   	halfdelay(0); /* Don't wait for more than 1/10 seconds for a keypress */
+    keypad(stdscr, TRUE); /* Enable keypad mode */
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); /* Report all mouse events */
+	//mouseinterval(0);
 
-	printw("C'est du text pour tester ");
+	while(/*Term::pop_input()*/ getch() != 'q'){
 
+		//clear();
 
-	Cell cell(L'¤', ColorPair::Red, Attr::Bright);
+    /*
+		if(Mouse::isButtonPressed(Mouse::Button::Left))
+			mvprintw(0, 0, "Mouse position : %d, %d", Mouse::getPosition().x, Mouse::getPosition().y);
+	*/
+    	MEVENT event;
 
-	w.set_on(ColorPair::Cyan);
+    	if(getmouse(&event) == OK){
+    		mvprintw(0, 0, "Mouse position : %d, %d", event.x, event.y);
+    	}
 
-	w.set_border(Window::Dash);
-	
-	w.set_cell(Vector2i(10, 10), cell);
-
-	mvwprintw(w, 0, 0, "Test ma subwin");
-
-	//w.set_border(Window::Dash);
-	w.set_off(ColorPair::Cyan);
-
-	w.fill(cell);
-
-	//clear();
-
-	refresh();
-
-	//refresh();
-
-	Term::wait(1000);
-
-	//wgetch(w); //refresh stdscr egalement
-	//getch();	
-
+		refresh();
+	}
 
 	Term::end_curs();
 
 	return 0;
 }
 
-/*
-//to manage resize;
 
-after a sigwinch:
+void handler(Window& w){
 
-void handle_winch(int sig)
-{
-    endwin();
-    // Needs to be called after an endwin() so ncurses will initialize
-    // itself with the new terminal dimensions.
-    refresh();
-    clear();
+	if(Keyboard::isKeyPressed(Keyboard::Key::Z)){
+	
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Key::Q)){
+	
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Key::S)){ 
+	
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Key::D)){
+	
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Key::Up)){
+	
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Key::Left)){
 
-    mvprintw(0, 0, "COLS = %d, LINES = %d", COLS, LINES);
-    for (int i = 0; i < COLS; i++)
-        mvaddch(1, i, '*');
-    refresh();
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Key::Down)){
+
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Key::Right)){
+
+	}
+	else if(Mouse::isButtonPressed(Mouse::Button::Right)){
+
+	}
+	else if(Mouse::isButtonPressed(Mouse::Button::Left)){
+
+	}
 }
-
- */

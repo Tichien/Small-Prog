@@ -17,6 +17,8 @@ TermScreen* TermScreen::getInstance(){
 
 Window Term::scr; 
 
+int Term::input = -1;
+
 //int (*Term::scan)(const char*, ...) = scanw; 
 
 void Term::init_curs() {
@@ -68,11 +70,16 @@ void Term::wait(int ms){
 }
 
 int Term::pop_input(){
-	return getch();
+	Term::input = getch();
+	return Term::input;
 }
 
 void Term::push_input(int ch){
 	ungetch(ch); 
+}
+
+int Term::get_input(){
+	return Term::input;
 }
 
 void Term::getline(std::string& str){
