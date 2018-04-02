@@ -128,7 +128,7 @@ bool Mouse::isWheelScrolling(Wheel wheel) {
 				return event.bstate == BUTTON4_PRESSED;
 				break;
 				case Mouse::ScrollDown:
-				return event.bstate == BUTTON5_PRESSED;
+				//return event.bstate == BUTTON5_PRESSED;
 				break;
 				default:
 				return false;

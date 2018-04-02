@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Term.h"
-#include "Keyboard.h"
 #include "Mouse.h"
 
 using namespace std;
@@ -18,8 +17,10 @@ int main()//int argc, char const *argv[])
     keypad(stdscr, TRUE); /* Enable keypad mode */
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); /* Report all mouse events */
 	//mouseinterval(0);
+    int ch  = 0;
+    int event_num = 0;
 
-	while(/*Term::pop_input()*/ getch() != 'q'){
+	while((ch = getch()) != 'q'){
 
 		//clear();
 
@@ -27,11 +28,20 @@ int main()//int argc, char const *argv[])
 		if(Mouse::isButtonPressed(Mouse::Button::Left))
 			mvprintw(0, 0, "Mouse position : %d, %d", Mouse::getPosition().x, Mouse::getPosition().y);
 	*/
-    	MEVENT event;
+   		if(ch == KEY_MOUSE){
+   			
+   			MEVENT event;
 
-    	if(getmouse(&event) == OK){
-    		mvprintw(0, 0, "Mouse position : %d, %d", event.x, event.y);
-    	}
+   			event_num++;
+
+	    	if(getmouse(&event) == OK)
+	    		mvprintw(0, 0, "Mouse position : %d, %d", event.x, event.y);
+	    	else
+	    		mvprintw(0, 0, "Mouse event error");
+
+	    	mvprintw(1, 0, "Event count : %d", event_num);
+   		}
+
 
 		refresh();
 	}
@@ -41,7 +51,7 @@ int main()//int argc, char const *argv[])
 	return 0;
 }
 
-
+/*
 void handler(Window& w){
 
 	if(Keyboard::isKeyPressed(Keyboard::Key::Z)){
@@ -75,3 +85,4 @@ void handler(Window& w){
 
 	}
 }
+*/
