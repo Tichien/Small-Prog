@@ -1,26 +1,26 @@
 #ifndef _MOUSE_H_
 #define _MOUSE_H_
 
-#include "Term.h"
+#include "Vector2.h"
+
+extern "C"{
+#include <ncursesw/curses.h>
+}
 
 class Mouse {
 
 public:
 
-	static Vector2i position;
+	static MEVENT event;
 
 	enum Button { Left, Right, Middle };
 	enum Wheel { ScrollUp, ScrollDown };
 
-	static int lastPressedInput;
-	static bool aButtonIsPressed;
+	static Vector2i get_pos();
 
-	static Vector2i getPosition();
-	//static Vector2i getPosition(Window& relative_to);
-
-	static bool isButtonPressed(Button button);
-	static bool isButtonReleased(Button button);
-	static bool isWheelScrolling(Wheel wheel);
+	static bool is_pressed(Button button);
+	static bool is_released(Button button);
+	static bool is_scrolling(Wheel wheel);
 };
 
 #endif

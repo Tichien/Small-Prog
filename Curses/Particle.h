@@ -11,12 +11,12 @@ public:
 	Vector2f position;
 	Vector2f velocity;
 	Vector2f acceleration;
-	float lifespan;
+	float lifetime;
 	float mass;
 
 	Particle();
-	Particle(const Vector2f& position, float lifespan = 100);
-	Particle(const Vector2f& pos, const Vector2f& v, float lifespan = 100);
+	Particle(const Vector2f& position, float lifetime = 100);
+	Particle(const Vector2f& pos, const Vector2f& v, float lifetime = 100);
 
 	void apply_force(const Vector2f& force);
 
@@ -62,24 +62,34 @@ class ParticleSystem {
 
 public:
 	std::list<Particle> particles;
-	Vector2f origin;
+
+	float duration;
+
+	IntRect velocity_range;
+	float velocity_over_time;
+	//int max_particles;
 
 	ParticleSystem();
-	ParticleSystem(const Vector2f& origin);
+	ParticleSystem(float duration, IntRect velocity_range = IntRect(0, 0, 0, 0), float velocity_over_time = 1);
 
 	void apply_force(const Vector2f& force);
 	
 	void apply_repeller(const Repeller& rep);
-	
 	void apply_attractor(const Attractor& att);
-	
-	void add_particle(float lifespan = 1000);
-	void add_particle(const Particle& p);
+
+	void add_particles(int n, Vector2f origin);
+	void add_particles(int n, IntRect zone);
 	
 	void run(Canvas& c);
 };
 
 float random(int start, int end, int precision = 100000);
 float constrain(float f, float start, float end);
+
+/* Prototype Particle system
+
+	add_particles(int n, Vector2f origin);
+	add_particles(int n, FloatRect zone);
+*/
 
 #endif

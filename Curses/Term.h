@@ -2,6 +2,8 @@
 #define _TERM_H_
 
 #include "Window.h"
+#include "Mouse.h"
+#include "Keyboard.h"
 
 class TermScreen : public Window {
 
@@ -44,8 +46,11 @@ public:
 /* return the last poped input */
 	static int get_input();
 
+/* lis les input claviers souris */
+	static int read_input();
+
 /* Renvoie un chaine de character taper par l'untilisateur dans str */
-	static void getline(std::string& str);
+	static void get_line(std::string& str);
 
 /* Pointeur vers la fonction scanw */
 	//static int (*scan)(const char*, ...);

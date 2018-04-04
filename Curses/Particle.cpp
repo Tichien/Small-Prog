@@ -2,11 +2,11 @@
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PARTICLE
 
-Particle::Particle() : position(), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifespan(), mass(1) {}
+Particle::Particle() : position(), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(), mass(1) {}
 
-Particle::Particle(const Vector2f& position, float lifespan) : position(position), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifespan(lifespan), mass(1){}
+Particle::Particle(const Vector2f& position, float lifetime) : position(position), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(lifetime), mass(1){}
 
-Particle::Particle(const Vector2f& pos, const Vector2f& v, float lifespan) : position(pos), velocity(v), acceleration(), lifespan(lifespan), mass(1) {} 
+Particle::Particle(const Vector2f& pos, const Vector2f& v, float lifetime) : position(pos), velocity(v), acceleration(), lifetime(lifetime), mass(1) {} 
 
 void Particle::apply_force(const Vector2f& force){
 	acceleration += (force / mass);
@@ -16,7 +16,7 @@ void Particle::update() {
 	velocity += acceleration;
 	position += velocity;
 	acceleration = Vector2f::zero;
-	lifespan -= 1.0;
+	lifetime -= 1.0;
 }
 
 void Particle::display(Canvas& c) {
@@ -31,7 +31,7 @@ void Particle::run(Canvas& c) {
 }
 
 bool Particle::is_alive() {
-	return lifespan > 0;
+	return lifetime > 0;
 }
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ATTRACTOR
@@ -46,7 +46,7 @@ Vector2f Attractor::attract(const Particle& p) const {
 	
 	//constrain dist pour ne pas perdre le controle des particules
 	float dist = dir.length();
-	dist = constrain(dist, 5, 50);
+	dist = constrain(dist, 10, 1000000000000);
 
 	dir.normalize();
 
@@ -57,7 +57,7 @@ Vector2f Attractor::attract(const Particle& p) const {
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ REPELLER
 
-Repeller::Repeller() : position(), strength(100), mass(1) {}
+Repeller::Repeller() : position(), strength(1), mass(1) {}
 
 Repeller::Repeller(const Vector2f& position) : position(position), strength(100), mass(1) {}
 
@@ -67,7 +67,7 @@ Vector2f Repeller::repel(const Particle& p) const {
 	
 	//constrain dist pour ne pas perdre le controle des particules
 	float dist = dir.length();
-	dist = constrain(dist, 5, 50);
+	dist = constrain(dist, 10, 100000000000);
 
 	dir.normalize();
 
@@ -78,9 +78,9 @@ Vector2f Repeller::repel(const Particle& p) const {
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PARTICLESYSTEM
 
-ParticleSystem::ParticleSystem() : particles(), origin() {}
+ParticleSystem::ParticleSystem() : particles(), duration(100), velocity_range(), velocity_over_time() {}
 
-ParticleSystem::ParticleSystem(const Vector2f& origin) : particles(), origin(origin) {}
+ParticleSystem::ParticleSystem(float duration, IntRect velocity_range, float velocity_over_time) : particles(),  duration(duration), velocity_range(velocity_range), velocity_over_time(velocity_over_time) {}
  
 void ParticleSystem::apply_force(const Vector2f& force){
 	for(std::list<Particle>::iterator it = particles.begin() ; it != particles.end() ; ++it){
@@ -102,25 +102,35 @@ void ParticleSystem::apply_attractor(const Attractor& att){
 	}
 }
 
-void ParticleSystem::add_particle(float lifespan){
-	add_particle(Particle(origin, lifespan));
+void ParticleSystem::add_particles(int n, Vector2f origin){
+	for(int i = 0 ; i < n ; i++){
+		particles.push_back(Particle(origin, 
+									 Vector2f(random(velocity_range.x, velocity_range.y), random(velocity_range.width, velocity_range.height)), 
+									 duration));
+	}
 }
 
-void ParticleSystem::add_particle(const Particle& p){ 
-	particles.push_back(p);
+void ParticleSystem::add_particles(int n, IntRect zone){
+	for(int i = 0 ; i < n ; i++){
+		particles.push_back(Particle(Vector2f(random(zone.x, zone.width), random(zone.y, zone.height)), 
+									 Vector2f(random(velocity_range.x, velocity_range.y), random(velocity_range.width, velocity_range.height)), 
+									 duration));
+	}
 }
 
 void ParticleSystem::run(Canvas& c){
 	for(std::list<Particle>::iterator it = particles.begin() ; it != particles.end() ; ++it){
 		
-		//c.unset(round(it->position.x), round(it->position.y));
-
-		if(it->is_alive())
+		if(it->is_alive()){
 			it->run(c);
+			it->velocity *= velocity_over_time;
+		}
 		else
 			it = particles.erase(it); //met a jour l'iterateur pour pointer vers l'iterateur suivant
 	}
 }
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ FUNCTIONS
 
 float random(int start, int end, int precision){
 

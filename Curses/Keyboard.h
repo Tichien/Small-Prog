@@ -4,6 +4,7 @@
 class Keyboard {
 
 public:
+	static int input;
 	
 	enum Key {
 		A, B, C,
@@ -26,7 +27,7 @@ public:
 		F11, F12,
 	};
 
-	static bool isKeyPressed(Key key);
+	static bool is_pressed(Key key);
 };
 
 #endif

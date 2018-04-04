@@ -1,49 +1,34 @@
 #include <iostream>
 #include "Term.h"
-#include "Mouse.h"
 
 using namespace std;
 
-void handler(Window& w);
+void handler();
 
 int main()//int argc, char const *argv[])
 {
+	//export TERM=xterm-1003   (push mouse pos) (1002 only on click)
 	Term::init_curs();
 	
-	cbreak();
-    noecho();
-   	//curs_set(0); /* Invisible cursor */
-   	halfdelay(0); /* Don't wait for more than 1/10 seconds for a keypress */
+	//cbreak();
+    //noecho();
+   	//timeout(0);
     keypad(stdscr, TRUE); /* Enable keypad mode */
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); /* Report all mouse events */
 	//mouseinterval(0);
-    int ch  = 0;
-    int event_num = 0;
 
-	while((ch = getch()) != 'q'){
+	int ch = 0;
+	while((ch = Term::read_input()) != 'q'){
 
-		//clear();
+		erase();
 
-    /*
-		if(Mouse::isButtonPressed(Mouse::Button::Left))
-			mvprintw(0, 0, "Mouse position : %d, %d", Mouse::getPosition().x, Mouse::getPosition().y);
-	*/
-   		if(ch == KEY_MOUSE){
-   			
-   			MEVENT event;
+	    mvprintw(0, 0, "Mouse position : %d, %d", Mouse::get_pos().x, Mouse::get_pos().y);
+	    mvprintw(1, 0, "Mouse bstate : %lu", Mouse::event.bstate);
+	    mvprintw(2, 0, "Key : %d", Keyboard::input);
 
-   			event_num++;
+	    handler();
 
-	    	if(getmouse(&event) == OK)
-	    		mvprintw(0, 0, "Mouse position : %d, %d", event.x, event.y);
-	    	else
-	    		mvprintw(0, 0, "Mouse event error");
-
-	    	mvprintw(1, 0, "Event count : %d", event_num);
-   		}
-
-
-		refresh();
+		//refresh();
 	}
 
 	Term::end_curs();
@@ -51,38 +36,19 @@ int main()//int argc, char const *argv[])
 	return 0;
 }
 
-/*
-void handler(Window& w){
+void handler(){
+	if(Mouse::is_pressed(Mouse::Left))
+		mvprintw(1, 0, "Left");
+	else if(Mouse::is_pressed(Mouse::Right))
+		mvprintw(1, 0, "Right");
+	else if(Mouse::is_pressed(Mouse::Middle))
+		mvprintw(1, 0, "Middle");
 
-	if(Keyboard::isKeyPressed(Keyboard::Key::Z)){
-	
-	}
-	else if(Keyboard::isKeyPressed(Keyboard::Key::Q)){
-	
-	}
-	else if(Keyboard::isKeyPressed(Keyboard::Key::S)){ 
-	
-	}
-	else if(Keyboard::isKeyPressed(Keyboard::Key::D)){
-	
-	}
-	else if(Keyboard::isKeyPressed(Keyboard::Key::Up)){
-	
-	}
-	else if(Keyboard::isKeyPressed(Keyboard::Key::Left)){
+	else if(Keyboard::is_pressed(Keyboard::A))
+		mvprintw(1, 0, "A");
+	else if(Keyboard::is_pressed(Keyboard::Z))
+		mvprintw(1, 0, "Z");
+	else if(Keyboard::is_pressed(Keyboard::E))
+		mvprintw(1, 0, "E");
 
-	}
-	else if(Keyboard::isKeyPressed(Keyboard::Key::Down)){
-
-	}
-	else if(Keyboard::isKeyPressed(Keyboard::Key::Right)){
-
-	}
-	else if(Mouse::isButtonPressed(Mouse::Button::Right)){
-
-	}
-	else if(Mouse::isButtonPressed(Mouse::Button::Left)){
-
-	}
 }
-*/

@@ -16,8 +16,6 @@ public:
 	T height;
 
 	Rect();
-
-	//Rect(T xywh);
 	
 	Rect(T x, T y, T width, T height);
 	

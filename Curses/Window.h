@@ -1,11 +1,6 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
-/*
-#ifndef _XOPEN_SOURCE_EXTENDED
-#define _XOPEN_SOURCE_EXTENDED // pour utilisé les fonction wide character et cchar_t
-#endif
-*/
 #include <string>
 #include "Rect.h"
 #include "Cell.h"

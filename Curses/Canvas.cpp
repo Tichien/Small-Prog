@@ -152,7 +152,7 @@ Vector2i cell_to_pixel_pos(int col, int row){
 }
 
 Vector2i cell_to_pixel_pos(const Vector2i& cell_coord){
-	return pixel_to_cell_coord(cell_coord.x, cell_coord.y);
+	return cell_to_pixel_pos(cell_coord.x, cell_coord.y);
 }
 
 bool is_braille(wint_t cell){

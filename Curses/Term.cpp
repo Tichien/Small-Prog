@@ -32,11 +32,14 @@ void Term::init_curs() {
 	Term::scr = *TermScreen::getInstance();
 
 	scr.set_special_key(true);
-	scr.set_input_timeout(-1); //-1 block the program if no input detected
+	scr.set_input_timeout(0); //-1 block the program if no input detected
 	
 	Term::cooked_mode(false);
 	Term::echo_key(false);
 	Term::curs_vis(0);
+
+	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); /* Report all mouse events and position */
+
 
 	refresh();
 }
@@ -70,8 +73,8 @@ void Term::wait(int ms){
 }
 
 int Term::pop_input(){
-	Term::input = getch();
-	return Term::input;
+	input = getch();
+	return input;
 }
 
 void Term::push_input(int ch){
@@ -79,10 +82,31 @@ void Term::push_input(int ch){
 }
 
 int Term::get_input(){
-	return Term::input;
+	return input;
 }
 
-void Term::getline(std::string& str){
+int Term::read_input(){
+
+	int ch = pop_input();
+
+	if(ch == KEY_MOUSE){
+
+		MEVENT temp = Mouse::event;
+		
+		getmouse(&(Mouse::event));
+
+		//Si l'evenement correspond a un deplacement du curseur
+		if(Mouse::event.bstate & REPORT_MOUSE_POSITION)
+			Mouse::event.bstate = temp.bstate;
+	}
+	else{
+		Keyboard::input = ch;
+	}
+
+	return ch;
+}
+
+void Term::get_line(std::string& str){
 	char cstr[1024] = "";
 	getstr(cstr);
 	str = cstr;
