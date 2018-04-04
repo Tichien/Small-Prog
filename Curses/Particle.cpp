@@ -1,7 +1,6 @@
 #include "Particle.h"
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PARTICLE
-
+//#DEFINITION
 Particle::Particle() : position(), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(), mass(1) {}
 
 Particle::Particle(const Vector2f& position, float lifetime) : position(position), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(lifetime), mass(1){}
@@ -44,13 +43,14 @@ Vector2f Attractor::attract(const Particle& p) const {
 
 	Vector2f dir = position - p.position;
 	
-	//constrain dist pour ne pas perdre le controle des particules
-	float dist = dir.length();
-	dist = constrain(dist, 10, 1000000000000);
+	float dist_squared = dir.length_squared();
+
+	//constrain dist pour ne pas perdre le controle des particules trop rapides
+	dist_squared = constrain(dist_squared, 100, 1000000000000);
 
 	dir.normalize();
 
-	float force = (strength * mass * p.mass) / (dist * dist);
+	float force = (strength * mass * p.mass) / dist_squared;
 	
 	return dir * force;
 }
@@ -65,20 +65,21 @@ Vector2f Repeller::repel(const Particle& p) const {
 
 	Vector2f dir = position - p.position;
 	
-	//constrain dist pour ne pas perdre le controle des particules
-	float dist = dir.length();
-	dist = constrain(dist, 10, 100000000000);
+	float dist_squared = dir.length_squared();
+
+	//constrain dist pour ne pas perdre le controle des particules trop rapides
+	dist_squared = constrain(dist_squared, 100, 10000000000000);
 
 	dir.normalize();
 
-	float force = (strength * mass * p.mass) / (dist * dist); 
+	float force = (strength * mass * p.mass) / dist_squared; 
 
 	return -dir * force;
 }
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PARTICLESYSTEM
 
-ParticleSystem::ParticleSystem() : particles(), duration(100), velocity_range(), velocity_over_time() {}
+ParticleSystem::ParticleSystem() : particles(), duration(1000), velocity_range(), velocity_over_time() {}
 
 ParticleSystem::ParticleSystem(float duration, IntRect velocity_range, float velocity_over_time) : particles(),  duration(duration), velocity_range(velocity_range), velocity_over_time(velocity_over_time) {}
  
@@ -144,3 +145,5 @@ float random(int start, int end, int precision){
 float constrain(float f, float start, float end){
 	return f < start ? start : f > end ? end : f;  
 }
+
+//#DEFINITION_END

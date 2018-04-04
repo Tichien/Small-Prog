@@ -5,30 +5,23 @@ using namespace std;
 
 void handler();
 
-int main()//int argc, char const *argv[])
+int main()
 {
-	//export TERM=xterm-1003   (push mouse pos) (1002 only on click)
 	Term::init_curs();
-	
-	//cbreak();
-    //noecho();
-   	//timeout(0);
-    keypad(stdscr, TRUE); /* Enable keypad mode */
-    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); /* Report all mouse events */
-	//mouseinterval(0);
 
 	int ch = 0;
-	while((ch = Term::read_input()) != 'q'){
+	
+	while(!Keyboard::is_pressed(Keyboard::Escape)){
 
-		erase();
+		Term::read_input();
 
-	    mvprintw(0, 0, "Mouse position : %d, %d", Mouse::get_pos().x, Mouse::get_pos().y);
+		Term::clear();
+
+	    mvprintw(0, 0, "Mouse position : %d, %d", Mouse::get_position().x, Mouse::get_position().y);
 	    mvprintw(1, 0, "Mouse bstate : %lu", Mouse::event.bstate);
 	    mvprintw(2, 0, "Key : %d", Keyboard::input);
 
 	    handler();
-
-		//refresh();
 	}
 
 	Term::end_curs();

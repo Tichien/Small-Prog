@@ -1,4 +1,4 @@
-
+//#DEFINITION
 ////////////////////////////////////////////////// CONSTRUCTEURS
 
 template <typename T>
@@ -6,9 +6,6 @@ Vector2<T>::Vector2() : x(), y() {}
 
 template <typename T>
 Vector2<T>::Vector2(T x, T y) : x(x), y(y) {}
-
-//template <typename T>
-//Vector2<T>::Vector2(T xy) : x(xy), y(xy) {}
 
 template <typename T>
 template <typename U>
@@ -18,6 +15,11 @@ template <typename T>
 Vector2<T>::~Vector2() {}
 
 ////////////////////////////////////////////////// METHODES
+
+template <typename T>
+Vector2<T> Vector2<T>::normal() const{
+	return Vector2<T>(-y, x);
+}
 
 template <typename T>
 float Vector2<T>::length() const{
@@ -78,7 +80,6 @@ template <typename T>
 Vector2<T> Vector2<T>::reflect(const Vector2<T>& vector, const Vector2<T>& normal){
 	return vector - (2 * Vector2<T>::dot(vector, normal) * normal);
 }
-
 
 ///////////////////////////////////////////////////// VARIABLE STATIQUES
 
@@ -181,3 +182,5 @@ std::istream& operator>>(std::istream& is, Vector2<T>& vector){
   is >> vector.x >> vector.y;
   return is;
 }
+
+//#DEFINITION_END

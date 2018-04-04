@@ -1,5 +1,6 @@
 #include "Canvas.h"
 
+//#DEFINITION
 ////////////////////////////////////////////////// VARIABLES STATIQUES
 
 const wint_t braille_char_offset = 0x2800;
@@ -401,3 +402,5 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 		}
 	}
 }
+
+//#DEFINITION_END

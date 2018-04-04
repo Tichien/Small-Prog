@@ -22,7 +22,7 @@ void draw_von_koch_rec(Turtle& T, float length, int prof){
 void draw_von_koch(Canvas& c, const Vector2i& pos, float length, int prof){
 	Turtle T(&c);
 
-	T.set_position(pos.x, pos.y);
+	T.position = Vector2f(pos);
 
 	draw_von_koch_rec(T, length, prof);
 }
@@ -39,7 +39,7 @@ void draw_poly_von_koch(Canvas& canvas, Vector2f center, int sides, float radius
 
 	//canvas->set(round(center.x), round(center.y));
 
-	T.set_position(center);
+	T.position = center;
 	T.turn(rotation);
 
 	T.move(-length / 2.0);
@@ -116,19 +116,20 @@ int main(int argc, char** argv)
 	IntRect canvasoffset(Vector2i::zero, Term::scr.get_dimension());
 
 	//canvas.fill(Cell('+'));
-	int c = 0;
+	int spd = 5;
 
-	canvas.display(Vector2i(0, 0));
+	canvas.display();
 	Term::update();
 
-	//Term::pop_input();
+	while(!Keyboard::is_pressed(Keyboard::Escape)){
+		
+		Term::read_input();
+		//canvas.clear();
 
+		handler(spd, printposition, canvasoffset);
 
-	while((c = Term::pop_input()) != 'q'){
-		Term::scr.clear();
-		Term::scr.display();
-		handler(c, printposition, canvasoffset);
 		canvas.display(printposition, canvasoffset);
+		
 		Term::update();
 	}
 
@@ -137,32 +138,22 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void handler(int ch, Vector2i& position, IntRect& offset){
+void handler(int spd, Vector2i& position, IntRect& offset){
 
-	int spd = 5;
-
-	if(ch == KEY_UP){
+	if(Keyboard::is_pressed(Keyboard::Up))
 		position.y += -spd;
-	}
-	else if(ch == KEY_DOWN){
+	else if(Keyboard::is_pressed(Keyboard::Down))
 		position.y += spd;
-	}	
-	else if(ch == KEY_LEFT){
+	else if(Keyboard::is_pressed(Keyboard::Left))
 		position.x += -spd;
-	}	
-	else if(ch == KEY_RIGHT){
+	else if(Keyboard::is_pressed(Keyboard::Right))
 		position.x += spd;
-	}	
-	else if(ch == 'e'){ //up
+	else if(Keyboard::is_pressed(Keyboard::Z))
 		offset.y += -spd;
-	}
-	else if(ch == 'd'){ //down
+	else if(Keyboard::is_pressed(Keyboard::S))
 		offset.y += spd;	
-	}	
-	else if(ch == 's'){ //left
+	else if(Keyboard::is_pressed(Keyboard::Q))
 		offset.x += -spd;
-	}	
-	else if(ch == 'f'){ //right
+	else if(Keyboard::is_pressed(Keyboard::D))
 		offset.x += spd;
-	}	
 }

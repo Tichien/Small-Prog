@@ -1,9 +1,18 @@
 #ifndef _ATTR_H_
 #define _ATTR_H_
 
+//#PREPROCESSING
+#ifndef _XOPEN_SOURCE_EXTENDED
+#define _XOPEN_SOURCE_EXTENDED // pour utilisé les fonction wide character et cchar_t
+#endif
+
 extern "C"{
 #include <ncursesw/curses.h>
 }
+
+//#PREPROCESSING_END
+
+//#DECLARATION
 
 class Attr
 {
@@ -27,16 +36,8 @@ public:
 	static const Attr Invisible;
 	static const Attr AltCharset;
 	static const Attr Italic;
-
-	//Ne font rien sur Windows
-	/*
-	static const Attr Horizontal;
-	static const Attr Vertical;
-	static const Attr Top;
-	static const Attr Low;
-	static const Attr Left;
-	static const Attr Right;
-	*/
 };
+
+//#DECLARATION_END
 
 #endif

@@ -3,35 +3,39 @@
 
 #include "Canvas.h"
 
+//#DECLARATION
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CANVAS
 
 class Turtle
 {
 private:
 	Canvas* m_canvas;
-	Vector2f position;
 	float rotation;
-	bool write;
-
 	bool allocated;
 
 public:
+	Vector2f position;
+
 	Turtle();
 	Turtle(Canvas* canvas);
 	~Turtle();
 
-	void set_position(float x, float y);
-	void set_position(const Vector2f& position);
-
+/* draw a line of "distance" pixels */
 	void draw(float distance);
 
+/* move the turtle of "distance" pixels */
 	void move(float distance);
 
+/* turn the turtle by "angle" degrees to the right if the angle is positive, or to the left if not. */
 	void turn(float angle);
 };
 
-float to_radians(float);
+/* Convert the angle "degree" in radians */
+float to_radians(float degree);
 
+/* Draw a polygon on the canvas */
 void draw_polygon(Canvas& canvas, Vector2f center, int sides, float radius, float rotation);
+
+//#DECLARATION_END
 
 #endif

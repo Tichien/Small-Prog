@@ -1,8 +1,9 @@
 #include "Mouse.h"
 
+//#DEFINITION
 MEVENT Mouse::event;
 
-Vector2i Mouse::get_pos() {
+Vector2i Mouse::get_position() {
 	return Vector2i(event.x, event.y);
 }
 
@@ -59,10 +60,12 @@ bool Mouse::is_scrolling(Wheel wheel) {
 		return event.bstate & BUTTON4_PRESSED;
 		break;
 		case Mouse::ScrollDown:
-		return event.bstate & BUTTON5_PRESSED;
+		return false;//return event.bstate & BUTTON5_PRESSED;
 		break;
 		default:
 		return false;
 		break;
 	}
 }
+
+//#DEFINITION_END

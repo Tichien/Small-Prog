@@ -1,3 +1,4 @@
+//#DEFINITION
 ////////////////////////////////////////////////// CONSTRUCTEURS
 
 template <typename T>
@@ -96,3 +97,5 @@ std::istream& operator>>(std::istream& is, Rect<T>& rect){
   is >> rect.x >> rect.y >> rect.width >> rect.height;
   return is;
 }
+
+//#DEFINITION_END

@@ -1,5 +1,6 @@
 #include "Attr.h"
 
+//#DEFINITION
 Attr::Attr() : m_attribute(A_NORMAL) {
 }
 
@@ -21,12 +22,4 @@ const Attr Attr::Invisible(A_INVIS);
 const Attr Attr::AltCharset(A_ALTCHARSET);
 const Attr Attr::Italic(A_ITALIC);
 
-// Ne font rien sur Windows
-/*
-const Attr Attr::Horizontal(WA_HORIZONTAL);
-const Attr Attr::Vertical(WA_VERTICAL);
-const Attr Attr::Top(WA_TOP);
-const Attr Attr::Low(WA_LOW);
-const Attr Attr::Left(WA_LEFT);
-const Attr Attr::Right(WA_RIGHT);
-*/
+//#DEFINITION_END

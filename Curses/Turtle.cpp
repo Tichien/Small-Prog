@@ -1,29 +1,13 @@
 #include "Turtle.h"
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TURTLE 
+//#DEFINITION
+Turtle::Turtle() : m_canvas(new Canvas()), rotation(), allocated(true), position() {}
 
-
-Turtle::Turtle() : position(), rotation(), write(true), allocated(true) {
-	m_canvas = new Canvas();
-}
-
-Turtle::Turtle(Canvas* canvas) : position(), rotation(), write(true), allocated(false) {
-	m_canvas = canvas;
-}
+Turtle::Turtle(Canvas* canvas) : m_canvas(canvas), rotation(), allocated(false), position() {}
 
 Turtle::~Turtle(){
-	if(allocated){
+	if(allocated)
 		delete m_canvas;
-	}
-}
-
-void Turtle::set_position(float x, float y){
-	position.x = x;
-	position.y = y;
-}
-
-void Turtle::set_position(const Vector2f& position){
-	set_position(position.x, position.y);
 }
 
 void Turtle::draw(float distance){
@@ -61,9 +45,9 @@ void draw_polygon(Canvas& canvas, Vector2f center, int sides, float radius, floa
 
 	//canvas->set(round(center.x), round(center.y));
 
-	T.set_position(center);
+	T.position = center;
 	T.turn(rotation);
-
+ 
 	T.move(-length / 2.0);
 	T.turn(90);
 	T.move(-inradius);
@@ -74,3 +58,5 @@ void draw_polygon(Canvas& canvas, Vector2f center, int sides, float radius, floa
 		T.turn(angle);
 	}
 }
+
+//#DEFINITION_END

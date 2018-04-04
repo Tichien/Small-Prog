@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -W -Wall -g
-SRCS1 = test_par.cpp Canvas.cpp Turtle.cpp Color.cpp Attr.cpp Cell.cpp Window.cpp Term.cpp Particle.cpp Mouse.cpp Keyboard.cpp
+SRCS1 = test_par.cpp
 LIB = -lncursesw
 EXE1 = bin/test_par
 HEADER = includes

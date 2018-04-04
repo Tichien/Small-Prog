@@ -1,13 +1,16 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
-#include <string>
 #include "Rect.h"
 #include "Cell.h"
 
+//#PREPROCESSING
+#include <string>
+//#PREPROCESSING_END
 
-//La class Window permet d'englober les WINDOW*. 
-//Pour englober les PADs il faudra redefinir la methode display avec pnoutrefresh */
+//#DECLARATION
+/* Cette class permet d'englober la structure WINDOW* definie dans ncurses. */ 
+
 class Window {
 
 protected:
@@ -20,13 +23,17 @@ public:
 	enum BorderType {
 		Empty,
 		Thin,
-		Point,
-		Dash,
+		ThinRound,
+		Thick,
+		Double,
 		Block,
+		BlockShade,
+		Dash,
 		Diamond,
-		Board,
-		CheckBoard,
-		Arrow,
+		Point,
+		PointThick,
+		Snow,
+		SnowThick
 	};
 
 	Window();
@@ -41,15 +48,6 @@ public:
 /* return/set the cursor position relative to up-left corner of the Window (col, row) */
 	Vector2i get_curs_pos() const;
 	void set_curs_pos(const Vector2i& coord);
-
-/* return an input, pop it from the input queue and refresh the window */
-	int pop_input();
-
-/*  set a timeout while waiting for input -(1 => wait for input)*/
-	void set_input_timeout(int ms);
-
-/* enable special key like arrows, f1, f2, etc... */
-	void set_special_key(bool);
 
 /* return/set a Window's cell relative to up-left corner of the window (col, row) */
 	Cell get_cell(const Vector2i& coord) const;
@@ -87,16 +85,17 @@ public:
 /* copy the content of another Window */
 	//void copy(const Window&, const IntRect&, const Vector2i&, bool convert_attr = true);// copywin;
 
-	//void write(std::wstring, ColorPair color = ColorPair::Default, Attr attr = Attr::Normal);
-	//void write(const Vector2i& coord, std::wstring, ColorPair color = ColorPair::Default, Attr attr = Attr::Normal);
-
 /* clear the Window */
 	void clear();
 	void clear(const IntRect& zone);
 
-/* prepare the Window to be drawn at the next Term::update */
+/* display the window to the virtual screen (use Term::update to display the virtual screen) */
 	virtual void display(); //pnoutrefresh;
+
+/* display the window directly to the realscreen without optimisation */
 	void refresh();
 };
+
+//#DECLARATION_END
 
 #endif

@@ -1,9 +1,13 @@
 #ifndef _VECTOR2_H_
 #define _VECTOR2_H_
 
+//#PREPROCESSING
 #include <iostream>
 #include <cmath>
+//#PREPROCESSING_END
 
+
+//#DECLARATION
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS VECTOR2
 
 template <typename T>
@@ -15,8 +19,6 @@ public:
 	T y;
 
 	Vector2();
-
-	//Vector2(T xy);
 	
 	Vector2(T x, T y);
 	
@@ -27,12 +29,13 @@ public:
 
 	Vector2<int> rounded() const;
 
+	Vector2<T> normal() const;
+
 	float length() const;
 
 	float length_squared() const;
 
 	void normalize();
-
 
 	static Vector2<T> zero;
 	static Vector2<T> one;
@@ -58,6 +61,8 @@ public:
 typedef Vector2<int> 			Vector2i;
 typedef Vector2<unsigned int> 	Vector2u;
 typedef Vector2<float> 			Vector2f;
+
+//#DECLARATION_END
 
 ////////////////////////////////////////////////// OPERATEURS
 

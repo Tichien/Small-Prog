@@ -5,6 +5,11 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 
+//#PREPROCESSING
+#include <cstdlib>
+//#PREPROCESSING_END
+
+//#DECLARATION
 class TermScreen : public Window {
 
 private:
@@ -24,7 +29,6 @@ class Term {
 
 public:
 	static Window scr;
-	static int input;
 
 	static void init_curs();
 	static void end_curs();
@@ -32,32 +36,38 @@ public:
 	static void save_state();
 	static void load_state();
 
-	static void cooked_mode(bool on);
-	static void echo_key(bool on);
+/* all the terminal options to activate/set */
+	static void set_cooked_mode_enabled(bool enable);
+	static void set_echo_key_enabled(bool enable);
+	static void set_keypad_enabled(bool enable);
+	static void set_mouse_enabled(bool enable);
 
-	static void curs_vis(int vis);
-	
-	static void wait(int ms);
+	static void set_timeout(int ms);
+	static void set_curs_vis(int vis);
 
 /* pop/push an input for the next call to the input queue */
 	static int pop_input();
 	static void push_input(int input);
 
-/* return the last poped input */
-	static int get_input();
-
-/* lis les input claviers souris */
+/* Read inputs from mouse and keyboard */
 	static int read_input();
 
-/* Renvoie un chaine de character taper par l'untilisateur dans str */
+/* Renvoie un chaine de character taper par l'untilisateur dans la chaine "str" */
 	static void get_line(std::string& str);
 
 /* Pointeur vers la fonction scanw */
 	//static int (*scan)(const char*, ...);
 
-/* update the terminal displays */
-	static void update();
+/* clear the screen */ 
+	static void clear();
 
+/* attend jusqu'à ce que "ms" microseconds soit passées */ 
+	static void wait(int ms);
+
+/* Display the virtual screen to the real screen */
+	static void update();
 };
+
+//#DECLARATION_END
 
 #endif

@@ -1,5 +1,6 @@
 #include "Window.h"
 
+//#DEFINITION
 Window::Window() : m_win() {}
 
 Window::Window(WINDOW* win) : m_win(win) {}
@@ -26,18 +27,6 @@ Vector2i Window::get_curs_pos() const{
 
 void Window::set_curs_pos(const Vector2i& pos){
 	wmove(m_win, pos.y, pos.x);
-}
-
-int Window::pop_input(){
-	return wgetch(m_win);
-} 
-
-void Window::set_input_timeout(int ms){
-	wtimeout(m_win, ms);
-}
-
-void Window::set_special_key(bool on){
-	keypad(m_win, on); 
 }
 
 Cell Window::get_cell(const Vector2i& coord) const{
@@ -133,33 +122,45 @@ void Window::set_border(BorderType type, ColorPair color, Attr a){
 		set_border(Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a));
 		break;
 		case Thin:
-		set_border(Cell(ACS_VLINE, c, a), Cell(ACS_VLINE, c, a), Cell(ACS_HLINE, c, a), Cell(ACS_HLINE, c, a), Cell(ACS_ULCORNER, c, a), Cell(ACS_URCORNER, c, a), Cell(ACS_LLCORNER, c, a), Cell(ACS_LRCORNER, c, a));
+		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'┌', c, a), Cell(L'┐', c, a), Cell(L'└', c, a), Cell(L'┘', c, a));
 		break;
-		case Point:
-		set_border(Cell(ACS_BULLET, c, a), Cell(ACS_BULLET, c, a), Cell(ACS_BULLET, c, a), Cell(ACS_BULLET, c, a), Cell(ACS_BULLET, c, a), Cell(ACS_BULLET, c, a), Cell(ACS_BULLET, c, a), Cell(ACS_BULLET, c, a));
+		case ThinRound:
+		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'╭', c, a), Cell(L'╮', c, a), Cell(L'╰', c, a), Cell(L'╯', c, a));
+		break;
+		case Thick:
+		set_border(Cell(L'┃', c, a), Cell(L'┃', c, a), Cell(L'━', c, a), Cell(L'━', c, a), Cell(L'┏', c, a), Cell(L'┓', c, a), Cell(L'┗', c, a), Cell(L'┛', c, a));
+		break;
+		case Double:
+		set_border(Cell(L'║', c, a), Cell(L'║', c, a), Cell(L'═', c, a), Cell(L'═', c, a), Cell(L'╔', c, a), Cell(L'╗', c, a), Cell(L'╚', c, a), Cell(L'╝', c, a));
+		break;
+		case Block:
+		set_border(Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'▀', c, a), Cell(L'▄', c, a), Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'█', c, a));
+		break;
+		case BlockShade:
+		set_border(Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a));
 		break;
 		case Dash: 
 		set_border(Cell('|', c, a), Cell('|', c, a), Cell('-', c, a), Cell('-', c, a), Cell('+', c, a), Cell('+', c, a), Cell('+', c, a), Cell('+', c, a));
 		break;
-		case Block:
-		set_border(Cell(ACS_BLOCK, c, a), Cell(ACS_BLOCK, c, a), Cell(ACS_BLOCK, c, a), Cell(ACS_BLOCK, c, a), Cell(ACS_BLOCK, c, a), Cell(ACS_BLOCK, c, a), Cell(ACS_BLOCK, c, a), Cell(ACS_BLOCK, c, a));
-		break;
 		case Diamond:
-		set_border(Cell(ACS_DIAMOND, c, a), Cell(ACS_DIAMOND, c, a), Cell(ACS_DIAMOND, c, a), Cell(ACS_DIAMOND, c, a), Cell(ACS_DIAMOND, c, a), Cell(ACS_DIAMOND, c, a), Cell(ACS_DIAMOND, c, a), Cell(ACS_DIAMOND, c, a));
+		set_border(Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a));
 		break;
-		case Board:
-		set_border(Cell(ACS_BOARD, c, a), Cell(ACS_BOARD, c, a), Cell(ACS_BOARD, c, a), Cell(ACS_BOARD, c, a), Cell(ACS_BOARD, c, a), Cell(ACS_BOARD, c, a), Cell(ACS_BOARD, c, a), Cell(ACS_BOARD, c, a));
+		case Point:
+		set_border(Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a));
 		break;
-		case CheckBoard:
-		set_border(Cell(ACS_CKBOARD, c, a), Cell(ACS_CKBOARD, c, a), Cell(ACS_CKBOARD, c, a), Cell(ACS_CKBOARD, c, a), Cell(ACS_CKBOARD, c, a), Cell(ACS_CKBOARD, c, a), Cell(ACS_CKBOARD, c, a), Cell(ACS_CKBOARD, c, a));
+		case PointThick:
+		set_border(Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a));
 		break;
-		case Arrow:
-		set_border(Cell(ACS_RARROW, c, a), Cell(ACS_LARROW, c, a), Cell(ACS_DARROW, c, a), Cell(ACS_UARROW, c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a));
+		case Snow:
+		set_border(Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a));
+		break;
+		case SnowThick:
+		set_border(Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a));
 		break;
 		default:
+		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'┌', c, a), Cell(L'┐', c, a), Cell(L'└', c, a), Cell(L'┘', c, a));
 		break;
 	}
-
 }
 
 void Window::fill(const Cell& cell){
@@ -201,16 +202,6 @@ void Window::set_background(ColorPair color, Attr attr){
 	set_background(cell);
 } 
 
-/*
-void Window::copy(const Window&, const IntRect&, const Vector2i&, bool convert_attr){
-
-}
-
-void Window::write(const Vector2i& coord, std::wstring, ColorPair color, Attr attr){
-
-}
-*/
-
 void Window::clear(){
 	/* faster than wclear */
 	werase(m_win);
@@ -246,4 +237,6 @@ void Window::refresh(){
 	}
 	else
 		wrefresh(m_win);
-} 
+}
+
+//#DEFINITION_END

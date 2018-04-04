@@ -3,6 +3,7 @@
 
 #include "Vector2.h"
 
+//#DECLARATION
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS RECT
 
 template <typename T>
@@ -45,6 +46,8 @@ public:
 
 typedef Rect<int> IntRect;
 typedef Rect<float> FloatRect;
+
+//#DECLARATION_END
 
 ////////////////////////////////////////////////// OPERATEURS
 

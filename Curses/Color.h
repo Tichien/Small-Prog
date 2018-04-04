@@ -5,6 +5,8 @@ extern "C"{
 #include <ncursesw/curses.h>
 }
 
+//#DECLARATION
+
 enum ColorUnit{
 	DEFAULT = -1, //La couleur par default du terminal a l'initialisation de ncurses
 	
@@ -63,5 +65,7 @@ void init_color_pairs();
 
 /* Change les valeurs de rouge vert et bleu associée à une couleur */
 void color_rgb(ColorUnit color, short r, short g, short b);
+
+//#DECLARATION_END
 
 #endif

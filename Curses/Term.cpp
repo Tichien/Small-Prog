@@ -1,5 +1,6 @@
 #include "Term.h"
 
+//#DEFINITION
 TermScreen* TermScreen::m_screen = NULL;
 
 TermScreen::TermScreen() : Window(stdscr) {}
@@ -17,13 +18,14 @@ TermScreen* TermScreen::getInstance(){
 
 Window Term::scr; 
 
-int Term::input = -1;
-
 //int (*Term::scan)(const char*, ...) = scanw; 
 
 void Term::init_curs() {
 
 	setlocale(LC_ALL, "");
+
+	//active les deplacements de la souris si un touche est pressé (-1003 tout le temps)
+	setenv("TERM", "xterm-1002", 1); 	
 
 	initscr();    // initialize curses
 
@@ -31,15 +33,15 @@ void Term::init_curs() {
 
 	Term::scr = *TermScreen::getInstance();
 
-	scr.set_special_key(true);
-	scr.set_input_timeout(0); //-1 block the program if no input detected
+	set_keypad_enabled(true);
+	set_mouse_enabled(true);
+	set_curs_vis(0); // 0 -> cursor is invisible.
+
+	set_cooked_mode_enabled(false);
+	set_echo_key_enabled(false);
+	set_timeout(-1); //-1 -> wait indefinitly for input.
 	
-	Term::cooked_mode(false);
-	Term::echo_key(false);
-	Term::curs_vis(0);
-
-	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); /* Report all mouse events and position */
-
+	mouseinterval(0); // 0 -> no click resolution.
 
 	refresh();
 }
@@ -56,38 +58,41 @@ void Term::load_state(){
 	reset_prog_mode(); // reset the ncurses win (!= resetty)
 }
 
-void Term::cooked_mode(bool on){
-	on ? nocbreak() : cbreak();
+void Term::set_cooked_mode_enabled(bool enable){
+	enable ? nocbreak() : cbreak();
 }
 
-void Term::echo_key(bool on){
-	on ? echo() : noecho();
+void Term::set_echo_key_enabled(bool enable){
+	enable ? echo() : noecho();
 }
 
-void Term::curs_vis(int vis){
+void Term::set_keypad_enabled(bool enable){
+	enable ? keypad(stdscr, TRUE) : keypad(stdscr, FALSE);
+}
+
+void Term::set_mouse_enabled(bool enable){
+	enable ? mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL) : mousemask((mmask_t)NULL, NULL);
+}
+
+void Term::set_timeout(int ms){
+	timeout(ms);
+}
+
+void Term::set_curs_vis(int vis){
 	curs_set(vis);
 }
 
-void Term::wait(int ms){
-	napms(ms);
-}
-
 int Term::pop_input(){
-	input = getch();
-	return input;
+	return getch();
 }
 
 void Term::push_input(int ch){
 	ungetch(ch); 
 }
 
-int Term::get_input(){
-	return input;
-}
-
 int Term::read_input(){
 
-	int ch = pop_input();
+	int ch = getch();
 
 	if(ch == KEY_MOUSE){
 
@@ -112,8 +117,17 @@ void Term::get_line(std::string& str){
 	str = cstr;
 }
 
+void Term::clear(){
+	erase();
+}
+
+void Term::wait(int ms){
+	napms(ms);
+}
+
 void Term::update(){
 	doupdate();
 }
 
+//#DEFINITION_END
 

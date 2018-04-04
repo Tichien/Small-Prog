@@ -1,6 +1,7 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
+//#DECLARATION
 class Keyboard {
 
 public:
@@ -29,5 +30,7 @@ public:
 
 	static bool is_pressed(Key key);
 };
+
+//#DECLARATION_END
 
 #endif

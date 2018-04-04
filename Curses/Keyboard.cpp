@@ -1,6 +1,7 @@
 #include "Keyboard.h"
-#include "Term.h"
+#include "Cell.h"
 
+//#DEFINITION
 int Keyboard::input = -1;
 
 bool Keyboard::is_pressed(Key key) {
@@ -225,3 +226,5 @@ bool Keyboard::is_pressed(Key key) {
 		break;
 	}
 }
+
+//#DEFINITION_END

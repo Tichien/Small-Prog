@@ -1,12 +1,10 @@
 #ifndef _CANVAS_H_
 #define _CANVAS_H_
-/*
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
-*/
+
 #include "Term.h"
 
+
+//#DECLARATION
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CANVAS
 
 class Canvas : public Window {
@@ -20,8 +18,6 @@ public:
 	Canvas();
 	Canvas(int w, int h);
 	virtual ~Canvas();
-
-	//faire attention au fuite mémoire avec set unset et toggle acces dans des (lecture de variable non init) 
 
 /* place un pixel a la position "point" */
 	void set(int x, int y);
@@ -70,5 +66,7 @@ bool is_braille(wint_t wch);
 /* dessine une ligne sur le canvas allant du point p1 au point p2 */
 void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2);
 void draw_line(Canvas& canvas, const Vector2i& p1, const Vector2i p2);
+
+//#DECLARATION_END
 
 #endif

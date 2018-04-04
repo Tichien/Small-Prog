@@ -7,6 +7,7 @@ extern "C"{
 #include <ncursesw/curses.h>
 }
 
+//#DECLARATION
 class Mouse {
 
 public:
@@ -16,12 +17,14 @@ public:
 	enum Button { Left, Right, Middle };
 	enum Wheel { ScrollUp, ScrollDown };
 
-	static Vector2i get_pos();
+	static Vector2i get_position();
 
 	static bool is_pressed(Button button);
 	static bool is_released(Button button);
 	static bool is_scrolling(Wheel wheel);
 };
+
+//#DECLARATION_END
 
 #endif
 

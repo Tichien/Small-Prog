@@ -1,5 +1,6 @@
 #include "Color.h"
 
+//#DEFINITION
 ColorPair::ColorPair() : front(DEFAULT), back(DEFAULT) {}
 
 ColorPair::ColorPair(chtype c){
@@ -69,3 +70,5 @@ void init_color_pairs(){
 		}
 	}
 }
+
+//#DEFINITION_END

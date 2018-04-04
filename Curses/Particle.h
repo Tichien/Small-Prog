@@ -1,10 +1,14 @@
 #ifndef _PARTICLE_H_
 #define _PARTICLE_H_
 
-#include <list>
-#include <cstdlib>
 #include "Canvas.h"
+#include <cstdlib>
 
+//#PREPROCESSING
+#include <list>
+//#PREPROCESSING_END
+
+//#DECLARATION
 class Particle {
 
 public:
@@ -33,9 +37,9 @@ public:
 class Attractor {
 
 public:
-	// Gravitational Constant
+
 	Vector2f position;
-	float strength;
+	float strength; //Force du champ d'attraction
 	float mass;
 
 	Attractor();
@@ -47,10 +51,9 @@ public:
 class Repeller {
 
 public:
-	// Gravitational Constant
-	
+
 	Vector2f position;
-	float strength; 
+	float strength; //Force du champ de repulsion
 	float mass;
 	Repeller();
 	Repeller(const Vector2f& position);
@@ -83,13 +86,14 @@ public:
 	void run(Canvas& c);
 };
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ FUNCTIONS
+
+/* genere un nombre flotant aléatoire entre "start" et "end", precision permet de stypulé le nombre max de zero aprés la virgule */
 float random(int start, int end, int precision = 100000);
+
+/* Oblige le nombre floatant f à être entre "start" et "end" */
 float constrain(float f, float start, float end);
 
-/* Prototype Particle system
-
-	add_particles(int n, Vector2f origin);
-	add_particles(int n, FloatRect zone);
-*/
+//#DECLARATION_END
 
 #endif
