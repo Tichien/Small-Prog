@@ -1,12 +1,15 @@
 #include "Cell.h"
 
 //#DEFINITION
+///////////////////////////////////////////////// CONSTRUCTEURS
+
 Cell::Cell() : character(L' '), color(), attr() {}
 
 Cell::Cell(cchar_t c) : character(c.chars[0]), color(c.attr), attr(c.attr) {}
 
 Cell::Cell(wint_t character, ColorPair color, Attr attr) : character(character), color(color), attr(attr) {} 
 
+///////////////////////////////////////////////// METHODES
 
 //la conversion en cchar_t pourrais etre meilleur je pense qu'il y a des characters unicode qui ne sont pas supporté
 //mais pour l'instant ca marche et c'est plus simple comme ça, un modification sera facile si besoin. 

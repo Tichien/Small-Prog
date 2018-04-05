@@ -8,6 +8,8 @@ extern "C"{
 }
 
 //#DECLARATION
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS MOUSE
+
 class Mouse {
 
 public:

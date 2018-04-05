@@ -1,6 +1,8 @@
 #include "Window.h"
 
 //#DEFINITION
+///////////////////////////////////////////////// CONSTRUCTEURS
+
 Window::Window() : m_win() {}
 
 Window::Window(WINDOW* win) : m_win(win) {}
@@ -8,6 +10,8 @@ Window::Window(WINDOW* win) : m_win(win) {}
 Window::~Window() {
 	delwin(m_win);
 }
+
+///////////////////////////////////////////////// METHODES
 
 Window::operator WINDOW*(){
 	return m_win;
@@ -115,50 +119,47 @@ void Window::set_border(Cell left, Cell right, Cell up, Cell down, Cell upLeft, 
 void Window::set_border(BorderType type, ColorPair color, Attr a){
 
 	ColorPair c = color == ColorPair::Default ? get_color() : color;
-
+ 
 	switch (type)
 	{
 		case Empty:
 		set_border(Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a));
 		break;
-		case Thin:
-		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'┌', c, a), Cell(L'┐', c, a), Cell(L'└', c, a), Cell(L'┘', c, a));
+		case Light:
+		set_border(Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_UL, c, a), Cell(U_LIGHT_UR, c, a), Cell(U_LIGHT_DL, c, a), Cell(U_LIGHT_DR, c, a));
 		break;
-		case ThinRound:
-		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'╭', c, a), Cell(L'╮', c, a), Cell(L'╰', c, a), Cell(L'╯', c, a));
+		case LightArc:
+		set_border(Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_ARC_UL, c, a), Cell(U_LIGHT_ARC_UR, c, a), Cell(U_LIGHT_ARC_DL, c, a), Cell(U_LIGHT_ARC_DR, c, a));
 		break;
-		case Thick:
-		set_border(Cell(L'┃', c, a), Cell(L'┃', c, a), Cell(L'━', c, a), Cell(L'━', c, a), Cell(L'┏', c, a), Cell(L'┓', c, a), Cell(L'┗', c, a), Cell(L'┛', c, a));
+		case Heavy:
+		set_border(Cell(U_HEAVY_V, c, a), Cell(U_HEAVY_V, c, a), Cell(U_HEAVY_H, c, a), Cell(U_HEAVY_H, c, a), Cell(U_HEAVY_UL, c, a), Cell(U_HEAVY_UR, c, a), Cell(U_HEAVY_DL, c, a), Cell(U_HEAVY_DR, c, a));
 		break;
 		case Double:
-		set_border(Cell(L'║', c, a), Cell(L'║', c, a), Cell(L'═', c, a), Cell(L'═', c, a), Cell(L'╔', c, a), Cell(L'╗', c, a), Cell(L'╚', c, a), Cell(L'╝', c, a));
+		set_border(Cell(U_DOUBLE_V, c, a), Cell(U_DOUBLE_V, c, a), Cell(U_DOUBLE_H, c, a), Cell(U_DOUBLE_H, c, a), Cell(U_DOUBLE_UL, c, a), Cell(U_DOUBLE_UR, c, a), Cell(U_DOUBLE_DL, c, a), Cell(U_DOUBLE_DR, c, a));
 		break;
-		case Block:
-		set_border(Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'▀', c, a), Cell(L'▄', c, a), Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'█', c, a));
+		case BlockFull:
+		set_border(Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_U, c, a), Cell(U_BLOCK_D, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a));
 		break;
-		case BlockShade:
-		set_border(Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a));
+		case BlockLight:
+		set_border(Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a));
+		break;
+		case BlockMedium:
+		set_border(Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a));
+		break;
+		case BlockDark:
+		set_border(Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a));
 		break;
 		case Dash: 
 		set_border(Cell('|', c, a), Cell('|', c, a), Cell('-', c, a), Cell('-', c, a), Cell('+', c, a), Cell('+', c, a), Cell('+', c, a), Cell('+', c, a));
 		break;
 		case Diamond:
-		set_border(Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a));
+		set_border(Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a));
 		break;
 		case Point:
-		set_border(Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a));
-		break;
-		case PointThick:
-		set_border(Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a));
-		break;
-		case Snow:
-		set_border(Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a));
-		break;
-		case SnowThick:
-		set_border(Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a));
+		set_border(Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a));
 		break;
 		default:
-		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'┌', c, a), Cell(L'┐', c, a), Cell(L'└', c, a), Cell(L'┘', c, a));
+		set_border(Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_UL, c, a), Cell(U_LIGHT_UR, c, a), Cell(U_LIGHT_DL, c, a), Cell(U_LIGHT_DR, c, a));
 		break;
 	}
 }

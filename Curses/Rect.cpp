@@ -74,7 +74,7 @@ bool Rect<T>::intersects(const Rect<T>& rect, Rect<T>& intersection) const {
 	return false;
 }
 
-////////////////////////////////////////////////// OPERATEURS
+////////////////////////////////////////////////// OPERATEURS DEFINITION
 
 template <typename T>
 bool operator==(const Rect<T>& left, const Rect<T>& right){

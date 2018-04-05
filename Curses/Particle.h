@@ -9,6 +9,8 @@
 //#PREPROCESSING_END
 
 //#DECLARATION
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS PARTICLE
+
 class Particle {
 
 public:
@@ -34,6 +36,8 @@ public:
 
 };
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS ATTRACTOR
+
 class Attractor {
 
 public:
@@ -48,6 +52,8 @@ public:
 	Vector2f attract(const Particle& p) const;
 };
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS REPELLER
+
 class Repeller {
 
 public:
@@ -60,6 +66,8 @@ public:
 
 	Vector2f repel(const Particle& p) const;
 };
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS PARTICLESYSTEM
 
 class ParticleSystem {
 
@@ -86,7 +94,7 @@ public:
 	void run(Canvas& c);
 };
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ FUNCTIONS
+////////////////////////////////////////////////// FONCTIONS DECLARATION
 
 /* genere un nombre flotant aléatoire entre "start" et "end", precision permet de stypulé le nombre max de zero aprés la virgule */
 float random(int start, int end, int precision = 100000);

@@ -10,6 +10,8 @@
 //#PREPROCESSING_END
 
 //#DECLARATION
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TERMSCREEN
+
 class TermScreen : public Window {
 
 private:
@@ -24,6 +26,8 @@ public:
 
 	static TermScreen* getInstance();
 };
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TERM
 
 class Term {
 

@@ -1,7 +1,8 @@
 #include <iostream>
 #include <cmath>
+
 #ifndef _XOPEN_SOURCE_EXTENDED
-#define _XOPEN_SOURCE_EXTENDED // pour utilisÃ© les fonction wide character et cchar_t
+#define _XOPEN_SOURCE_EXTENDED // pour utilisé les fonction wide character et cchar_t
 #endif
 
 extern "C"{
@@ -13,6 +14,7 @@ extern "C"{
 #include <string>
 #include <cstdlib>
 #include <list>
+
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS VECTOR2
 
 template <typename T>
@@ -57,7 +59,7 @@ public:
 	static Vector2<T> max(const Vector2<T>& left, const Vector2<T>& right);
 	static Vector2<T> normalize(const Vector2<T>& vector);
 
-	/* renvoie la reflexion du vecteur vector par rappor a la normal normal (normal doit etre normalisÃ©) */
+	/* renvoie la reflexion du vecteur vector par rappor a la normal normal (normal doit etre normalisé) */
 	static Vector2<T> reflect(const Vector2<T>& vector, const Vector2<T>& normal);
 };
 
@@ -66,6 +68,50 @@ public:
 typedef Vector2<int> 			Vector2i;
 typedef Vector2<unsigned int> 	Vector2u;
 typedef Vector2<float> 			Vector2f;
+
+////////////////////////////////////////////////// OPERATEURS DECLARATION
+
+template <typename T>
+Vector2<T> operator-(const Vector2<T>& right);
+
+template <typename T>
+Vector2<T>& operator+=(Vector2<T>& left, const Vector2<T>& right);
+
+template <typename T>
+Vector2<T>& operator-=(Vector2<T>& left, const Vector2<T>& right);
+
+template <typename T>
+Vector2<T> operator+(const Vector2<T>& left, const Vector2<T>& right);
+
+template <typename T>
+Vector2<T> operator-(const Vector2<T>& left, const Vector2<T>& right);
+
+template <typename T>
+Vector2<T> operator*(const Vector2<T>& left, T right);
+
+template <typename T>
+Vector2<T> operator*(T left, const Vector2<T>& right);
+
+template <typename T>
+Vector2<T>& operator*=(Vector2<T>& left, T right);
+
+template <typename T>
+Vector2<T> operator/(const Vector2<T>& left, T right);
+
+template <typename T>
+Vector2<T>& operator/=(Vector2<T>& left, T right);
+
+template <typename T>
+bool operator==(const Vector2<T>& left, const Vector2<T>& right);
+
+template <typename T>
+bool operator!=(const Vector2<T>& left, const Vector2<T>& right);
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Vector2<T>& vector);
+
+template <typename T>
+std::istream& operator>>(std::istream& is, Vector2<T>& vector);
 
 ////////////////////////////////////////////////// CONSTRUCTEURS
 
@@ -169,8 +215,7 @@ Vector2<T> Vector2<T>::left(-1, 0);
 template <typename T>
 Vector2<T> Vector2<T>::right(1, 0);
 
-
-////////////////////////////////////////////////// OPERATEURS
+////////////////////////////////////////////////// OPERATEURS DEFINITION
 
 template <typename T>
 Vector2<T> operator-(const Vector2<T>& right){
@@ -294,6 +339,20 @@ public:
 typedef Rect<int> IntRect;
 typedef Rect<float> FloatRect;
 
+////////////////////////////////////////////////// OPERATEURS DECLARATION
+
+template <typename T>
+bool operator==(const Rect<T>& left, const Rect<T>& right);
+
+template <typename T>
+bool operator!=(const Rect<T>& left, const Rect<T>& right);
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Rect<T>& rect);
+
+template <typename T>
+std::istream& operator>>(std::istream& is, Rect<T>& rect);
+
 ////////////////////////////////////////////////// CONSTRUCTEURS
 
 template <typename T>
@@ -369,7 +428,7 @@ bool Rect<T>::intersects(const Rect<T>& rect, Rect<T>& intersection) const {
 	return false;
 }
 
-////////////////////////////////////////////////// OPERATEURS
+////////////////////////////////////////////////// OPERATEURS DEFINITION
 
 template <typename T>
 bool operator==(const Rect<T>& left, const Rect<T>& right){
@@ -393,6 +452,7 @@ std::istream& operator>>(std::istream& is, Rect<T>& rect){
   return is;
 }
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS ATTR
 
 class Attr
 {
@@ -418,14 +478,19 @@ public:
 	static const Attr Italic;
 };
 
-Attr::Attr() : m_attribute(A_NORMAL) {
-}
+////////////////////////////////////////////////// CONSTRUCTEURS
+
+Attr::Attr() : m_attribute(A_NORMAL) {}
 
 Attr::Attr(chtype c) : m_attribute(c & A_ATTRIBUTES) {}
+
+////////////////////////////////////////////////// METHODES
 
 Attr::operator chtype() const {
 	return m_attribute;
 }
+
+////////////////////////////////////////////////// VARIABLE STATIQUES
 
 const Attr Attr::Normal(A_NORMAL);
 const Attr Attr::Standout(A_STANDOUT);
@@ -439,6 +504,7 @@ const Attr Attr::Invisible(A_INVIS);
 const Attr Attr::AltCharset(A_ALTCHARSET);
 const Attr Attr::Italic(A_ITALIC);
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS COLORPAIR
 
 enum ColorUnit{
 	DEFAULT = -1, //La couleur par default du terminal a l'initialisation de ncurses
@@ -466,13 +532,11 @@ public:
 	ColorPair(ColorUnit front_back);
 	ColorPair(ColorUnit front, ColorUnit back);
 
-/* Renvoie le numÃ©ro correspondant Ã  la paire de couleur composÃ©e de front et back */
+/* Renvoie le numéro correspondant à la paire de couleur composée de front et back */
 	int pair_num() const;
 
-/* Convertie en chtype la paire de couleur composÃ©e de front et back */
-
+/* Convertie en chtype la paire de couleur composée de front et back */
 	operator chtype() const;
-
 
 	static const ColorPair Default;
 	static const ColorPair WhiteBlack;
@@ -493,11 +557,15 @@ public:
 	static const ColorPair Cyan;
 };
 
+////////////////////////////////////////////////// FONCTIONS DECLARATION
+
 /* Initialise toutes les pairs de couleurs possible en fonction du terminal */
 void init_color_pairs();
 
-/* Change les valeurs de rouge vert et bleu associÃ©e Ã  une couleur */
+/* Change les valeurs de rouge vert et bleu associée à une couleur */
 void color_rgb(ColorUnit color, short r, short g, short b);
+
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 ColorPair::ColorPair() : front(DEFAULT), back(DEFAULT) {}
 
@@ -522,6 +590,8 @@ ColorPair::ColorPair(ColorUnit front, ColorUnit back) {
 	this->back = back;
 }
 
+////////////////////////////////////////////////// METHODES
+
 int ColorPair::pair_num() const{
 	return (front + 1) * COLORS + (back + 1) + 1;
 }
@@ -530,6 +600,8 @@ ColorPair::operator chtype() const{
 	
 	return COLOR_PAIR(pair_num());
 }
+
+////////////////////////////////////////////////// VARIABLE STATIQUES
 
 const ColorPair ColorPair::Default(DEFAULT, DEFAULT);
 const ColorPair ColorPair::WhiteBlack(WHITE, BLACK);
@@ -549,6 +621,7 @@ const ColorPair ColorPair::Magenta(MAGENTA, DEFAULT);
 const ColorPair ColorPair::Yellow(YELLOW, DEFAULT);
 const ColorPair ColorPair::Cyan(CYAN, DEFAULT);
 
+////////////////////////////////////////////////// FONCTIONS DEFINITION
 
 void init_color_pairs(){
 
@@ -562,12 +635,14 @@ void init_color_pairs(){
 		{
 			for (int i = 0; i < COLORS; ++i)
 			{
-				//init_pair(numero, front, back) (-1 correspond Ã  la couleur par default du terminal)
+				//init_pair(numero, front, back) (-1 correspond à la couleur par default du terminal)
 				init_pair(j * COLORS + i + 1, j - 1, i - 1);
 			}
 		}
 	}
 }
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CELL
 
 class Cell
 {
@@ -579,8 +654,10 @@ public:
 	Cell();
 	Cell(cchar_t);
 	Cell(wint_t, ColorPair color = ColorPair::Default, Attr attr = Attr::Normal);
-	operator cchar_t() const; //verifier avec valgrind pas de problÃ¨me d'initialisation de variable local
+	operator cchar_t() const; //verifier avec valgrind pas de problème d'initialisation de variable local
 };
+
+///////////////////////////////////////////////// CONSTRUCTEURS
 
 Cell::Cell() : character(L' '), color(), attr() {}
 
@@ -588,9 +665,10 @@ Cell::Cell(cchar_t c) : character(c.chars[0]), color(c.attr), attr(c.attr) {}
 
 Cell::Cell(wint_t character, ColorPair color, Attr attr) : character(character), color(color), attr(attr) {} 
 
+///////////////////////////////////////////////// METHODES
 
-//la conversion en cchar_t pourrais etre meilleur je pense qu'il y a des characters unicode qui ne sont pas supportÃ©
-//mais pour l'instant ca marche et c'est plus simple comme Ã§a, un modification sera facile si besoin. 
+//la conversion en cchar_t pourrais etre meilleur je pense qu'il y a des characters unicode qui ne sont pas supporté
+//mais pour l'instant ca marche et c'est plus simple comme ça, un modification sera facile si besoin. 
 Cell::operator cchar_t() const{
 
 	cchar_t c;// = { 0, {0, 0, 0, 0, 0}};
@@ -603,6 +681,48 @@ Cell::operator cchar_t() const{
 
 	return c;
 }
+
+/* definition de quelques characters unicodes interresants */
+
+#define U_LIGHT_V  			L'\u2502'
+#define U_LIGHT_H  			L'\u2500'
+#define U_LIGHT_UL 			L'\u250C'
+#define U_LIGHT_UR 			L'\u2510'
+#define U_LIGHT_DL 			L'\u2514'
+#define U_LIGHT_DR 			L'\u2518'
+
+#define U_LIGHT_ARC_UL 		L'\u256D'
+#define U_LIGHT_ARC_UR 		L'\u256E'
+#define U_LIGHT_ARC_DL 		L'\u2570'
+#define U_LIGHT_ARC_DR 		L'\u256F'
+
+#define U_HEAVY_V  			L'\u2503'
+#define U_HEAVY_H  			L'\u2501'
+#define U_HEAVY_UL 			L'\u250F'
+#define U_HEAVY_UR 			L'\u2513'
+#define U_HEAVY_DL 			L'\u2517'
+#define U_HEAVY_DR 			L'\u251B'
+
+#define U_DOUBLE_V  		L'\u2551'
+#define U_DOUBLE_H  		L'\u2550'
+#define U_DOUBLE_UL 		L'\u2554'
+#define U_DOUBLE_UR 		L'\u2557'
+#define U_DOUBLE_DL 		L'\u255A'
+#define U_DOUBLE_DR 		L'\u255D'
+
+#define U_BLOCK_FULL 		L'\u2588'
+#define U_BLOCK_U 			L'\u2580'
+#define U_BLOCK_D 			L'\u2584'
+
+#define U_BLOCK_LIGHT 		L'\u2591'
+#define U_BLOCK_MEDIUM 		L'\u2592'
+#define U_BLOCK_DARK 		L'\u2593'
+
+#define U_DIAMOND 			L'\u25C6'
+
+#define U_POINT 			L'\u25CF'
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS WINDOW
 
 /* Cette class permet d'englober la structure WINDOW* definie dans ncurses. */ 
 
@@ -617,18 +737,17 @@ public:
 
 	enum BorderType {
 		Empty,
-		Thin,
-		ThinRound,
-		Thick,
+		Light,
+		LightArc,
+		Heavy,
 		Double,
-		Block,
-		BlockShade,
+		BlockFull,
+		BlockLight,
+		BlockMedium,
+		BlockDark,
 		Dash,
 		Diamond,
-		Point,
-		PointThick,
-		Snow,
-		SnowThick
+		Point
 	};
 
 	Window();
@@ -636,7 +755,7 @@ public:
 
 	operator WINDOW*();
 
-/* return the dimensions of the Window (col, row) (stdscr ne peut pas  Ãªtre resize et rien ne peut etre plus grand que stdscr a par les pads) */
+/* return the dimensions of the Window (col, row) (stdscr ne peut pas  être resize et rien ne peut etre plus grand que stdscr a par les pads) */
 	Vector2i get_dimension() const;
 	//void set_dimension(const Vector2i& dim);
 
@@ -665,7 +784,7 @@ public:
 	std::wstring to_wstring() const;
 
 /* draw a border around the window */
-	void set_border(BorderType type, ColorPair c = ColorPair::Default, Attr  a = Attr::Normal); //verifier pas de problÃ¨me avec assignation par default
+	void set_border(BorderType type, ColorPair c = ColorPair::Default, Attr  a = Attr::Normal); //verifier pas de problème avec assignation par default
 	void set_border(Cell left, Cell right, Cell up, Cell down, Cell upLeft, Cell upRight, Cell downLeft, Cell downRight);
 
 /* fill the windows background whith a specific Cell, ColorPair and/or Attribute */
@@ -691,6 +810,8 @@ public:
 	void refresh();
 };
 
+///////////////////////////////////////////////// CONSTRUCTEURS
+
 Window::Window() : m_win() {}
 
 Window::Window(WINDOW* win) : m_win(win) {}
@@ -698,6 +819,8 @@ Window::Window(WINDOW* win) : m_win(win) {}
 Window::~Window() {
 	delwin(m_win);
 }
+
+///////////////////////////////////////////////// METHODES
 
 Window::operator WINDOW*(){
 	return m_win;
@@ -805,50 +928,47 @@ void Window::set_border(Cell left, Cell right, Cell up, Cell down, Cell upLeft, 
 void Window::set_border(BorderType type, ColorPair color, Attr a){
 
 	ColorPair c = color == ColorPair::Default ? get_color() : color;
-
+ 
 	switch (type)
 	{
 		case Empty:
 		set_border(Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a), Cell(' ', c, a));
 		break;
-		case Thin:
-		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'┌', c, a), Cell(L'┐', c, a), Cell(L'└', c, a), Cell(L'┘', c, a));
+		case Light:
+		set_border(Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_UL, c, a), Cell(U_LIGHT_UR, c, a), Cell(U_LIGHT_DL, c, a), Cell(U_LIGHT_DR, c, a));
 		break;
-		case ThinRound:
-		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'╭', c, a), Cell(L'╮', c, a), Cell(L'╰', c, a), Cell(L'╯', c, a));
+		case LightArc:
+		set_border(Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_ARC_UL, c, a), Cell(U_LIGHT_ARC_UR, c, a), Cell(U_LIGHT_ARC_DL, c, a), Cell(U_LIGHT_ARC_DR, c, a));
 		break;
-		case Thick:
-		set_border(Cell(L'┃', c, a), Cell(L'┃', c, a), Cell(L'━', c, a), Cell(L'━', c, a), Cell(L'┏', c, a), Cell(L'┓', c, a), Cell(L'┗', c, a), Cell(L'┛', c, a));
+		case Heavy:
+		set_border(Cell(U_HEAVY_V, c, a), Cell(U_HEAVY_V, c, a), Cell(U_HEAVY_H, c, a), Cell(U_HEAVY_H, c, a), Cell(U_HEAVY_UL, c, a), Cell(U_HEAVY_UR, c, a), Cell(U_HEAVY_DL, c, a), Cell(U_HEAVY_DR, c, a));
 		break;
 		case Double:
-		set_border(Cell(L'║', c, a), Cell(L'║', c, a), Cell(L'═', c, a), Cell(L'═', c, a), Cell(L'╔', c, a), Cell(L'╗', c, a), Cell(L'╚', c, a), Cell(L'╝', c, a));
+		set_border(Cell(U_DOUBLE_V, c, a), Cell(U_DOUBLE_V, c, a), Cell(U_DOUBLE_H, c, a), Cell(U_DOUBLE_H, c, a), Cell(U_DOUBLE_UL, c, a), Cell(U_DOUBLE_UR, c, a), Cell(U_DOUBLE_DL, c, a), Cell(U_DOUBLE_DR, c, a));
 		break;
-		case Block:
-		set_border(Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'▀', c, a), Cell(L'▄', c, a), Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'█', c, a), Cell(L'█', c, a));
+		case BlockFull:
+		set_border(Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_U, c, a), Cell(U_BLOCK_D, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a), Cell(U_BLOCK_FULL, c, a));
 		break;
-		case BlockShade:
-		set_border(Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a), Cell(L'▒', c, a));
+		case BlockLight:
+		set_border(Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a), Cell(U_BLOCK_LIGHT, c, a));
+		break;
+		case BlockMedium:
+		set_border(Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a), Cell(U_BLOCK_MEDIUM, c, a));
+		break;
+		case BlockDark:
+		set_border(Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a), Cell(U_BLOCK_DARK, c, a));
 		break;
 		case Dash: 
 		set_border(Cell('|', c, a), Cell('|', c, a), Cell('-', c, a), Cell('-', c, a), Cell('+', c, a), Cell('+', c, a), Cell('+', c, a), Cell('+', c, a));
 		break;
 		case Diamond:
-		set_border(Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a), Cell(L'🞙', c, a));
+		set_border(Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a), Cell(U_DIAMOND, c, a));
 		break;
 		case Point:
-		set_border(Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a), Cell(L'🞄', c, a));
-		break;
-		case PointThick:
-		set_border(Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a), Cell(L'●', c, a));
-		break;
-		case Snow:
-		set_border(Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a), Cell(L'🞻', c, a));
-		break;
-		case SnowThick:
-		set_border(Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a), Cell(L'🞼', c, a));
+		set_border(Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a), Cell(U_POINT, c, a));
 		break;
 		default:
-		set_border(Cell(L'│', c, a), Cell(L'│', c, a), Cell(L'─', c, a), Cell(L'─', c, a), Cell(L'┌', c, a), Cell(L'┐', c, a), Cell(L'└', c, a), Cell(L'┘', c, a));
+		set_border(Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_V, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_H, c, a), Cell(U_LIGHT_UL, c, a), Cell(U_LIGHT_UR, c, a), Cell(U_LIGHT_DL, c, a), Cell(U_LIGHT_DR, c, a));
 		break;
 	}
 }
@@ -929,6 +1049,8 @@ void Window::refresh(){
 		wrefresh(m_win);
 }
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS KEYBOARD
+
 class Keyboard {
 
 public:
@@ -958,7 +1080,11 @@ public:
 	static bool is_pressed(Key key);
 };
 
+///////////////////////////////////////////////// VARIABLES STATIQUES
+
 int Keyboard::input = -1;
+
+///////////////////////////////////////////////// METHODES
 
 bool Keyboard::is_pressed(Key key) {
 
@@ -1043,13 +1169,13 @@ bool Keyboard::is_pressed(Key key) {
 		return input == 'z' || input == 'Z';
 		break;
 	case Keyboard::Num0:
-		return input == 224 || input == '0'; //problème avec la reconnaissance de 'à' (meme avec toupper et tolowwer)
+		return input == 224 || input == '0'; //probl�me avec la reconnaissance de '�' (meme avec toupper et tolowwer)
 		break;
 	case Keyboard::Num1:
 		return input == '&' || input == '1';
 		break;
 	case Keyboard::Num2:
-		return input == 233 || input == '2';  //problème avec la reconnaissance de 'é' (meme avec toupper et tolowwer)
+		return input == 233 || input == '2';  //probl�me avec la reconnaissance de '�' (meme avec toupper et tolowwer)
 		break;
 	case Keyboard::Num3:
 		return input == '\"' || input == '3';
@@ -1064,16 +1190,16 @@ bool Keyboard::is_pressed(Key key) {
 		return input == '-' || input == '6';
 		break;
 	case Keyboard::Num7:
-		return input == 232 || input == '7';  //problème avec la reconnaissance de 'è' (meme avec toupper et tolowwer)
+		return input == 232 || input == '7';  //probl�me avec la reconnaissance de '�' (meme avec toupper et tolowwer)
 		break;
 	case Keyboard::Num8:
 		return input == '_' || input == '8';
 		break;
 	case Keyboard::Num9:
-		return input == 231 || input == '9';  //problème avec la reconnaissance de 'ç' (meme avec toupper et tolowwer)
+		return input == 231 || input == '9';  //probl�me avec la reconnaissance de '�' (meme avec toupper et tolowwer)
 		break;
 	case Keyboard::Escape:
-		return input == 27; //Surement probleme de compatibilité
+		return input == 27; //Surement probleme de compatibilit�
 		break;
 	case Keyboard::SemiColon:
 		return input == ';' || input == '.';
@@ -1091,13 +1217,13 @@ bool Keyboard::is_pressed(Key key) {
 		return input == ' ';
 		break;
 	case Keyboard::Return:
-		return input == KEY_ENTER || input == 13 || input == 10; //Surement probleme de compatibilité
+		return input == KEY_ENTER || input == 13 || input == 10; //Surement probleme de compatibilit�
 		break;
 	case Keyboard::BackSpace:
-		return input == KEY_BACKSPACE || input == 8; //Surement probleme de compatibilité
+		return input == KEY_BACKSPACE || input == 8; //Surement probleme de compatibilit�
 		break;
 	case Keyboard::Tab:
-		return input == KEY_BTAB || input == 9; //Surement probleme de compatibilité
+		return input == KEY_BTAB || input == 9; //Surement probleme de compatibilit�
 		break;
 	case Keyboard::Left:
 		return input == KEY_LEFT;
@@ -1183,6 +1309,8 @@ bool Keyboard::is_pressed(Key key) {
 	}
 }
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS MOUSE
+
 class Mouse {
 
 public:
@@ -1199,7 +1327,11 @@ public:
 	static bool is_scrolling(Wheel wheel);
 };
 
+///////////////////////////////////////////////// VARIABLES STATIQUES
+
 MEVENT Mouse::event;
+
+///////////////////////////////////////////////// METHODES
 
 Vector2i Mouse::get_position() {
 	return Vector2i(event.x, event.y);
@@ -1266,6 +1398,8 @@ bool Mouse::is_scrolling(Wheel wheel) {
 	}
 }
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TERMSCREEN
+
 class TermScreen : public Window {
 
 private:
@@ -1280,6 +1414,8 @@ public:
 
 	static TermScreen* getInstance();
 };
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TERM
 
 class Term {
 
@@ -1317,20 +1453,26 @@ public:
 /* clear the screen */ 
 	static void clear();
 
-/* attend jusqu'Ã  ce que "ms" microseconds soit passÃ©es */ 
+/* attend jusqu'à ce que "ms" microseconds soit passées */ 
 	static void wait(int ms);
 
 /* Display the virtual screen to the real screen */
 	static void update();
 };
 
+////////////////////////////////////////////////// VARIABLES STATIQUES
+
 TermScreen* TermScreen::m_screen = NULL;
+
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 TermScreen::TermScreen() : Window(stdscr) {}
 
 TermScreen::~TermScreen() {
 	//delete m_screen;
 }
+
+////////////////////////////////////////////////// METHODES
 
 TermScreen* TermScreen::getInstance(){
 	if(!m_screen){
@@ -1339,15 +1481,19 @@ TermScreen* TermScreen::getInstance(){
 	return m_screen;
 }
 
+////////////////////////////////////////////////// VARIABLES STATIQUES
+
 Window Term::scr; 
 
 //int (*Term::scan)(const char*, ...) = scanw; 
+
+////////////////////////////////////////////////// METHODES
 
 void Term::init_curs() {
 
 	setlocale(LC_ALL, "");
 
-	//active les deplacements de la souris si un touche est pressÃ© (-1003 tout le temps)
+	//active les deplacements de la souris si un touche est pressé (-1003 tout le temps)
 	setenv("TERM", "xterm-1002", 1); 	
 
 	initscr();    // initialize curses
@@ -1482,29 +1628,31 @@ public:
 /* Renvoie les dimension du canvas en nombre de pixel (width, height) */
 	Vector2i get_size() const;
 
-/* affiche entiÃ¨rement le canvas Ã  la position (0, 0) */
+/* affiche entièrement le canvas à la position (0, 0) */
 	virtual void display();
 
-/* affiche entiÃ¨rement le canvas Ã  la position "position" */
+/* affiche entièrement le canvas à la position "position" */
 	void display(const Vector2i& position);
 
-/* affiche Ã  la position "position", le rectangle "view" reprÃ©sentant une vue/camera sur le canvas  */
+/* affiche à la position "position", le rectangle "view" représentant une vue/camera sur le canvas  */
 	void display(const Vector2i& position, const IntRect& view);
 
-/* verifie un pixel existe Ã  la position (x, y) */
+/* verifie un pixel existe à la position (x, y) */
 	bool is_set(int x, int y);
 	bool is_set(const Vector2i& point);
 
-/* verifie si la position (x, y) est Ã  l'interieur du canvas */
+/* verifie si la position (x, y) est à l'interieur du canvas */
 	bool is_in(int x, int y);
 	bool is_in(const Vector2i& point);
 };
 
-/* Converti la position du pixel (x, y) en coordonnÃ©e de cellule (row, col) */
+///////////////////////////////////////////////// FONCTIONS DECLARATION
+
+/* Converti la position du pixel (x, y) en coordonnée de cellule (row, col) */
 Vector2i pixel_to_cell_coord(int x, int y);
 Vector2i pixel_to_cell_coord(const Vector2i& point);
 
-/* Converti les coordonnÃ©es de la cellule (row, col) en position de pixel (x, y) */
+/* Converti les coordonnées de la cellule (row, col) en position de pixel (x, y) */
 Vector2i cell_to_pixel_pos(int col, int row);
 Vector2i cell_to_pixel_pos(const Vector2i& cell_coord);
 
@@ -1652,7 +1800,7 @@ bool Canvas::is_in(const Vector2i& point){
 	return point.x >= 0 && point.y >= 0 && point.x < get_size().x && point.y < get_size().y;
 }
 
-////////////////////////////////////////////////// FONCTIONS
+////////////////////////////////////////////////// FONCTIONS DEFINITION
 
 Vector2i pixel_to_cell_coord(int x, int y){
 	return Vector2i(x / 2, y / 4);
@@ -1713,7 +1861,7 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 					// vecteur oblique dans le 1er quadran
 					
 					if(dx >= dy){
-						// vecteur diagonal ou oblique proche de lâ€™horizontale dans le 1er octant
+						// vecteur diagonal ou oblique proche de l’horizontale dans le 1er octant
 
 						float e = dx ;
 						dx = e * 2;
@@ -1755,7 +1903,7 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 					// vecteur oblique dans le 4e cadran
 					
 					if(dx >= -dy){
-						// vecteur diagonal ou oblique proche de lâ€™horizontale, dans le 8e octant
+						// vecteur diagonal ou oblique proche de l’horizontale, dans le 8e octant
 						float e = dx;
 						dx = e * 2;
 						dy *= 2;
@@ -1807,7 +1955,7 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 					// vecteur oblique dans le 2d quadran
 					
 					if(-dx >= dy){
-						// vecteur diagonal ou oblique proche de lâ€™horizontale, dans le 4e octant
+						// vecteur diagonal ou oblique proche de l’horizontale, dans le 4e octant
 						
 						float e = dx;
 						dx = e * 2;
@@ -1849,7 +1997,7 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 					// vecteur oblique dans le 3e cadran
 					
 					if(dx <= dy){
-						// vecteur diagonal ou oblique proche de lâ€™horizontale, dans le 5e octant
+						// vecteur diagonal ou oblique proche de l’horizontale, dans le 5e octant
 						
 						float e = dx;
 						dx = e * 2;
@@ -1907,7 +2055,7 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 				}while(!((y1++) == y2));
 			}
 			else{
-				// vecteur vertical dÃ©croissant
+				// vecteur vertical décroissant
 				
 				do{
 					canvas.set(x1, y1);
@@ -1917,7 +2065,7 @@ void draw_line(Canvas& canvas, int x1, int y1, int x2, int y2){
 	}
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CANVAS
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TURTLE
 
 class Turtle
 {
@@ -1943,11 +2091,15 @@ public:
 	void turn(float angle);
 };
 
+////////////////////////////////////////////////// FONCTIONS DECLARATION
+
 /* Convert the angle "degree" in radians */
 float to_radians(float degree);
 
 /* Draw a polygon on the canvas */
 void draw_polygon(Canvas& canvas, Vector2f center, int sides, float radius, float rotation);
+
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 Turtle::Turtle() : m_canvas(new Canvas()), rotation(), allocated(true), position() {}
 
@@ -1957,6 +2109,8 @@ Turtle::~Turtle(){
 	if(allocated)
 		delete m_canvas;
 }
+
+////////////////////////////////////////////////// METHODES
 
 void Turtle::draw(float distance){
 
@@ -1977,6 +2131,8 @@ void Turtle::move(float distance){
 void Turtle::turn(float angle){
 	rotation += angle;
 }
+
+////////////////////////////////////////////////// FONCTIONS DEFINITION
 
 float to_radians(float degree){
 	return degree * M_PI / float(180);
@@ -2007,6 +2163,8 @@ void draw_polygon(Canvas& canvas, Vector2f center, int sides, float radius, floa
 	}
 }
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS PARTICLE
+
 class Particle {
 
 public:
@@ -2032,6 +2190,8 @@ public:
 
 };
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS ATTRACTOR
+
 class Attractor {
 
 public:
@@ -2046,6 +2206,8 @@ public:
 	Vector2f attract(const Particle& p) const;
 };
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS REPELLER
+
 class Repeller {
 
 public:
@@ -2058,6 +2220,8 @@ public:
 
 	Vector2f repel(const Particle& p) const;
 };
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS PARTICLESYSTEM
 
 class ParticleSystem {
 
@@ -2084,19 +2248,23 @@ public:
 	void run(Canvas& c);
 };
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ FUNCTIONS
+////////////////////////////////////////////////// FONCTIONS DECLARATION
 
-/* genere un nombre flotant alÃ©atoire entre "start" et "end", precision permet de stypulÃ© le nombre max de zero aprÃ©s la virgule */
+/* genere un nombre flotant aléatoire entre "start" et "end", precision permet de stypulé le nombre max de zero aprés la virgule */
 float random(int start, int end, int precision = 100000);
 
-/* Oblige le nombre floatant f Ã  Ãªtre entre "start" et "end" */
+/* Oblige le nombre floatant f à être entre "start" et "end" */
 float constrain(float f, float start, float end);
+
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 Particle::Particle() : position(), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(), mass(1) {}
 
 Particle::Particle(const Vector2f& position, float lifetime) : position(position), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(lifetime), mass(1){}
 
 Particle::Particle(const Vector2f& pos, const Vector2f& v, float lifetime) : position(pos), velocity(v), acceleration(), lifetime(lifetime), mass(1) {} 
+
+////////////////////////////////////////////////// METHODES
 
 void Particle::apply_force(const Vector2f& force){
 	acceleration += (force / mass);
@@ -2124,11 +2292,13 @@ bool Particle::is_alive() {
 	return lifetime > 0;
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ATTRACTOR
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 Attractor::Attractor() : position(), strength(100), mass(1) {}
 
 Attractor::Attractor(const Vector2f& position) : position(position), strength(100), mass(1) {}
+
+////////////////////////////////////////////////// METHODES
 
 Vector2f Attractor::attract(const Particle& p) const {
 
@@ -2146,11 +2316,13 @@ Vector2f Attractor::attract(const Particle& p) const {
 	return dir * force;
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ REPELLER
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 Repeller::Repeller() : position(), strength(1), mass(1) {}
 
 Repeller::Repeller(const Vector2f& position) : position(position), strength(100), mass(1) {}
+
+////////////////////////////////////////////////// METHODES
 
 Vector2f Repeller::repel(const Particle& p) const {
 
@@ -2168,12 +2340,14 @@ Vector2f Repeller::repel(const Particle& p) const {
 	return -dir * force;
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PARTICLESYSTEM
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 ParticleSystem::ParticleSystem() : particles(), duration(1000), velocity_range(), velocity_over_time() {}
 
 ParticleSystem::ParticleSystem(float duration, IntRect velocity_range, float velocity_over_time) : particles(),  duration(duration), velocity_range(velocity_range), velocity_over_time(velocity_over_time) {}
  
+////////////////////////////////////////////////// METHODES
+
 void ParticleSystem::apply_force(const Vector2f& force){
 	for(std::list<Particle>::iterator it = particles.begin() ; it != particles.end() ; ++it){
 		it->apply_force(force);
@@ -2222,7 +2396,7 @@ void ParticleSystem::run(Canvas& c){
 	}
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ FUNCTIONS
+////////////////////////////////////////////////// FONCTIONS DEFINITION
 
 float random(int start, int end, int precision){
 

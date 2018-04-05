@@ -1,7 +1,11 @@
 #include "Mouse.h"
 
 //#DEFINITION
+///////////////////////////////////////////////// VARIABLES STATIQUES
+
 MEVENT Mouse::event;
+
+///////////////////////////////////////////////// METHODES
 
 Vector2i Mouse::get_position() {
 	return Vector2i(event.x, event.y);

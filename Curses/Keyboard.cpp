@@ -2,7 +2,11 @@
 #include "Cell.h"
 
 //#DEFINITION
+///////////////////////////////////////////////// VARIABLES STATIQUES
+
 int Keyboard::input = -1;
+
+///////////////////////////////////////////////// METHODES
 
 bool Keyboard::is_pressed(Key key) {
 

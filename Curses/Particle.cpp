@@ -1,11 +1,15 @@
 #include "Particle.h"
 
 //#DEFINITION
+////////////////////////////////////////////////// CONSTRUCTEURS
+
 Particle::Particle() : position(), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(), mass(1) {}
 
 Particle::Particle(const Vector2f& position, float lifetime) : position(position), velocity(random(-1, 1), random(-1, -1)), acceleration(), lifetime(lifetime), mass(1){}
 
 Particle::Particle(const Vector2f& pos, const Vector2f& v, float lifetime) : position(pos), velocity(v), acceleration(), lifetime(lifetime), mass(1) {} 
+
+////////////////////////////////////////////////// METHODES
 
 void Particle::apply_force(const Vector2f& force){
 	acceleration += (force / mass);
@@ -33,11 +37,13 @@ bool Particle::is_alive() {
 	return lifetime > 0;
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ATTRACTOR
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 Attractor::Attractor() : position(), strength(100), mass(1) {}
 
 Attractor::Attractor(const Vector2f& position) : position(position), strength(100), mass(1) {}
+
+////////////////////////////////////////////////// METHODES
 
 Vector2f Attractor::attract(const Particle& p) const {
 
@@ -55,11 +61,13 @@ Vector2f Attractor::attract(const Particle& p) const {
 	return dir * force;
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ REPELLER
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 Repeller::Repeller() : position(), strength(1), mass(1) {}
 
 Repeller::Repeller(const Vector2f& position) : position(position), strength(100), mass(1) {}
+
+////////////////////////////////////////////////// METHODES
 
 Vector2f Repeller::repel(const Particle& p) const {
 
@@ -77,12 +85,14 @@ Vector2f Repeller::repel(const Particle& p) const {
 	return -dir * force;
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PARTICLESYSTEM
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 ParticleSystem::ParticleSystem() : particles(), duration(1000), velocity_range(), velocity_over_time() {}
 
 ParticleSystem::ParticleSystem(float duration, IntRect velocity_range, float velocity_over_time) : particles(),  duration(duration), velocity_range(velocity_range), velocity_over_time(velocity_over_time) {}
  
+////////////////////////////////////////////////// METHODES
+
 void ParticleSystem::apply_force(const Vector2f& force){
 	for(std::list<Particle>::iterator it = particles.begin() ; it != particles.end() ; ++it){
 		it->apply_force(force);
@@ -131,7 +141,7 @@ void ParticleSystem::run(Canvas& c){
 	}
 }
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ FUNCTIONS
+////////////////////////////////////////////////// FONCTIONS DEFINITION
 
 float random(int start, int end, int precision){
 

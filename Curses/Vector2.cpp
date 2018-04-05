@@ -101,8 +101,7 @@ Vector2<T> Vector2<T>::left(-1, 0);
 template <typename T>
 Vector2<T> Vector2<T>::right(1, 0);
 
-
-////////////////////////////////////////////////// OPERATEURS
+////////////////////////////////////////////////// OPERATEURS DEFINITION
 
 template <typename T>
 Vector2<T> operator-(const Vector2<T>& right){

@@ -3,7 +3,6 @@
 
 #include "Term.h"
 
-
 //#DECLARATION
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CANVAS
 
@@ -51,6 +50,8 @@ public:
 	bool is_in(int x, int y);
 	bool is_in(const Vector2i& point);
 };
+
+///////////////////////////////////////////////// FONCTIONS DECLARATION
 
 /* Converti la position du pixel (x, y) en coordonnée de cellule (row, col) */
 Vector2i pixel_to_cell_coord(int x, int y);

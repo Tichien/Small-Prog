@@ -1,14 +1,19 @@
 #include "Attr.h"
 
 //#DEFINITION
-Attr::Attr() : m_attribute(A_NORMAL) {
-}
+////////////////////////////////////////////////// CONSTRUCTEURS
+
+Attr::Attr() : m_attribute(A_NORMAL) {}
 
 Attr::Attr(chtype c) : m_attribute(c & A_ATTRIBUTES) {}
+
+////////////////////////////////////////////////// METHODES
 
 Attr::operator chtype() const {
 	return m_attribute;
 }
+
+////////////////////////////////////////////////// VARIABLE STATIQUES
 
 const Attr Attr::Normal(A_NORMAL);
 const Attr Attr::Standout(A_STANDOUT);

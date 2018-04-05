@@ -1,8 +1,8 @@
 #ifndef _CELL_H_
 #define _CELL_H_
 
-#include "Color.h"
 #include "Attr.h"
+#include "Color.h"
 
 //#PREPROCESSING
 #include <cwchar>
@@ -11,6 +11,8 @@
 
 
 //#DECLARATION
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CELL
+
 class Cell
 {
 public:

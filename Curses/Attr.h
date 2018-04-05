@@ -2,6 +2,7 @@
 #define _ATTR_H_
 
 //#PREPROCESSING
+
 #ifndef _XOPEN_SOURCE_EXTENDED
 #define _XOPEN_SOURCE_EXTENDED // pour utilisé les fonction wide character et cchar_t
 #endif
@@ -13,6 +14,7 @@ extern "C"{
 //#PREPROCESSING_END
 
 //#DECLARATION
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS ATTR
 
 class Attr
 {

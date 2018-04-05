@@ -9,6 +9,48 @@
 //#PREPROCESSING_END
 
 //#DECLARATION
+/* definition de quelques characters unicodes interresants */
+
+#define U_LIGHT_V  			L'\u2502'
+#define U_LIGHT_H  			L'\u2500'
+#define U_LIGHT_UL 			L'\u250C'
+#define U_LIGHT_UR 			L'\u2510'
+#define U_LIGHT_DL 			L'\u2514'
+#define U_LIGHT_DR 			L'\u2518'
+
+#define U_LIGHT_ARC_UL 		L'\u256D'
+#define U_LIGHT_ARC_UR 		L'\u256E'
+#define U_LIGHT_ARC_DL 		L'\u2570'
+#define U_LIGHT_ARC_DR 		L'\u256F'
+
+#define U_HEAVY_V  			L'\u2503'
+#define U_HEAVY_H  			L'\u2501'
+#define U_HEAVY_UL 			L'\u250F'
+#define U_HEAVY_UR 			L'\u2513'
+#define U_HEAVY_DL 			L'\u2517'
+#define U_HEAVY_DR 			L'\u251B'
+
+#define U_DOUBLE_V  		L'\u2551'
+#define U_DOUBLE_H  		L'\u2550'
+#define U_DOUBLE_UL 		L'\u2554'
+#define U_DOUBLE_UR 		L'\u2557'
+#define U_DOUBLE_DL 		L'\u255A'
+#define U_DOUBLE_DR 		L'\u255D'
+
+#define U_BLOCK_FULL 		L'\u2588'
+#define U_BLOCK_U 			L'\u2580'
+#define U_BLOCK_D 			L'\u2584'
+
+#define U_BLOCK_LIGHT 		L'\u2591'
+#define U_BLOCK_MEDIUM 		L'\u2592'
+#define U_BLOCK_DARK 		L'\u2593'
+
+#define U_DIAMOND 			L'\u25C6'
+
+#define U_POINT 			L'\u25CF'
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS WINDOW
+
 /* Cette class permet d'englober la structure WINDOW* definie dans ncurses. */ 
 
 class Window {
@@ -22,18 +64,17 @@ public:
 
 	enum BorderType {
 		Empty,
-		Thin,
-		ThinRound,
-		Thick,
+		Light,
+		LightArc,
+		Heavy,
 		Double,
-		Block,
-		BlockShade,
+		BlockFull,
+		BlockLight,
+		BlockMedium,
+		BlockDark,
 		Dash,
 		Diamond,
-		Point,
-		PointThick,
-		Snow,
-		SnowThick
+		Point
 	};
 
 	Window();

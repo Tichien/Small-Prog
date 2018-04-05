@@ -138,7 +138,7 @@ bool Canvas::is_in(const Vector2i& point){
 	return point.x >= 0 && point.y >= 0 && point.x < get_size().x && point.y < get_size().y;
 }
 
-////////////////////////////////////////////////// FONCTIONS
+////////////////////////////////////////////////// FONCTIONS DEFINITION
 
 Vector2i pixel_to_cell_coord(int x, int y){
 	return Vector2i(x / 2, y / 4);

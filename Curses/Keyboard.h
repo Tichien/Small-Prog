@@ -2,6 +2,8 @@
 #define _KEYBOARD_H_
 
 //#DECLARATION
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS KEYBOARD
+
 class Keyboard {
 
 public:

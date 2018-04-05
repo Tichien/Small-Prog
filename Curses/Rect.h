@@ -47,9 +47,7 @@ public:
 typedef Rect<int> IntRect;
 typedef Rect<float> FloatRect;
 
-//#DECLARATION_END
-
-////////////////////////////////////////////////// OPERATEURS
+////////////////////////////////////////////////// OPERATEURS DECLARATION
 
 template <typename T>
 bool operator==(const Rect<T>& left, const Rect<T>& right);
@@ -62,6 +60,8 @@ std::ostream& operator<<(std::ostream& os, const Rect<T>& rect);
 
 template <typename T>
 std::istream& operator>>(std::istream& is, Rect<T>& rect);
+
+//#DECLARATION_END
 
 #include "Rect.cpp"
 

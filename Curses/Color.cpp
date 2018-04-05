@@ -1,6 +1,8 @@
 #include "Color.h"
 
 //#DEFINITION
+////////////////////////////////////////////////// CONSTRUCTEURS
+
 ColorPair::ColorPair() : front(DEFAULT), back(DEFAULT) {}
 
 ColorPair::ColorPair(chtype c){
@@ -24,6 +26,8 @@ ColorPair::ColorPair(ColorUnit front, ColorUnit back) {
 	this->back = back;
 }
 
+////////////////////////////////////////////////// METHODES
+
 int ColorPair::pair_num() const{
 	return (front + 1) * COLORS + (back + 1) + 1;
 }
@@ -32,6 +36,8 @@ ColorPair::operator chtype() const{
 	
 	return COLOR_PAIR(pair_num());
 }
+
+////////////////////////////////////////////////// VARIABLE STATIQUES
 
 const ColorPair ColorPair::Default(DEFAULT, DEFAULT);
 const ColorPair ColorPair::WhiteBlack(WHITE, BLACK);
@@ -51,6 +57,7 @@ const ColorPair ColorPair::Magenta(MAGENTA, DEFAULT);
 const ColorPair ColorPair::Yellow(YELLOW, DEFAULT);
 const ColorPair ColorPair::Cyan(CYAN, DEFAULT);
 
+////////////////////////////////////////////////// FONCTIONS DEFINITION
 
 void init_color_pairs(){
 

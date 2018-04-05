@@ -1,13 +1,19 @@
 #include "Term.h"
 
 //#DEFINITION
+////////////////////////////////////////////////// VARIABLES STATIQUES
+
 TermScreen* TermScreen::m_screen = NULL;
+
+////////////////////////////////////////////////// CONSTRUCTEURS
 
 TermScreen::TermScreen() : Window(stdscr) {}
 
 TermScreen::~TermScreen() {
 	//delete m_screen;
 }
+
+////////////////////////////////////////////////// METHODES
 
 TermScreen* TermScreen::getInstance(){
 	if(!m_screen){
@@ -16,9 +22,13 @@ TermScreen* TermScreen::getInstance(){
 	return m_screen;
 }
 
+////////////////////////////////////////////////// VARIABLES STATIQUES
+
 Window Term::scr; 
 
 //int (*Term::scan)(const char*, ...) = scanw; 
+
+////////////////////////////////////////////////// METHODES
 
 void Term::init_curs() {
 

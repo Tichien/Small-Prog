@@ -1,11 +1,16 @@
 #ifndef _COLOR_H_
 #define _COLOR_H_
 
+#ifndef _XOPEN_SOURCE_EXTENDED
+#define _XOPEN_SOURCE_EXTENDED // pour utilisé les fonction wide character et cchar_t
+#endif
+
 extern "C"{
 #include <ncursesw/curses.h>
 }
 
 //#DECLARATION
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS COLORPAIR
 
 enum ColorUnit{
 	DEFAULT = -1, //La couleur par default du terminal a l'initialisation de ncurses
@@ -37,9 +42,7 @@ public:
 	int pair_num() const;
 
 /* Convertie en chtype la paire de couleur composée de front et back */
-
 	operator chtype() const;
-
 
 	static const ColorPair Default;
 	static const ColorPair WhiteBlack;
@@ -59,6 +62,8 @@ public:
 	static const ColorPair Yellow;
 	static const ColorPair Cyan;
 };
+
+////////////////////////////////////////////////// FONCTIONS DECLARATION
 
 /* Initialise toutes les pairs de couleurs possible en fonction du terminal */
 void init_color_pairs();

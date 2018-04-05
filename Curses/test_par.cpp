@@ -1,4 +1,4 @@
-#include "unidraw.h"
+#include "Particle.h"
 
 using namespace std;
 
@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 		lifetime = atof(argv[2]);
 
 	if(argc > 3)
-		gravity.y = atof(argv[3]);
+		gravity.x = atof(argv[3]);
 
 	if(argc > 4)
 		wind.x = atof(argv[4]);
@@ -97,7 +97,7 @@ int main(int argc, char const *argv[])
 
 		float run_time = clock();
 
-		canvas.set_border(Window::Thin);
+		//canvas.set_border((Window::BorderType)border);
 		PS.run(canvas);
 	
 		run_time = (clock() - run_time) / (float)CLOCKS_PER_SEC;

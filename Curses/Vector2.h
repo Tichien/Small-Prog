@@ -8,6 +8,7 @@
 
 
 //#DECLARATION
+
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS VECTOR2
 
 template <typename T>
@@ -62,9 +63,7 @@ typedef Vector2<int> 			Vector2i;
 typedef Vector2<unsigned int> 	Vector2u;
 typedef Vector2<float> 			Vector2f;
 
-//#DECLARATION_END
-
-////////////////////////////////////////////////// OPERATEURS
+////////////////////////////////////////////////// OPERATEURS DECLARATION
 
 template <typename T>
 Vector2<T> operator-(const Vector2<T>& right);
@@ -107,6 +106,8 @@ std::ostream& operator<<(std::ostream& os, const Vector2<T>& vector);
 
 template <typename T>
 std::istream& operator>>(std::istream& is, Vector2<T>& vector);
+
+//#DECLARATION_END
 
 #include "Vector2.cpp"
 

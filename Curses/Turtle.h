@@ -4,7 +4,7 @@
 #include "Canvas.h"
 
 //#DECLARATION
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS CANVAS
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CLASS TURTLE
 
 class Turtle
 {
@@ -29,6 +29,8 @@ public:
 /* turn the turtle by "angle" degrees to the right if the angle is positive, or to the left if not. */
 	void turn(float angle);
 };
+
+////////////////////////////////////////////////// FONCTIONS DECLARATION
 
 /* Convert the angle "degree" in radians */
 float to_radians(float degree);
